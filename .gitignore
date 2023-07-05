@@ -21,6 +21,8 @@
 *.ppk
 /credentials
 /archive
+*.odt
+*.odt#
 
 # debug
 npm-debug.log*

@@ -1,9 +1,11 @@
 import styles from './styles.css';
-export default function Home() {
+import Link from 'next/link';
+
+export default function Portfolio() {
     return (
         <main className='flex min-h-screen flex-col items-center justify-between p-24'>
             <div className='h-screen'>
-                <p>Home Page</p>
+                <p>Portfolio</p>
             </div>
         </main>
     );

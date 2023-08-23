@@ -1,10 +1,12 @@
 import styles from './styles.css';
+
 export default function Home() {
     return (
-        <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-            <div className='h-screen'>
-                <p>Home Page</p>
-            </div>
-        </main>
+        <div className='h-screen flex flex-col'>
+            <h1>Home Page</h1>
+            <main className='flex flex-col items-center justify-between'>
+                <p>Main content</p>
+            </main>
+        </div>
     );
 }

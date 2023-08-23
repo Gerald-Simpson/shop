@@ -14,19 +14,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  //let cookieStore = cookies();
-  //let cookieId = cookieStore.get('id');
-  //let cookieItem1 = 'blank';
   return (
     <html lang='en'>
-      <body
-        className={
-          inter.className +
-          ' flex min-h-screen flex-col items-center justify-between'
-        }
-      >
-        <NavBar />
-        {children}
+      <body className={inter.className}>
+        <div className='flex flex-col w-view items-center'>
+          <NavBar />
+          {children}
+        </div>
       </body>
     </html>
   );

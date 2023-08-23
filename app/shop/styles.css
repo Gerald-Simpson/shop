@@ -1,0 +1,27 @@
+.shopLabel {
+  font-size: 1rem;
+}
+.shopPrice {
+  font-size: 0.8rem;
+}
+
+.tileImg {
+  position: relative;
+}
+
+.tileImgOne {
+  position: absolute;
+  opacity: 1;
+}
+
+.tileImg:hover .tileImgOne {
+  opacity: 0;
+}
+
+.tileImgTwo {
+  opacity: 0;
+}
+
+.tileImg:hover .tileImgTwo {
+  opacity: 1;
+}

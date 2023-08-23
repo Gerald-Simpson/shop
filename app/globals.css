@@ -22,3 +22,17 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-end-rgb));
 }
+
+.mainTitle {
+  font-size: 2rem;
+  font-weight: 300;
+  padding: 5rem 0rem;
+}
+
+.mainCont {
+  display: flex;
+  flex-direction: column;
+  min-width: 65%;
+  max-width: 65%;
+  align-items: center;
+}

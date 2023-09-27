@@ -30,10 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env*
+.local
 
 # images
-/app/_components/productImages
+# to include once images not to be shared /public/productImages
 
 # vercel
 .vercel

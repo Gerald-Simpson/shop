@@ -6,14 +6,14 @@ export default function ItemTile(props) {
       <div className='tileImg' sizes='22%'>
         <Image
           className='tileImgOne'
-          width='300'
-          placeholder='blur'
+          width='280'
+          height='280'
           src={props.img1}
         />
         <Image
           className='tileImgTwo'
-          width='300'
-          placeholder='blur'
+          width='280'
+          height='280'
           src={props.img2}
         />
       </div>

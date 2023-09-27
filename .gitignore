@@ -9,7 +9,7 @@
 /coverage
 
 # next.js
-/.next/
+# to reduce cpuu utilisation needed on aws server /.next/
 /out/
 
 # production

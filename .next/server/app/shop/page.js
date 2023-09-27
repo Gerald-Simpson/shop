@@ -280,7 +280,7 @@ __webpack_require__.r(__webpack_exports__);
         'shop',
         {
         children: ['__PAGE__', {}, {
-          page: [() => Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 6849)), "/home/gerryy/coding/shop/app/shop/page.js"],
+          page: [() => Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 5538)), "/home/gerryy/coding/shop/app/shop/page.js"],
           
         }]
       },
@@ -322,27 +322,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 9396:
+/***/ 37:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 1522, 23));
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 125, 23));
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 6249, 23));
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 7844, 23));
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 8782, 23))
-
-/***/ }),
-
-/***/ 4204:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 3912, 23));
 Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 7977, 23));
-Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 2118))
+Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 3912, 23))
 
 /***/ }),
 
-/***/ 6849:
+/***/ 5538:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -351,7 +339,9 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "default": () => (/* binding */ Shop)
+  "default": () => (/* binding */ Shop),
+  fetchStock: () => (/* binding */ fetchStock),
+  revalidate: () => (/* binding */ revalidate)
 });
 
 // EXTERNAL MODULE: external "next/dist/compiled/react/jsx-runtime"
@@ -393,7 +383,7 @@ function ItemTile(props) {
                 children: [
                     /*#__PURE__*/ jsx_runtime_.jsx("h3", {
                         className: "shopLabel",
-                        children: props.description
+                        children: props.name
                     }),
                     /*#__PURE__*/ jsx_runtime_.jsx("p", {
                         className: "shopPrice",
@@ -405,10 +395,9 @@ function ItemTile(props) {
     });
 }
 
-;// CONCATENATED MODULE: ./public/productImages/item1A.jpg
-/* harmony default export */ const item1A = ({"src":"/_next/static/media/item1A.394ee938.jpg","height":2857,"width":4314,"blurDataURL":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoKCgoKCgsMDAsPEA4QDxYUExMUFiIYGhgaGCIzICUgICUgMy03LCksNy1RQDg4QFFeT0pPXnFlZXGPiI+7u/sBCgoKCgoKCwwMCw8QDhAPFhQTExQWIhgaGBoYIjMgJSAgJSAzLTcsKSw3LVFAODhAUV5PSk9ecWVlcY+Ij7u7+//CABEIAAUACAMBIgACEQEDEQH/xAAoAAEBAAAAAAAAAAAAAAAAAAAABwEBAQAAAAAAAAAAAAAAAAAAAQL/2gAMAwEAAhADEAAAAKgGf//EAB4QAAAGAgMAAAAAAAAAAAAAAAECAwQRFAATElFS/9oACAEBAAE/AAbr3zOLimnSBK8Bwn33Of/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z","blurWidth":8,"blurHeight":5});
+// EXTERNAL MODULE: ./node_modules/next/dist/compiled/react/react.shared-subset.js
+var react_shared_subset = __webpack_require__(7887);
 ;// CONCATENATED MODULE: ./app/shop/page.js
-
 
 
 
@@ -416,41 +405,51 @@ function ItemTile(props) {
 
 const mongoose = __webpack_require__(1185);
 (__webpack_require__(3307).config)();
-async function fetchStock() {
-    mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-    const stockSchema = new mongoose.Schema({
-        name: {
-            type: String
-        },
-        description: {
-            type: String
-        },
-        stock: {
-            type: Number
-        },
-        categories: {
-            type: Object
-        }
-    });
-    let stockModel = mongoose.models.stock || mongoose.model("stock", stockSchema);
+// Connect to stock DB
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+// Set DB schema
+const stockSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    price: {
+        type: String
+    },
+    stock: {
+        type: Number
+    },
+    categories: {
+        type: Object
+    }
+});
+// Create DB model
+let stockModel = mongoose.models.stock || mongoose.model("stock", stockSchema);
+//stock data from db is cached & re-validated every 60 seconds
+const revalidate = 60;
+const fetchStock = (0,react_shared_subset.cache)(async function() {
     return await stockModel.find({});
-}
+});
+// map through each item of stock & if there is stock, render a item tile
 async function renderedTiles() {
     let stockData = await fetchStock();
     return stockData.map(async (data, index)=>{
-        return /*#__PURE__*/ jsx_runtime_.jsx(ItemTile, {
-            img1: "/productImages/" + data["_id"] + "/tile.jpg",
-            img2: "/productImages/" + data["_id"] + "/tileHover.jpg",
-            price: "\xa312.99",
-            description: "this is a test description"
-        });
+        if (data["stock"] > 0) {
+            return /*#__PURE__*/ jsx_runtime_.jsx(ItemTile, {
+                img1: "/productImages/" + data["_id"] + "/tile.jpg",
+                img2: "/productImages/" + data["_id"] + "/tileHover.jpg",
+                price: "\xa3" + data["price"],
+                name: data["name"]
+            });
+        }
     });
 }
 async function Shop() {
-    let stockData = await fetchStock();
     let builtTiles = await renderedTiles();
     return /*#__PURE__*/ (0,jsx_runtime_.jsxs)("div", {
         className: "mainCont",
@@ -470,18 +469,6 @@ async function Shop() {
 
 /***/ }),
 
-/***/ 2118:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({"src":"/_next/static/media/item1A.394ee938.jpg","height":2857,"width":4314,"blurDataURL":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoKCgoKCgsMDAsPEA4QDxYUExMUFiIYGhgaGCIzICUgICUgMy03LCksNy1RQDg4QFFeT0pPXnFlZXGPiI+7u/sBCgoKCgoKCwwMCw8QDhAPFhQTExQWIhgaGBoYIjMgJSAgJSAzLTcsKSw3LVFAODhAUV5PSk9ecWVlcY+Ij7u7+//CABEIAAUACAMBIgACEQEDEQH/xAAoAAEBAAAAAAAAAAAAAAAAAAAABwEBAQAAAAAAAAAAAAAAAAAAAQL/2gAMAwEAAhADEAAAAKgGf//EAB4QAAAGAgMAAAAAAAAAAAAAAAECAwQRFAATElFS/9oACAEBAAE/AAbr3zOLimnSBK8Bwn33Of/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQIBAT8Af//EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQMBAT8Af//Z","blurWidth":8,"blurHeight":5});
-
-/***/ }),
-
 /***/ 9701:
 /***/ (() => {
 
@@ -496,7 +483,7 @@ __webpack_require__.r(__webpack_exports__);
 var __webpack_require__ = require("../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [864,262,307,733], () => (__webpack_exec__(3030)));
+var __webpack_exports__ = __webpack_require__.X(0, [864,262,307,533], () => (__webpack_exec__(3030)));
 module.exports = __webpack_exports__;
 
 })();

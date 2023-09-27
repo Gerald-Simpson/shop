@@ -1,6 +1,6 @@
 {
-  "/favicon.ico/route": "/favicon.ico",
   "/page": "/",
+  "/favicon.ico/route": "/favicon.ico",
   "/basket/page": "/basket",
   "/commissions/page": "/commissions",
   "/portfolio/page": "/portfolio",

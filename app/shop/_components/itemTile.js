@@ -18,7 +18,7 @@ export default function ItemTile(props) {
         />
       </div>
       <div className='flex flex-col items-center text-center mx-[1rem] my-[0.5rem]'>
-        <h3 className='shopLabel'>{props.description}</h3>
+        <h3 className='shopLabel'>{props.name}</h3>
         <p className='shopPrice'>{props.price}</p>
       </div>
     </div>

@@ -14,11 +14,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  console.log('test');
+  console.log(cookies().get('id'));
   return (
     <html lang='en'>
       <body className={inter.className}>
         <div className='flex flex-col w-view items-center'>
           <NavBar />
+          <p>cookies - basket: {cookies().get('id')['value']}</p>
           {children}
         </div>
       </body>

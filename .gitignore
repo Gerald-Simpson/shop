@@ -9,11 +9,11 @@
 /coverage
 
 # next.js
-# to reduce cpuu utilisation needed on aws server /.next/
+/.next/
 /out/
 
 # production
-# to reduce cpu utilisation needed on aws server /build
+/build
 
 # misc
 .DS_Store

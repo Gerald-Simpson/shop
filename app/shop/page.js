@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styles from './styles.css';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
+import { createCookie } from './actions';
 
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -34,8 +35,8 @@ const stockSchema = new mongoose.Schema({
 // Create DB model
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
-//stock data from db is cached & re-validated every 60 seconds
-export const revalidate = 60;
+//stock data from db is cached & re-validated every 120 seconds
+export const revalidate = 120;
 export const fetchStock = cache(async function () {
   return await stockModel.find({});
 });

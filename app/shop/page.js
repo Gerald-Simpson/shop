@@ -5,13 +5,8 @@ import { cache } from 'react';
 import { createCookie } from './actions';
 
 const mongoose = require('mongoose');
-require('dotenv').config();
 
-// Connect to stock DB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+//Connected to DB in layout.js
 
 // Set DB schema
 const stockSchema = new mongoose.Schema({
@@ -35,11 +30,17 @@ const stockSchema = new mongoose.Schema({
 // Create DB model
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
+/*
 //stock data from db is cached & re-validated every 120 seconds
 export const revalidate = 120;
 export const fetchStock = cache(async function () {
   return await stockModel.find({});
 });
+*/
+// Removed periodic revalidation as this revalidates every two minutes whether the website is in use or not, so results in more requests to the DB.
+export const fetchStock = async function () {
+  return await stockModel.find({});
+};
 
 // map through each item of stock & if there is stock, render a item tile
 async function renderedTiles() {

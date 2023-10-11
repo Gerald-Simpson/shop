@@ -1,8 +1,10 @@
+'use server';
+
 import Link from 'next/link';
 import styles from './styles.css';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
-import { createCookie } from './actions';
+import { cookies } from 'next/headers';
 
 const mongoose = require('mongoose');
 
@@ -42,6 +44,8 @@ export const fetchStock = async function () {
   return await stockModel.find({});
 };
 
+let basketModel = mongoose.models.stock;
+
 // map through each item of stock & if there is stock, render a item tile
 async function renderedTiles() {
   let stockData = await fetchStock();
@@ -53,6 +57,7 @@ async function renderedTiles() {
           img2={'/productImages/' + data['_id'] + '/tileHover.jpg'}
           price={'£' + data['price']}
           name={data['name']}
+          itemDbId={data['_id']}
         />
       );
     }
@@ -60,7 +65,7 @@ async function renderedTiles() {
 }
 
 export default async function Shop() {
-  let builtTiles = await renderedTiles();
+  let builtTiles = renderedTiles();
   return (
     <div className='mainCont'>
       <h1 className='mainTitle'>Shop</h1>

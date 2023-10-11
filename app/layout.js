@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 const basketSchema = new mongoose.Schema({
   cookieId: {
     type: String,
+    unique: true,
   },
   itemDbId: {
     type: [String],
@@ -37,6 +38,7 @@ export const fetchBasket = async function () {
 };
 */
 
+//Once adding items to basket is created, need to look at how to re-validate fetchBasket once items are added, as the basket count on the navbar element doesn't update unless the page is refreshed.
 export default async function RootLayout({ children }) {
   let fetchBasket = await basketModel.find({
     cookieId: cookies().get('id')['value'],
@@ -51,7 +53,13 @@ export default async function RootLayout({ children }) {
     <html lang='en'>
       <body className={inter.className}>
         <div className='flex flex-col w-view items-center'>
-          <NavBar basketCount={' ' + fetchBasket[0]['itemDbId'].length} />
+          <NavBar
+            basketCount={
+              fetchBasket[0]['itemDbId'].length === 0
+                ? ''
+                : ' ' + fetchBasket[0]['itemDbId'].length
+            }
+          />
           {children}
         </div>
       </body>

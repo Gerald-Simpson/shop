@@ -35,7 +35,7 @@ export async function AddToBasket(dataObj) {
         await basketModel.findOneAndUpdate(
             { 'basket.itemDbId': dataObj['itemDbId'] },
             {
-                $set: { basket: basketCopy },
+                $set: { basket: basketCopy, lastUpdated: Date.now() },
             }
         );
     } else {
@@ -43,6 +43,7 @@ export async function AddToBasket(dataObj) {
         let basketPushItem = { itemDbId: dataObj['itemDbId'], count: 1 };
         await basketModel.findOneAndUpdate(query, {
             $push: { basket: basketPushItem },
+            $set: { lastUpdated: Date.now() },
         });
     }
 }

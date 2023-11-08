@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './styles.css';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
-import { cookies } from 'next/headers';
+import NavBar from '../_components/navBar';
 
 const mongoose = require('mongoose');
 
@@ -32,19 +32,10 @@ const stockSchema = new mongoose.Schema({
 // Create DB model
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
-/*
-//stock data from db is cached & re-validated every 120 seconds
-export const revalidate = 120;
-export const fetchStock = cache(async function () {
-  return await stockModel.find({});
-});
-*/
 // Removed periodic revalidation as this revalidates every two minutes whether the website is in use or not, so results in more requests to the DB.
 export const fetchStock = async function () {
   return await stockModel.find({});
 };
-
-let basketModel = mongoose.models.stock;
 
 // map through each item of stock & if there is stock, render a item tile
 async function renderedTiles() {
@@ -67,11 +58,14 @@ async function renderedTiles() {
 export default async function Shop() {
   let builtTiles = renderedTiles();
   return (
-    <div className='mainCont'>
-      <h1 className='mainTitle'>Shop</h1>
-      <main className='flex flex-wrap w-full justify-between'>
-        {builtTiles}
-      </main>
+    <div className='h-screen flex flex-col items-center'>
+      <NavBar path={'/shop'} />
+      <div className='mainCont'>
+        <h1 className='mainTitle'>Shop</h1>
+        <main className='flex flex-wrap w-full justify-between'>
+          {builtTiles}
+        </main>
+      </div>
     </div>
   );
 }

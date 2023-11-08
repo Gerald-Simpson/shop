@@ -1,8 +1,14 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
+import { AddToBasket } from './shop/_components/addToBasket.js';
 
-export async function addBasket(item) {
-  cookies().set('basket', 'sdfsdf');
-  console.log('cookieset');
+export async function addToBasketAndClearCache(cookieId, itemDbId) {
+  'use server';
+
+  await AddToBasket({
+    cookieId: cookieId,
+    itemDbId: itemDbId,
+  });
+  revalidateTag('basketTag');
 }

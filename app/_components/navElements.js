@@ -3,14 +3,13 @@
 import styles from './NavBar.module.css';
 import Link from 'next/link';
 import { navLinks } from './navLinks';
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
-export default function GetPath(props) {
-  const pathName = usePathname();
-  useEffect(() => {}, [pathName]);
+export default function NavElements(props) {
+  //const [basketCount, updateCount] = useState(props.basketCount);
+  const basketCount = props.basketCount;
   return navLinks.map((link, index) => {
-    if (pathName != link.path) {
+    if (props.path != link.path) {
       return (
         <Link
           id={'nav' + link.name}
@@ -18,7 +17,7 @@ export default function GetPath(props) {
           className={styles.nav}
           key={index}
         >
-          {link.name != 'BASKET' ? link.name : 'BASKET' + props.basketCount}
+          {link.name != 'BASKET' ? link.name : 'BASKET' + basketCount}
         </Link>
       );
     } else {
@@ -29,7 +28,7 @@ export default function GetPath(props) {
           className={styles.navActive}
           key={index}
         >
-          {link.name != 'BASKET' ? link.name : 'BASKET' + props.basketCount}
+          {link.name != 'BASKET' ? link.name : 'BASKET' + basketCount}
         </Link>
       );
     }

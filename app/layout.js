@@ -7,86 +7,14 @@ import NavBar from './_components/navBar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-    title: 'test tab title',
-    description: 'Built by Gerald Simpson',
+  title: 'test tab title',
+  description: 'Built by Gerald Simpson',
 };
 
-const mongoose = require('mongoose');
-// Connect to stock DB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const basketSchema = new mongoose.Schema(
-    {
-        cookieId: {
-            type: String,
-            unique: true,
-        },
-        basket: {
-            type: [{ itemDbId: String, count: Number }],
-            minimize: false,
-        },
-        lastUpdated: {
-            type: Date,
-            default: Date.now,
-        },
-    },
-    { minimize: false }
-);
-
-// Create DB model
-let basketModel =
-    mongoose.models.basket || mongoose.model('basket', basketSchema);
-
-/*
-export const fetchBasket = async function () {
-  return await basketModel.find({ cookieId: cookies().get('id')['value'] });
-};
-*/
-
-//Once adding items to basket is created, need to look at how to re-validate fetchBasket once items are added, as the basket count on the navbar element doesn't update unless the page is refreshed.
 export default async function RootLayout({ children }) {
-    let fetchBasket = await basketModel.find({
-        cookieId: cookies().get('id')['value'],
-    });
-    if (fetchBasket.length === 0) {
-        // There is no entry for this cookie in the basket DB
-        basketModel.create({
-            cookieId: cookies().get('id')['value'],
-            basket: [],
-        });
-        // If no cookie, set basket number to zero
-        return (
-            <html lang='en'>
-                <body className={inter.className}>
-                    <div className='flex flex-col w-view items-center'>
-                        <NavBar basketCount={''} />
-                        {children}
-                    </div>
-                </body>
-            </html>
-        );
-    } else {
-        // If cookie present, set basket number to number of items in basket DB
-        let basketItemCount = 0;
-        fetchBasket[0]['basket'].forEach((entry) => {
-            basketItemCount += entry['count'];
-        });
-        return (
-            <html lang='en'>
-                <body className={inter.className}>
-                    <div className='flex flex-col w-view items-center'>
-                        <NavBar
-                            basketCount={
-                                basketItemCount === 0 ? '' : ' ' + String(basketItemCount)
-                            }
-                        />
-                        {children}
-                    </div>
-                </body>
-            </html>
-        );
-    }
+  return (
+    <html lang='en'>
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
 }

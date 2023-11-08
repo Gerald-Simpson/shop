@@ -1,4 +1,4 @@
-'use client';
+import NavBar from '../_components/navBar';
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import checkOut from './api/checkout_sessions.js';
@@ -11,15 +11,16 @@ const stripePromise = loadStripe(
 
 export default function PreviewPage() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <div className='h-screen'>
-        <p>Basket</p>
-      </div>
-      <form action={checkOut}>
-        <section>
-          <button>Checkout</button>
-        </section>
-      </form>
-    </main>
+    <div className='h-screen flex flex-col items-center'>
+      <NavBar path={'/basket'} />
+      <main className='flex flex-col items-center justify-between'>
+        <h1>Basket</h1>
+        <form action={checkOut}>
+          <section>
+            <button>Checkout</button>
+          </section>
+        </form>
+      </main>
+    </div>
   );
 }

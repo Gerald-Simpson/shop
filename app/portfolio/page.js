@@ -1,11 +1,14 @@
 import Link from 'next/link';
+import NavBar from '../_components/navBar';
 
 export default function Portfolio() {
-    return (
-        <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-            <div className='h-screen'>
-                <p>Portfolio</p>
-            </div>
-        </main>
-    );
+  return (
+    <div className='h-screen flex flex-col items-center'>
+      <NavBar path={'/portfolio'} />
+      <h1>Portfolio</h1>
+      <main className='flex flex-col items-center justify-between'>
+        <p>Portfolio</p>
+      </main>
+    </div>
+  );
 }

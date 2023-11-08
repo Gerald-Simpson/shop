@@ -1,19 +1,36 @@
+'use server';
+
 import styles from './NavBar.module.css';
 import Link from 'next/link';
-import { navLinks } from './navLinks';
-import GetPath from './navElements';
-import { Suspense } from 'react';
+import NavElements from './navElements.js';
+import { cookies } from 'next/headers';
 
-export default function NavBar(props) {
+async function fetchBasketCount() {
+  let res = await fetch('http://localhost:3000/api/fetch-basket', {
+    method: 'GET',
+    cache: 'no-store',
+    next: { tags: ['basketTag'] },
+    headers: {
+      cookieId: cookies().get('id')['value'],
+    },
+  });
+  const data = await res.json();
+  if (data === []) return '';
+  let basketItemCount = 0;
+  await data['basket'].forEach((entry) => {
+    basketItemCount += entry['count'];
+  });
+  return ' ' + basketItemCount;
+}
+
+export default async function NavBar(props) {
   return (
     <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
       <Link href='/' className='text-4xl'>
         Logo
       </Link>
       <div className='flex w-2/4 justify-evenly'>
-        <Suspense fallback={null}>
-          <GetPath basketCount={props.basketCount} />
-        </Suspense>
+        <NavElements basketCount={await fetchBasketCount()} path={props.path} />
       </div>
     </div>
   );

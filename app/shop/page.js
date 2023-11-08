@@ -5,6 +5,7 @@ import styles from './styles.css';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
 import NavBar from '../_components/navBar';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const mongoose = require('mongoose');
 
@@ -34,6 +35,7 @@ let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
 // Removed periodic revalidation as this revalidates every two minutes whether the website is in use or not, so results in more requests to the DB.
 export const fetchStock = async function () {
+  noStore();
   return await stockModel.find({});
 };
 

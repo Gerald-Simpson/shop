@@ -7,7 +7,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function checkOut() {
   // Create Checkout Sessions from body params.
-  console.log(cookies().get('id')['value']);
   // check DB for details on items in
   const session = await stripe.checkout.sessions.create({
     line_items: [

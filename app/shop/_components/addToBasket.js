@@ -19,43 +19,44 @@ export async function AddToBasket(dataObj) {
       cookieId: dataObj['cookieId'],
       basket: {
         itemDbId: dataObj['itemDbId'],
-        variantName: { name: dataObj.variantName },
+        variantName: dataObj.variantName,
         count: 1,
       },
     });
-  }
-  let basketCopy = fetchBasket[0]['basket'];
-  let position = -1;
-  // Basket already exists
-  // Check if item already in basket
-  basketCopy.forEach((obj, index) => {
-    if (
-      obj.itemDbId === dataObj['itemDbId'] &&
-      obj.variantName === dataObj.variantName
-    ) {
-      position = index;
-      // Increment cont in basketCopy
-      basketCopy[index]['count'] += 1;
-    }
-  });
-  if (position > -1) {
-    // Replace basket with updated basketCopy
-    await basketModel.findOneAndUpdate(
-      { 'basket.itemDbId': dataObj['itemDbId'] },
-      {
-        $set: { basket: basketCopy, lastUpdated: Date.now() },
-      }
-    );
   } else {
-    //If not, add the item to the itemDbId object with value of 1
-    let basketPushItem = {
-      itemDbId: dataObj['itemDbId'],
-      variantName: dataObj.variantName,
-      count: 1,
-    };
-    await basketModel.findOneAndUpdate(query, {
-      $push: { basket: basketPushItem },
-      $set: { lastUpdated: Date.now() },
+    let basketCopy = fetchBasket[0]['basket'];
+    let position = -1;
+    // Basket already exists
+    // Check if item already in basket
+    basketCopy.forEach((obj, index) => {
+      if (
+        obj.itemDbId === dataObj['itemDbId'] &&
+        obj.variantName === dataObj.variantName
+      ) {
+        position = index;
+        // Increment cont in basketCopy
+        basketCopy[index]['count'] += 1;
+      }
     });
+    if (position > -1) {
+      // Replace basket with updated basketCopy
+      await basketModel.findOneAndUpdate(
+        { 'basket.itemDbId': dataObj['itemDbId'] },
+        {
+          $set: { basket: basketCopy, lastUpdated: Date.now() },
+        }
+      );
+    } else {
+      //If not, add the item to the itemDbId object with value of 1
+      let basketPushItem = {
+        itemDbId: dataObj['itemDbId'],
+        variantName: dataObj.variantName,
+        count: 1,
+      };
+      await basketModel.findOneAndUpdate(query, {
+        $push: { basket: basketPushItem },
+        $set: { lastUpdated: Date.now() },
+      });
+    }
   }
 }

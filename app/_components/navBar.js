@@ -6,6 +6,10 @@ import NavElements from './navElements.js';
 import { cookies } from 'next/headers';
 
 async function fetchBasketCount() {
+  if (!cookies().has('id')) {
+    return '';
+  }
+  //return '';
   let res = await fetch('http://localhost:3000/api/fetch-basket', {
     method: 'GET',
     cache: 'no-store',
@@ -15,11 +19,12 @@ async function fetchBasketCount() {
     },
   });
   const data = await res.json();
-  if (data === []) return '';
+  if (data.length === 0) return '';
   let basketItemCount = 0;
   await data['basket'].forEach((entry) => {
     basketItemCount += entry['count'];
   });
+  console.log(data);
   return ' ' + basketItemCount;
 }
 

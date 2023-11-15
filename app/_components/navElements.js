@@ -6,7 +6,6 @@ import { navLinks } from './navLinks';
 import { useState } from 'react';
 
 export default function NavElements(props) {
-  //const [basketCount, updateCount] = useState(props.basketCount);
   const basketCount = props.basketCount;
   return navLinks.map((link, index) => {
     if (props.path != link.path) {

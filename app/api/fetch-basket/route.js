@@ -42,8 +42,9 @@ export async function GET() {
   const res = await basketModel.find({
     cookieId: cookieId,
   });
-
+  if (res.length === 0) {
+    return new Response('[]');
+  }
   let data = res[0];
-  //let testData = "{ testing: 'ver tested', othertest: 'testing' }";
   return new Response(JSON.stringify(data));
 }

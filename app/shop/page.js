@@ -46,12 +46,22 @@ export const fetchStock = async function () {
 async function renderedTiles() {
   let stockData = await fetchStock();
   return stockData.map(async (data, index) => {
-    if (data['stock'] > 0) {
+    let stockCount = 0;
+    let minPrice = '';
+    data.variant.forEach((vari) => {
+      stockCount += vari.stock;
+      if (minPrice === '') {
+        minPrice = vari.price;
+      } else if (parseFloat(minPrice) > parseFloat(vari.price)) {
+        minPrice = vari.price;
+      }
+    });
+    if (stockCount > 0) {
       return (
         <ItemTile
           img1={'/productImages/' + data['_id'] + '/tile.jpg'}
           img2={'/productImages/' + data['_id'] + '/tileHover.jpg'}
-          price={'£' + data['price']}
+          price={'£' + minPrice}
           name={data['name']}
           itemDbId={data['_id']}
         />

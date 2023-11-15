@@ -17,7 +17,11 @@ export async function AddToBasket(dataObj) {
     // Create basket & add item
     basketModel.create({
       cookieId: dataObj['cookieId'],
-      basket: { itemDbId: dataObj['itemDbId'], count: 1 },
+      basket: {
+        itemDbId: dataObj['itemDbId'],
+        variantName: { name: dataObj.variantName },
+        count: 1,
+      },
     });
   }
   let basketCopy = fetchBasket[0]['basket'];
@@ -25,7 +29,10 @@ export async function AddToBasket(dataObj) {
   // Basket already exists
   // Check if item already in basket
   basketCopy.forEach((obj, index) => {
-    if (obj.itemDbId === dataObj['itemDbId']) {
+    if (
+      obj.itemDbId === dataObj['itemDbId'] &&
+      obj.variantName === dataObj.variantName
+    ) {
       position = index;
       // Increment cont in basketCopy
       basketCopy[index]['count'] += 1;
@@ -41,7 +48,11 @@ export async function AddToBasket(dataObj) {
     );
   } else {
     //If not, add the item to the itemDbId object with value of 1
-    let basketPushItem = { itemDbId: dataObj['itemDbId'], count: 1 };
+    let basketPushItem = {
+      itemDbId: dataObj['itemDbId'],
+      variantName: dataObj.variantName,
+      count: 1,
+    };
     await basketModel.findOneAndUpdate(query, {
       $push: { basket: basketPushItem },
       $set: { lastUpdated: Date.now() },

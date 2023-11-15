@@ -64,6 +64,7 @@ async function renderedTiles() {
           price={'£' + minPrice}
           name={data['name']}
           itemDbId={data['_id']}
+          variantName={data.variant[0].name}
         />
       );
     }

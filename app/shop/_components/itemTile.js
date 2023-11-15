@@ -28,6 +28,7 @@ export default async function ItemTile(props) {
       <AddToBasketButton
         cookieId={cookies().get('id')['value']}
         itemDbId={String(props.itemDbId)}
+        variantName={props.variantName}
       />
     </div>
   );

@@ -15,7 +15,13 @@ const basketSchema = new mongoose.Schema(
       unique: true,
     },
     basket: {
-      type: [{ itemDbId: String, count: Number }],
+      type: [
+        {
+          itemDbId: String,
+          variant: [{ name: String, count: Number }],
+          count: Number,
+        },
+      ],
       minimize: false,
     },
     lastUpdated: {

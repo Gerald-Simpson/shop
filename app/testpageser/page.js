@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 
 async function fetchBasketCount() {
-  let res = await fetch('http://localhost:3000/api/fetch-basket', {
+  let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
     method: 'GET',
     headers: {
       cookieId: cookies().get('id')['value'],

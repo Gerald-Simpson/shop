@@ -10,7 +10,7 @@ async function fetchBasketCount() {
     return '';
   }
   //return '';
-  let res = await fetch('http://localhost:3000/api/fetch-basket', {
+  let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
     method: 'GET',
     cache: 'no-store',
     next: { tags: ['basketTag'] },
@@ -19,12 +19,11 @@ async function fetchBasketCount() {
     },
   });
   const data = await res.json();
-  if (data.length === 0) return '';
+  if (data.length === 0) return ' 0';
   let basketItemCount = 0;
   await data['basket'].forEach((entry) => {
     basketItemCount += entry['count'];
   });
-  console.log(data);
   return ' ' + basketItemCount;
 }
 

@@ -4,6 +4,7 @@ import styles from './NavBar.module.css';
 import Link from 'next/link';
 import NavElements from './navElements.js';
 import { cookies } from 'next/headers';
+import { Suspense } from 'react';
 
 async function fetchBasketCount() {
   if (!cookies().has('id')) {
@@ -24,7 +25,7 @@ async function fetchBasketCount() {
   await data['basket'].forEach((entry) => {
     basketItemCount += entry['count'];
   });
-  return ' ' + basketItemCount;
+  return basketItemCount;
 }
 
 export default async function NavBar(props) {
@@ -34,7 +35,12 @@ export default async function NavBar(props) {
         Logo
       </Link>
       <div className='flex w-2/4 justify-evenly'>
-        <NavElements basketCount={await fetchBasketCount()} path={props.path} />
+        <Suspense fallback={<NavElements basketCount='0' path={props.path} />}>
+          <NavElements
+            basketCount={await fetchBasketCount()}
+            path={props.path}
+          />
+        </Suspense>
       </div>
     </div>
   );

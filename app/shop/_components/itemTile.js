@@ -9,13 +9,13 @@ export default async function ItemTile(props) {
     <div className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
       <div className='tileImg' sizes='22%'>
         <Image
-          className='tileImgOne'
+          className='tileImgOne z-0'
           width='280'
           height='280'
           src={props.img1}
         />
         <Image
-          className='tileImgTwo'
+          className='tileImgTwo z-0'
           width='280'
           height='280'
           src={props.img2}

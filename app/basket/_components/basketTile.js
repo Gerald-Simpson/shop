@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default async function BasketTile(props) {
   return (
-    <div className='flex flex-row justify-between w-full items-center bg-orange-500'>
+    <div className='flex flex-row justify-between w-96 items-center bg-orange-500'>
       <Image width='80' height='80' src={props.img} />
       <div>
         <div>

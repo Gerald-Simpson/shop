@@ -78,7 +78,7 @@ export default async function Shop() {
   let stockData = await fetchStock();
   return (
     <div className='h-screen flex flex-col items-center'>
-      <NavBar path={'/shop'} stockData={stockData} />
+      <NavBar activePath={'/shop'} stockData={stockData} />
       <div className='mainCont'>
         <h1 className='mainTitle'>Shop</h1>
         <main className='flex flex-wrap w-full justify-between'>

@@ -17,3 +17,9 @@ export async function addToBasketAndClearCache(
   });
   revalidateTag('basketTag');
 }
+
+export async function doThing() {
+  'use server';
+  console.log('tester');
+  return 'tits';
+}

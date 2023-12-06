@@ -37,12 +37,14 @@ const stockSchema = new mongoose.Schema({
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
 // Removed periodic revalidation as this revalidates every two minutes whether the website is in use or not, so results in more requests to the DB.
-export const fetchStock = async function () {
+// Eventually change this revalidate every hour, with a tag to cause revalidation on successful user checkout
+const fetchStock = async function () {
   noStore();
   return await stockModel.find({});
 };
 
 // map through each item of stock & if there is stock, render a item tile
+// This could be changed to reduce server load by finding each item by Id from the DB instead
 async function renderedTiles() {
   let stockData = await fetchStock();
   return stockData.map(async (data, index) => {
@@ -73,9 +75,10 @@ async function renderedTiles() {
 
 export default async function Shop() {
   let builtTiles = renderedTiles();
+  let stockData = await fetchStock();
   return (
     <div className='h-screen flex flex-col items-center'>
-      <NavBar path={'/shop'} />
+      <NavBar path={'/shop'} stockData={stockData} />
       <div className='mainCont'>
         <h1 className='mainTitle'>Shop</h1>
         <main className='flex flex-wrap w-full justify-between'>

@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { fetchStock } from '../../shop/page.js';
+import { fetchStock } from '../shop/page.js';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 

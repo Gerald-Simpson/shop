@@ -4,7 +4,7 @@ import styles from './NavBar.module.css';
 import Link from 'next/link';
 import { navLinks } from './navLinks';
 import { useState } from 'react';
-import BasketOverlay from '../basket/_components/basketOverlay';
+import BasketOverlay from './basketOverlay';
 
 export default function NavElements(props) {
   const basketCount = props.basketCount;
@@ -30,6 +30,8 @@ export default function NavElements(props) {
               showBasket={showBasket}
               onClick={toggleBasket}
               basketCount={props.basketCount}
+              basketData={props.basketData}
+              stockData={props.stockData}
             />
             <button
               id={'nav' + link.name}
@@ -62,6 +64,8 @@ export default function NavElements(props) {
               showBasket={showBasket}
               onClick={toggleBasket}
               basketCount={props.basketCount}
+              basketData={props.basketData}
+              stockData={props.stockData}
             />
             <button
               id={'nav' + link.name}

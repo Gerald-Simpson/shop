@@ -10,7 +10,6 @@ async function fetchBasketCount() {
   if (!cookies().has('id')) {
     return '';
   }
-  //return '';
   let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
     method: 'GET',
     cache: 'no-store',
@@ -28,6 +27,19 @@ async function fetchBasketCount() {
   return basketItemCount;
 }
 
+async function fetchBasket() {
+  let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
+    method: 'GET',
+    cache: 'no-store',
+    next: { tags: ['basketTag'] },
+    headers: {
+      cookieId: cookies().get('id')['value'],
+    },
+  });
+  const data = await res.json();
+  return data.basket;
+}
+
 export default async function NavBar(props) {
   return (
     <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
@@ -38,6 +50,8 @@ export default async function NavBar(props) {
         <Suspense fallback={<NavElements basketCount='0' path={props.path} />}>
           <NavElements
             basketCount={await fetchBasketCount()}
+            stockData={props.stockData}
+            basketData={await fetchBasket()}
             path={props.path}
           />
         </Suspense>

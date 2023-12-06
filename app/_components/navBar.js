@@ -4,6 +4,85 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import NavBasketButton from './navBasketButton.js';
+import { unstable_noStore as noStore } from 'next/cache';
+
+export default async function NavBar(props) {
+  let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
+  return (
+    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
+      <Link href='/' className='text-4xl'>
+        Logo
+      </Link>
+      <div className='flex w-2/4 justify-evenly'>
+        <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
+        <NavLink
+          title={'PORTFOLIO'}
+          href={'/portfolio'}
+          activePath={props.activePath}
+        />
+        <NavLink title={'SHOP'} href={'/shop'} activePath={props.activePath} />
+        <NavLink
+          title={'COMMISSIONS'}
+          href={'/commissions'}
+          activePath={props.activePath}
+        />
+        <NavBasketButton
+          comparedBasket={comparedBasket}
+          basketCount={basketCount(await fetchBasket())}
+        />
+      </div>
+    </div>
+  );
+}
+
+const mongoose = require('mongoose');
+
+//Connected to DB in layout.js
+
+// Set DB schema
+const stockSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  variant: {
+    type: [{ name: String, price: String, stock: Number }],
+  },
+  price: {
+    type: String,
+  },
+  stock: {
+    type: Number,
+  },
+  categories: {
+    type: Object,
+  },
+});
+
+// Create DB model
+let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
+
+// Removed periodic revalidation as this revalidates every two minutes whether the website is in use or not, so results in more requests to the DB.
+// Eventually change this revalidate every hour, with a tag to cause revalidation on successful user checkout
+export const fetchStock = async function () {
+  noStore();
+  return await stockModel.find({});
+};
+//
+
+/*
+        <Suspense fallback={<NavElements basketCount='0' path={props.path} />}>
+          <NavElements
+            basketCount={await fetchBasketCount()}
+            stockData={props.stockData}
+            basketData={await fetchBasket()}
+            path={props.path}
+          />
+        </Suspense>
+    
+    */
 
 // Currently does not cache but will look at caching & re-validating when necessary later
 async function fetchBasket() {
@@ -33,43 +112,6 @@ async function fetchBasketCount() {
   return basketCount(data);
 }
 
-export default async function NavBar(props) {
-  return (
-    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
-      <Link href='/' className='text-4xl'>
-        Logo
-      </Link>
-      <div className='flex w-2/4 justify-evenly'>
-        <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
-        <NavLink
-          title={'PORTFOLIO'}
-          href={'/portfolio'}
-          activePath={props.activePath}
-        />
-        <NavLink title={'SHOP'} href={'/shop'} activePath={props.activePath} />
-        <NavLink
-          title={'COMMISSIONS'}
-          href={'/commissions'}
-          activePath={props.activePath}
-        />
-        <NavBasketButton basketCount={fetchBasketCount()} />
-      </div>
-    </div>
-  );
-}
-
-/*
-        <Suspense fallback={<NavElements basketCount='0' path={props.path} />}>
-          <NavElements
-            basketCount={await fetchBasketCount()}
-            stockData={props.stockData}
-            basketData={await fetchBasket()}
-            path={props.path}
-          />
-        </Suspense>
-    
-    */
-
 async function NavLink(props) {
   if (props.href === props.activePath) {
     return (
@@ -92,4 +134,51 @@ async function NavLink(props) {
       </Link>
     );
   }
+}
+
+function compareBasket(basketData, stockData) {
+  let inStock = [];
+  let outStock = [];
+  // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
+  basketData.basket.forEach((basketItem) => {
+    stockData.forEach((stockItem) => {
+      if (basketItem.itemDbId === String(stockItem._id)) {
+        stockItem.variant.forEach((vari) => {
+          if (vari.name === basketItem.variantName) {
+            if (vari.stock > basketItem.count) {
+              inStock.push({
+                name: stockItem.name,
+                variant: vari.name,
+                price: parseFloat(vari.price),
+                description: stockItem.description,
+                quantity: basketItem.count,
+                itemDbId: basketItem.itemDbId,
+              });
+            } else {
+              if (vari.stock > 0) {
+                inStock.push({
+                  name: stockItem.name,
+                  variant: vari.name,
+                  price: parseFloat(vari.price),
+                  description: stockItem.description,
+                  quantity: vari.stock,
+                  itemDbId: basketItem.itemDbId,
+                });
+              }
+              outStock.push({
+                name: stockItem.name,
+                variant: vari.name,
+                price: parseFloat(vari.price),
+                description: stockItem.description,
+                quantity: basketItem.count - vari.stock,
+                itemDbId: basketItem.itemDbId,
+              });
+            }
+          }
+        });
+      }
+    });
+  });
+
+  return [inStock, outStock];
 }

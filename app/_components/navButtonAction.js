@@ -1,5 +1,5 @@
 'use server';
 
-export async function doThing() {
+export async function toggleBasket() {
   console.log('tester');
 }

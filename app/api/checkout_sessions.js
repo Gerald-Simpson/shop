@@ -72,8 +72,8 @@ export default async function checkOut() {
   const session = await stripe.checkout.sessions.create({
     line_items: await compareBasket(),
     mode: 'payment',
-    success_url: `${process.env.HOST_NAME}/basket`,
-    cancel_url: `${process.env.HOST_NAME}/basket`,
+    success_url: `${process.env.HOST_NAME}/`,
+    cancel_url: `${process.env.HOST_NAME}/`,
     automatic_tax: { enabled: true },
   });
   redirect(session.url);

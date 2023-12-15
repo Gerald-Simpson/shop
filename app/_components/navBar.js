@@ -29,6 +29,7 @@ export default async function NavBar(props) {
         <Basket
           comparedBasket={comparedBasket}
           basketCount={await fetchBasketCount()}
+          cookieId={cookies().get('id')['value']}
         />
       </div>
     </div>

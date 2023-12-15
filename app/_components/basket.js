@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Suspense } from 'react';
 import checkOut from '../api/checkout_sessions.js';
+import { removeFromBasketAndClearCache } from '../actions.js';
 
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
@@ -55,7 +56,10 @@ export default function Basket(props) {
               </div>
               <div className='flex flex-col w-full h-auto border-t'>
                 <Suspense fallback={<p>Loading...</p>}>
-                  <CombinedBasketTiles comparedBasket={props.comparedBasket} />
+                  <CombinedBasketTiles
+                    comparedBasket={props.comparedBasket}
+                    cookieId={props.cookieId}
+                  />
                 </Suspense>
               </div>
             </div>
@@ -88,10 +92,12 @@ function CombinedBasketTiles(props) {
       return (
         <BasketTile
           name={item.name}
-          variant={item.variant}
+          variantName={item.variant}
           price={item.price.toString()}
           quantity={item.quantity}
           img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+          cookieId={props.cookieId}
+          itemDbId={item.itemDbId}
         />
       );
     });
@@ -107,11 +113,22 @@ function BasketTile(props) {
           <p className='text-xs font-bold underline underline-offset-1'>
             {props.name}
           </p>
-          <p className='pt-1 text-xs font-bold'>{props.variant}</p>
+          <p className='pt-1 text-xs font-bold'>{props.variantName}</p>
           <p className='pt-1 text-xs'>{props.quantity}</p>
         </div>
         <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
-          <button className='text-xs hover:text-red-700'>Remove</button>
+          <button
+            onClick={() => {
+              removeFromBasketAndClearCache(
+                props.cookieId,
+                props.itemDbId,
+                props.variantName
+              );
+            }}
+            className='text-xs hover:text-red-700'
+          >
+            Remove
+          </button>
           <p>£{props.price}</p>
         </div>
       </div>

@@ -1,7 +1,8 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { AddToBasket } from './shop/_components/addToBasket.js';
+import { addToBasket } from './shop/_components/addToBasket.js';
+import { removeFromBasket } from './shop/_components/removeFromBasket.js';
 
 export async function addToBasketAndClearCache(
   cookieId,
@@ -10,7 +11,7 @@ export async function addToBasketAndClearCache(
 ) {
   'use server';
 
-  await AddToBasket({
+  await addToBasket({
     cookieId: cookieId,
     itemDbId: itemDbId,
     variantName: variantName,
@@ -18,8 +19,17 @@ export async function addToBasketAndClearCache(
   revalidateTag('basketTag');
 }
 
-export async function doThing() {
-  'use server';
-  console.log('tester');
-  return 'tits';
+export async function removeFromBasketAndClearCache(
+  cookieId,
+  itemDbId,
+  variantName
+) {
+  'user server';
+
+  await removeFromBasket({
+    cookieId: cookieId,
+    itemDbId: itemDbId,
+    variantName: variantName,
+  });
+  revalidateTag('basketTag');
 }

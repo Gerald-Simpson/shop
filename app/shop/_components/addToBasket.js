@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 let basketModel = mongoose.models.basket;
 
-export async function AddToBasket(dataObj) {
+export async function addToBasket(dataObj) {
   'use server';
   // Need to check if cookieId is already in basketDB & add if not.
   // Also change itemDbId in basketDB to object with count rather than array

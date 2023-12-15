@@ -5,6 +5,10 @@ import { useState } from 'react';
 import { Suspense } from 'react';
 import checkOut from '../api/checkout_sessions.js';
 import { removeFromBasketAndClearCache } from '../actions.js';
+import {
+  addToBasketAndClearCache,
+  decrementBasketAndClearCache,
+} from '../actions.js';
 
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
@@ -23,7 +27,6 @@ export default function Basket(props) {
       </button>
     );
   } else {
-    //props.comparedBasket
     return (
       <div>
         <button
@@ -68,7 +71,9 @@ export default function Basket(props) {
                 <h5 className='text-xs'>
                   Subtotal ({props.basketCount} Items)
                 </h5>
-                <h5 className='text-xs'>£pricecount</h5>
+                <h5 className='text-xs'>
+                  £{priceCount(props.comparedBasket[0])}
+                </h5>
               </div>
               <form className='w-full h-full px-4' action={checkOut}>
                 <button className='bg-blue-500 w-full h-10 rounded-md'>
@@ -114,7 +119,31 @@ function BasketTile(props) {
             {props.name}
           </p>
           <p className='pt-1 text-xs font-bold'>{props.variantName}</p>
-          <p className='pt-1 text-xs'>{props.quantity}</p>
+          <div className='flex'>
+            <button
+              onClick={() => {
+                decrementBasketAndClearCache(
+                  props.cookieId,
+                  props.itemDbId,
+                  props.variantName
+                );
+              }}
+            >
+              Down
+            </button>
+            <p className='pt-1 text-xs'>{props.quantity}</p>
+            <button
+              onClick={() => {
+                addToBasketAndClearCache(
+                  props.cookieId,
+                  props.itemDbId,
+                  props.variantName
+                );
+              }}
+            >
+              Up
+            </button>
+          </div>
         </div>
         <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
           <button
@@ -134,4 +163,13 @@ function BasketTile(props) {
       </div>
     </div>
   );
+}
+
+function priceCount(inStock) {
+  if (inStock.length === 0) return '0.00';
+  let basketPriceCount = 0.0;
+  inStock.forEach((entry) => {
+    basketPriceCount += entry.quantity * entry.price;
+  });
+  return basketPriceCount.toFixed(2).toString();
 }

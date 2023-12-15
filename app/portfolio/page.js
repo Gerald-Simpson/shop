@@ -7,7 +7,7 @@ export default function Portfolio() {
       <NavBar activePath={'/portfolio'} />
       <h1>Portfolio</h1>
       <main className='flex flex-col items-center justify-between'>
-        <p>Portfolio</p>
+        <p>text text</p>
       </main>
     </div>
   );

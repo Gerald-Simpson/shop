@@ -2,11 +2,10 @@
 
 //import { toggleBasket } from './navButtonAction.js';
 import { useState } from 'react';
-import BasketOverlay from './basketOverlay.js';
 import { Suspense } from 'react';
 import checkOut from '../api/checkout_sessions.js';
 
-export default function NavBasketButton(props) {
+export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
   const toggleBasket = () => basketChange(!showBasket);
   const handleChildClick = (e) => {
@@ -56,7 +55,7 @@ export default function NavBasketButton(props) {
               </div>
               <div className='flex flex-col w-full h-auto border-t'>
                 <Suspense fallback={<p>Loading...</p>}>
-                  <p>bombined tiles</p>
+                  <CombinedBasketTiles comparedBasket={props.comparedBasket} />
                 </Suspense>
               </div>
             </div>
@@ -80,11 +79,42 @@ export default function NavBasketButton(props) {
   }
 }
 
-/*          <BasketOverlay
-            showBasket={showBasket}
-            toggleBasket={toggleBasket}
-            basketCount={props.basketCount}
-            basketData={props.basketData}
-            stockData={props.stockData}
-          />
-*/
+function CombinedBasketTiles(props) {
+  let inStock = props.comparedBasket[0];
+  let outStock = props.comparedBasket[1];
+
+  if (inStock.length > 0 && outStock.length === 0) {
+    return inStock.map((item) => {
+      return (
+        <BasketTile
+          name={item.name}
+          variant={item.variant}
+          price={item.price.toString()}
+          quantity={item.quantity}
+          img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+        />
+      );
+    });
+  }
+}
+
+function BasketTile(props) {
+  return (
+    <div className='flex flex-row justify-between w-full p-5 items-center border-b'>
+      <img width='90' height='90' src={props.img} />
+      <div className='flex justify-between w-full h-full px-3'>
+        <div className='flex flex-col h-full justify-start py-2'>
+          <p className='text-xs font-bold underline underline-offset-1'>
+            {props.name}
+          </p>
+          <p className='pt-1 text-xs font-bold'>{props.variant}</p>
+          <p className='pt-1 text-xs'>{props.quantity}</p>
+        </div>
+        <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
+          <button className='text-xs hover:text-red-700'>Remove</button>
+          <p>£{props.price}</p>
+        </div>
+      </div>
+    </div>
+  );
+}

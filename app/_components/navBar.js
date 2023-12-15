@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
-import NavBasketButton from './navBasketButton.js';
+import Basket from './basket.js';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function NavBar(props) {
@@ -26,9 +26,9 @@ export default async function NavBar(props) {
           href={'/commissions'}
           activePath={props.activePath}
         />
-        <NavBasketButton
+        <Basket
           comparedBasket={comparedBasket}
-          basketCount={basketCount(await fetchBasket())}
+          basketCount={await fetchBasketCount()}
         />
       </div>
     </div>
@@ -149,7 +149,7 @@ function compareBasket(basketData, stockData) {
               inStock.push({
                 name: stockItem.name,
                 variant: vari.name,
-                price: parseFloat(vari.price),
+                price: vari.price,
                 description: stockItem.description,
                 quantity: basketItem.count,
                 itemDbId: basketItem.itemDbId,
@@ -159,7 +159,7 @@ function compareBasket(basketData, stockData) {
                 inStock.push({
                   name: stockItem.name,
                   variant: vari.name,
-                  price: parseFloat(vari.price),
+                  price: vari.price,
                   description: stockItem.description,
                   quantity: vari.stock,
                   itemDbId: basketItem.itemDbId,
@@ -168,7 +168,7 @@ function compareBasket(basketData, stockData) {
               outStock.push({
                 name: stockItem.name,
                 variant: vari.name,
-                price: parseFloat(vari.price),
+                price: vari.price,
                 description: stockItem.description,
                 quantity: basketItem.count - vari.stock,
                 itemDbId: basketItem.itemDbId,

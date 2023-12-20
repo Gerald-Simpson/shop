@@ -186,7 +186,7 @@ function QuantityControl(props) {
               props.variantName
             );
           }}
-          className='text-l'
+          className='text-l w-full'
         >
           &#x2B;
         </button>

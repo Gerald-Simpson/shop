@@ -118,31 +118,14 @@ function BasketTile(props) {
           <p className='text-xs font-bold underline underline-offset-1'>
             {props.name}
           </p>
-          <p className='pt-1 text-xs font-bold'>{props.variantName}</p>
-          <div className='flex'>
-            <button
-              onClick={() => {
-                decrementBasketAndClearCache(
-                  props.cookieId,
-                  props.itemDbId,
-                  props.variantName
-                );
-              }}
-            >
-              Down
-            </button>
-            <p className='pt-1 text-xs'>{props.quantity}</p>
-            <button
-              onClick={() => {
-                addToBasketAndClearCache(
-                  props.cookieId,
-                  props.itemDbId,
-                  props.variantName
-                );
-              }}
-            >
-              Up
-            </button>
+          <p className='pt-2 text-xs font-bold'>{props.variantName}</p>
+          <div className='pt-2'>
+            <QuantityControl
+              quantity={props.quantity}
+              cookieId={props.cookieId}
+              itemDbId={props.itemDbId}
+              variantName={props.variantName}
+            />
           </div>
         </div>
         <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
@@ -158,7 +141,7 @@ function BasketTile(props) {
           >
             Remove
           </button>
-          <p>£{props.price}</p>
+          <p>£{(props.price * props.quantity).toFixed(2).toString()}</p>
         </div>
       </div>
     </div>
@@ -172,4 +155,42 @@ function priceCount(inStock) {
     basketPriceCount += entry.quantity * entry.price;
   });
   return basketPriceCount.toFixed(2).toString();
+}
+
+function QuantityControl(props) {
+  return (
+    <div className='flex justify-evenly items-center w-16 border'>
+      <div className='flex w-full justify-center hover:bg-slate-200'>
+        <button
+          onClick={() => {
+            decrementBasketAndClearCache(
+              props.cookieId,
+              props.itemDbId,
+              props.variantName
+            );
+          }}
+          className='text-l'
+        >
+          &#x2212;
+        </button>
+      </div>
+      <div className='flex w-full justify-center text-center'>
+        <p className='text-xs'>{props.quantity}</p>
+      </div>
+      <div className='flex w-full justify-center hover:bg-slate-200'>
+        <button
+          onClick={() => {
+            addToBasketAndClearCache(
+              props.cookieId,
+              props.itemDbId,
+              props.variantName
+            );
+          }}
+          className='text-l'
+        >
+          &#x2B;
+        </button>
+      </div>
+    </div>
+  );
 }

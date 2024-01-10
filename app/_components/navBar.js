@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import Basket from './basket.js';
 import { unstable_noStore as noStore } from 'next/cache';
+import { decrementBasketAndClearCache } from '../actions.js';
 
 export default async function NavBar(props) {
   let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
@@ -141,6 +142,8 @@ function compareBasket(basketData, stockData) {
   let inStock = [];
   let outStock = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
+  let inStockQuantity = 0;
+  let outStockQuantity = 0;
   basketData.basket.forEach((basketItem) => {
     stockData.forEach((stockItem) => {
       if (basketItem.itemDbId === String(stockItem._id)) {
@@ -155,6 +158,7 @@ function compareBasket(basketData, stockData) {
                 quantity: basketItem.count,
                 itemDbId: basketItem.itemDbId,
               });
+              inStockQuantity += basketItem.count;
             } else {
               if (vari.stock > 0) {
                 inStock.push({
@@ -165,6 +169,7 @@ function compareBasket(basketData, stockData) {
                   quantity: vari.stock,
                   itemDbId: basketItem.itemDbId,
                 });
+                inStockQuantity += vari.stock;
               }
               outStock.push({
                 name: stockItem.name,
@@ -174,6 +179,7 @@ function compareBasket(basketData, stockData) {
                 quantity: basketItem.count - vari.stock,
                 itemDbId: basketItem.itemDbId,
               });
+              outStockQuantity += basketItem.count - vari.stock;
             }
           }
         });
@@ -181,5 +187,10 @@ function compareBasket(basketData, stockData) {
     });
   });
 
-  return [inStock, outStock];
+  return {
+    inStock: inStock,
+    outStock: outStock,
+    inStockQuantity: inStockQuantity,
+    outStockQuantity: outStockQuantity,
+  };
 }

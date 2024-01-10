@@ -9,6 +9,8 @@ import {
   addToBasketAndClearCache,
   decrementBasketAndClearCache,
 } from '../actions.js';
+import Link from 'next/link';
+import { Play } from 'next/font/google/index.js';
 
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
@@ -26,7 +28,7 @@ export default function Basket(props) {
         BASKET {props.basketCount}
       </button>
     );
-  } else {
+  } else
     return (
       <div>
         <button
@@ -39,14 +41,14 @@ export default function Basket(props) {
         <div
           onClick={() => toggleBasket()}
           className={
-            'flex flex-col items-end fixed inset-0 w-screen h-screen z-50 bg-slate-500/50'
+            'flex flex-col items-end fixed inset-0 w-screen h-full z-50 bg-slate-500/50'
           }
         >
           <div
             onClick={(e) => handleChildClick(e)}
             className='flex flex-col items-center justify-between w-1/4 h-full my-2 mx-2 rounded-xl bg-white'
           >
-            <div className='flex flex-col items-center w-full'>
+            <div className='flex flex-col h-full items-center w-full'>
               <div className='flex flex-row w-full px-5 justify-between'>
                 <div></div>
                 <h1 className='my-4'>Your Basket</h1>
@@ -57,7 +59,7 @@ export default function Basket(props) {
                   &#x2715;
                 </button>
               </div>
-              <div className='flex flex-col w-full h-auto border-t'>
+              <div className='flex flex-col w-full h-full border-t'>
                 <Suspense fallback={<p>Loading...</p>}>
                   <CombinedBasketTiles
                     comparedBasket={props.comparedBasket}
@@ -66,31 +68,59 @@ export default function Basket(props) {
                 </Suspense>
               </div>
             </div>
-            <div className='flex flex-col items-center w-full border-t h-24'>
-              <div className='w-full h-auto flex justify-between px-4 pt-4 pb-1'>
-                <h5 className='text-xs'>
-                  Subtotal ({props.basketCount} Items)
-                </h5>
-                <h5 className='text-xs'>
-                  £{priceCount(props.comparedBasket[0])}
-                </h5>
-              </div>
-              <form className='w-full h-full px-4' action={checkOut}>
-                <button className='bg-blue-500 w-full h-10 rounded-md'>
-                  Checkout
-                </button>
-              </form>
-            </div>
+            <CheckoutOverlay
+              comparedBasket={props.comparedBasket}
+              basketCount={props.basketCount}
+            />
           </div>
         </div>
+      </div>
+    );
+}
+
+function CheckoutOverlay(props) {
+  if (props.comparedBasket.inStock.length > 0) {
+    return (
+      <div className='flex flex-col items-center w-full border-t h-24'>
+        <div className='w-full h-auto flex justify-between px-4 pt-4 pb-1'>
+          <h5 className='text-xs'>
+            Subtotal ({props.comparedBasket.inStockQuantity} Items)
+          </h5>
+          <h5 className='text-xs'>
+            £{priceCount(props.comparedBasket.inStock)}
+          </h5>
+        </div>
+        <form className='w-full h-full px-4' action={checkOut}>
+          <button className='bg-blue-500 w-full h-10 rounded-md'>
+            Checkout
+          </button>
+        </form>
+      </div>
+    );
+  } else {
+    return (
+      <div className='flex flex-col items-center w-full border-t h-24'>
+        <div className='w-full h-auto flex justify-between px-4 pt-4 pb-1'>
+          <h5 className='text-xs'>
+            Subtotal ({props.comparedBasket.inStockQuantity} Items)
+          </h5>
+          <h5 className='text-xs'>
+            £{priceCount(props.comparedBasket.inStock)}
+          </h5>
+        </div>
+        <form className='w-full h-full px-4' action={checkOut}>
+          <button className='bg-gray-300 w-full h-10 rounded-md' disabled>
+            Checkout
+          </button>
+        </form>
       </div>
     );
   }
 }
 
 function CombinedBasketTiles(props) {
-  let inStock = props.comparedBasket[0];
-  let outStock = props.comparedBasket[1];
+  let inStock = props.comparedBasket.inStock;
+  let outStock = props.comparedBasket.outStock;
 
   if (inStock.length > 0 && outStock.length === 0) {
     return inStock.map((item) => {
@@ -106,8 +136,50 @@ function CombinedBasketTiles(props) {
         />
       );
     });
+  } else if (inStock.length === 0 && outStock.length === 0) {
+    return (
+      <div className='flex h-full w-full flex-col text-center content-center'>
+        <h2 className='text-lg pt-10'>YOUR BASKET IS EMPTY!</h2>
+      </div>
+    );
+  } else if (outStock.length > 0) {
+    let inTiles = inStock.map((item) => {
+      return (
+        <BasketTile
+          name={item.name}
+          variantName={item.variant}
+          price={item.price.toString()}
+          quantity={item.quantity}
+          img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+          cookieId={props.cookieId}
+          itemDbId={item.itemDbId}
+        />
+      );
+    });
+    let outTiles = [
+      <div className='flex flex-col text-center py-5'>
+        <h2 className='text-xs'>Below items not included as out of stock</h2>
+      </div>,
+    ];
+    outTiles.push(
+      outStock.map((item) => {
+        return (
+          <BasketTile
+            name={item.name}
+            variantName={item.variant}
+            price={item.price.toString()}
+            quantity={item.quantity}
+            img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+            cookieId={props.cookieId}
+            itemDbId={item.itemDbId}
+          />
+        );
+      })
+    );
+    return inTiles.concat(outTiles);
   }
 }
+//<h2>Below items are now out of stock:</h2>
 
 function BasketTile(props) {
   return (
@@ -125,6 +197,7 @@ function BasketTile(props) {
               cookieId={props.cookieId}
               itemDbId={props.itemDbId}
               variantName={props.variantName}
+              inStock={true}
             />
           </div>
         </div>
@@ -160,7 +233,7 @@ function priceCount(inStock) {
 function QuantityControl(props) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
-      <div className='flex w-full justify-center hover:bg-slate-200'>
+      <div className='flex w-full justify-center hover:bg-slate-200 border-r'>
         <button
           onClick={() => {
             decrementBasketAndClearCache(
@@ -177,7 +250,7 @@ function QuantityControl(props) {
       <div className='flex w-full justify-center text-center'>
         <p className='text-xs'>{props.quantity}</p>
       </div>
-      <div className='flex w-full justify-center hover:bg-slate-200'>
+      <div className='flex w-full justify-center hover:bg-slate-200 border-l'>
         <button
           onClick={() => {
             addToBasketAndClearCache(

@@ -25,7 +25,7 @@ async function fetchBasket() {
 async function compareBasket() {
   let basketData = await fetchBasket();
   let stockData = await fetchStock();
-  let testLines = [];
+  let lineItems = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
   basketData.forEach((basketItem) => {
     stockData.forEach((stockItem) => {
@@ -33,7 +33,7 @@ async function compareBasket() {
         stockItem.variant.forEach((vari) => {
           if (vari.name === basketItem.variantName) {
             if (vari.stock > basketItem.count) {
-              testLines.push({
+              lineItems.push({
                 price_data: {
                   currency: 'gbp',
                   unit_amount: parseFloat(vari.price) * 100,
@@ -45,7 +45,7 @@ async function compareBasket() {
                 quantity: basketItem.count,
               });
             } else {
-              testLines.push({
+              lineItems.push({
                 price_data: {
                   currency: 'gbp',
                   unit_amount: parseFloat(vari.price) * 100,
@@ -63,7 +63,8 @@ async function compareBasket() {
     });
   });
 
-  return testLines;
+  console.log(lineItems);
+  return lineItems;
 }
 
 export default async function checkOut() {

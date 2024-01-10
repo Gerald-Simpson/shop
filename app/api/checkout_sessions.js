@@ -44,7 +44,7 @@ async function compareBasket() {
                 },
                 quantity: basketItem.count,
               });
-            } else {
+            } else if (vari.stock > 0) {
               lineItems.push({
                 price_data: {
                   currency: 'gbp',

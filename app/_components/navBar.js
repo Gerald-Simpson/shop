@@ -55,9 +55,6 @@ const stockSchema = new mongoose.Schema({
   price: {
     type: String,
   },
-  stock: {
-    type: Number,
-  },
   categories: {
     type: Object,
   },

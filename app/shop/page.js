@@ -12,10 +12,9 @@ export default async function Shop() {
   return (
     <div className='h-screen flex flex-col items-center'>
       <NavBar activePath={'/shop'} />
-      <div className='mainCont'>
+      <div className='pageRemainder'>
         <h1 className='mainTitle'>Shop</h1>
         <main className='flex flex-wrap w-full justify-between'>
-          {' '}
           {builtTiles}
         </main>
       </div>
@@ -46,7 +45,21 @@ async function renderedTiles() {
           price={'£' + minPrice}
           name={data['name']}
           itemDbId={data['_id']}
+          description={data.description}
           variantName={data.variant[0].name}
+        />
+      );
+    } else {
+      return (
+        <ItemTile
+          img1={'/productImages/' + data['_id'] + '/tile.jpg'}
+          img2={'/productImages/' + data['_id'] + '/tileHover.jpg'}
+          price={'£' + minPrice}
+          name={data['name']}
+          itemDbId={data['_id']}
+          description={data.description}
+          variantName={data.variant[0].name}
+          outStock={true}
         />
       );
     }

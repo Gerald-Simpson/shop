@@ -14,12 +14,14 @@ export async function addToBasketAndClearCache(
 ) {
   'use server';
 
-  await addToBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId.length === 36) {
+    await addToBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }
 
 export async function removeFromBasketAndClearCache(
@@ -29,12 +31,14 @@ export async function removeFromBasketAndClearCache(
 ) {
   'user server';
 
-  await removeFromBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId.length === 36) {
+    await removeFromBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }
 
 export async function decrementBasketAndClearCache(
@@ -44,10 +48,12 @@ export async function decrementBasketAndClearCache(
 ) {
   'user server';
 
-  await decrementBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId.length === 36) {
+    await decrementBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }

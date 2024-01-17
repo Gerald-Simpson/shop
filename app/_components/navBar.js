@@ -9,6 +9,11 @@ import { decrementBasketAndClearCache } from '../actions.js';
 
 export default async function NavBar(props) {
   let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
+  let cookieId = '';
+  let cookieList = cookies();
+  if (cookieList.has('id')) {
+    cookieId = cookies().get('id');
+  }
   return (
     <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
       <Link href='/' className='text-4xl'>
@@ -30,7 +35,7 @@ export default async function NavBar(props) {
         <Basket
           comparedBasket={comparedBasket}
           basketCount={await fetchBasketCount()}
-          cookieId={cookies().get('id')['value']}
+          cookieId={cookieId}
         />
       </div>
     </div>
@@ -67,7 +72,13 @@ let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 // Eventually change this revalidate every hour, with a tag to cause revalidation on successful user checkout
 export const fetchStock = async function () {
   noStore();
-  return await stockModel.find({});
+  try {
+    let response = await stockModel.find({});
+    return response;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
 //
 
@@ -85,16 +96,25 @@ export const fetchStock = async function () {
 
 // Currently does not cache but will look at caching & re-validating when necessary later
 async function fetchBasket() {
-  let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
-    method: 'GET',
-    cache: 'no-store',
-    next: { tags: ['basketTag'] },
-    headers: {
-      cookieId: cookies().get('id')['value'],
-    },
-  });
-  const data = await res.json();
-  return data;
+  let cookieList = cookies();
+  if (!cookieList.has('id')) {
+    return [];
+  }
+  try {
+    let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
+      method: 'GET',
+      cache: 'no-store',
+      next: { tags: ['basketTag'] },
+      headers: {
+        cookieId: cookies().get('id')['value'],
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
 async function basketCount(data) {
@@ -141,49 +161,57 @@ function compareBasket(basketData, stockData) {
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
   let inStockQuantity = 0;
   let outStockQuantity = 0;
-  basketData.basket.forEach((basketItem) => {
-    stockData.forEach((stockItem) => {
-      if (basketItem.itemDbId === String(stockItem._id)) {
-        stockItem.variant.forEach((vari) => {
-          if (vari.name === basketItem.variantName) {
-            if (vari.stock > basketItem.count) {
-              inStock.push({
-                name: stockItem.name,
-                variant: vari.name,
-                price: vari.price,
-                description: stockItem.description,
-                quantity: basketItem.count,
-                itemDbId: basketItem.itemDbId,
-              });
-              inStockQuantity += basketItem.count;
-            } else {
-              if (vari.stock > 0) {
+  if (basketData.length === 0) {
+    return {
+      inStock: [],
+      outStock: [],
+      inStockQuantity: 0,
+      outStockQuantity: 0,
+    };
+  } else {
+    basketData.basket.forEach((basketItem) => {
+      stockData.forEach((stockItem) => {
+        if (basketItem.itemDbId === String(stockItem._id)) {
+          stockItem.variant.forEach((vari) => {
+            if (vari.name === basketItem.variantName) {
+              if (vari.stock > basketItem.count) {
                 inStock.push({
                   name: stockItem.name,
                   variant: vari.name,
                   price: vari.price,
                   description: stockItem.description,
-                  quantity: vari.stock,
+                  quantity: basketItem.count,
                   itemDbId: basketItem.itemDbId,
                 });
-                inStockQuantity += vari.stock;
+                inStockQuantity += basketItem.count;
+              } else {
+                if (vari.stock > 0) {
+                  inStock.push({
+                    name: stockItem.name,
+                    variant: vari.name,
+                    price: vari.price,
+                    description: stockItem.description,
+                    quantity: vari.stock,
+                    itemDbId: basketItem.itemDbId,
+                  });
+                  inStockQuantity += vari.stock;
+                }
+                outStock.push({
+                  name: stockItem.name,
+                  variant: vari.name,
+                  price: vari.price,
+                  description: stockItem.description,
+                  quantity: basketItem.count - vari.stock,
+                  itemDbId: basketItem.itemDbId,
+                });
+                outStockQuantity += basketItem.count - vari.stock;
               }
-              outStock.push({
-                name: stockItem.name,
-                variant: vari.name,
-                price: vari.price,
-                description: stockItem.description,
-                quantity: basketItem.count - vari.stock,
-                itemDbId: basketItem.itemDbId,
-              });
-              outStockQuantity += basketItem.count - vari.stock;
             }
-          }
-        });
-      }
+          });
+        }
+      });
     });
-  });
-
+  }
   return {
     inStock: inStock,
     outStock: outStock,

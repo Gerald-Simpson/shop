@@ -7,6 +7,10 @@ import { fetchStock } from '../shop/page.js';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 async function fetchBasket() {
+  let cookieList = cookies();
+  if (!cookieList.has('id')) {
+    return [];
+  }
   let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
     method: 'GET',
     cache: 'no-store',

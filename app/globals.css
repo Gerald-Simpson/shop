@@ -29,10 +29,11 @@ body {
   padding: 5rem 0rem;
 }
 
-.mainCont {
+.pageRemainder {
   display: flex;
   flex-direction: column;
-  min-width: 65%;
-  max-width: 65%;
+  height: 90%;
+  min-width: 1240px;
+  max-width: 1240px;
   align-items: center;
 }

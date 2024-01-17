@@ -63,7 +63,6 @@ async function compareBasket() {
     });
   });
 
-  console.log(lineItems);
   return lineItems;
 }
 

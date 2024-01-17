@@ -1,6 +1,5 @@
 'use server';
 
-import Image from 'next/image';
 import AddToBasketButton from './AddToBasketButton.js';
 import { cookies } from 'next/headers';
 
@@ -9,14 +8,14 @@ export default async function ItemTile(props) {
     return (
       <div className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
         <div className='tileImg' sizes='22%'>
-          <Image
+          <img
             className='tileImgOne z-0'
             width='280'
             height='280'
             src={props.img1}
             alt={'Picture 1 of ' + props.description}
           />
-          <Image
+          <img
             className='tileImgTwo z-0'
             width='280'
             height='280'
@@ -39,14 +38,14 @@ export default async function ItemTile(props) {
     return (
       <div className=' opacity-50 flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
         <div className='tileImg' sizes='22%'>
-          <Image
+          <img
             className='tileImgOne z-0'
             width='280'
             height='280'
             src={props.img1}
             alt={'Picture 1 of ' + props.description}
           />
-          <Image
+          <img
             className='tileImgTwo z-0'
             width='280'
             height='280'

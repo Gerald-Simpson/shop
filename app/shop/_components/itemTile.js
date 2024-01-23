@@ -4,6 +4,11 @@ import AddToBasketButton from './AddToBasketButton.js';
 import { cookies } from 'next/headers';
 
 export default async function ItemTile(props) {
+  let cookieId = '';
+  let cookieList = cookies();
+  if (cookieList.has('id')) {
+    cookieId = cookies().get('id').value;
+  }
   if (props.outStock === undefined || false) {
     return (
       <div className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
@@ -28,7 +33,7 @@ export default async function ItemTile(props) {
           <p className='text-sm'>{props.price}</p>
         </div>
         <AddToBasketButton
-          cookieId={cookies().get('id')['value']}
+          cookieId={cookieId}
           itemDbId={String(props.itemDbId)}
           variantName={props.variantName}
         />

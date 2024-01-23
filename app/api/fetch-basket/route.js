@@ -3,10 +3,7 @@ import { headers } from 'next/headers';
 
 const mongoose = require('mongoose');
 // Connect to stock DB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGO_URI);
 
 const basketSchema = new mongoose.Schema(
   {

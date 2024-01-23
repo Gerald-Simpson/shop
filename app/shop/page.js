@@ -68,7 +68,30 @@ async function renderedTiles() {
 
 const mongoose = require('mongoose');
 
-let stockModel = mongoose.models.stock;
+// Connect to DB
+mongoose.connect(process.env.MONGO_URI);
+
+// Set DB schema
+const stockSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  variant: {
+    type: [{ name: String, price: String, stock: Number }],
+  },
+  price: {
+    type: String,
+  },
+  categories: {
+    type: Object,
+  },
+});
+
+// Create DB model
+let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
 export const fetchStock = async function () {
   noStore();

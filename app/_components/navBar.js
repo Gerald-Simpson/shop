@@ -12,7 +12,7 @@ export default async function NavBar(props) {
   let cookieId = '';
   let cookieList = cookies();
   if (cookieList.has('id')) {
-    cookieId = cookies().get('id');
+    cookieId = cookies().get('id').value;
   }
   return (
     <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
@@ -44,7 +44,11 @@ export default async function NavBar(props) {
 
 const mongoose = require('mongoose');
 
-//Connected to DB in layout.js
+// Connect to DB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Set DB schema
 const stockSchema = new mongoose.Schema({

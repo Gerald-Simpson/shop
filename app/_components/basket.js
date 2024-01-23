@@ -9,8 +9,6 @@ import {
   addToBasketAndClearCache,
   decrementBasketAndClearCache,
 } from '../actions.js';
-import Link from 'next/link';
-import { Play } from 'next/font/google/index.js';
 
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
@@ -179,7 +177,6 @@ function CombinedBasketTiles(props) {
     return inTiles.concat(outTiles);
   }
 }
-//<h2>Below items are now out of stock:</h2>
 
 function BasketTile(props) {
   return (
@@ -197,7 +194,6 @@ function BasketTile(props) {
               cookieId={props.cookieId}
               itemDbId={props.itemDbId}
               variantName={props.variantName}
-              inStock={true}
             />
           </div>
         </div>

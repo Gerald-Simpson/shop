@@ -83,18 +83,6 @@ export const fetchStock = async function () {
 };
 //
 
-/*
-        <Suspense fallback={<NavElements basketCount='0' path={props.path} />}>
-          <NavElements
-            basketCount={await fetchBasketCount()}
-            stockData={props.stockData}
-            basketData={await fetchBasket()}
-            path={props.path}
-          />
-        </Suspense>
-    
-    */
-
 // Currently does not cache but will look at caching & re-validating when necessary later
 async function fetchBasket() {
   let cookieList = cookies();

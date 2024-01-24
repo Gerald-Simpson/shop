@@ -13,13 +13,15 @@ export async function addToBasketAndClearCache(
   variantName
 ) {
   'use server';
-
-  await addToBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId == '') {
+  } else {
+    await addToBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }
 
 export async function removeFromBasketAndClearCache(
@@ -28,13 +30,15 @@ export async function removeFromBasketAndClearCache(
   variantName
 ) {
   'user server';
-
-  await removeFromBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId == '') {
+  } else {
+    await removeFromBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }
 
 export async function decrementBasketAndClearCache(
@@ -43,11 +47,13 @@ export async function decrementBasketAndClearCache(
   variantName
 ) {
   'user server';
-
-  await decrementBasket({
-    cookieId: cookieId,
-    itemDbId: itemDbId,
-    variantName: variantName,
-  });
-  revalidateTag('basketTag');
+  if (cookieId == '') {
+  } else {
+    await decrementBasket({
+      cookieId: cookieId,
+      itemDbId: itemDbId,
+      variantName: variantName,
+    });
+    revalidateTag('basketTag');
+  }
 }

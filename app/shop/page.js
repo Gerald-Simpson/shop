@@ -88,6 +88,9 @@ const stockSchema = new mongoose.Schema({
   categories: {
     type: Object,
   },
+  pictureCount: {
+    type: Number,
+  },
 });
 
 // Create DB model

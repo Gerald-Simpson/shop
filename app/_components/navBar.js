@@ -15,7 +15,7 @@ export default async function NavBar(props) {
     cookieId = cookies().get('id').value;
   }
   return (
-    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
+    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-[#cce5ff] px-80'>
       <Link href='/' className='text-4xl'>
         Logo
       </Link>
@@ -63,6 +63,9 @@ const stockSchema = new mongoose.Schema({
   },
   categories: {
     type: Object,
+  },
+  pictureCount: {
+    type: Number,
   },
 });
 

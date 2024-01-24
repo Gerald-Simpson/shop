@@ -1,14 +1,39 @@
 'use server';
 import mongoose from 'mongoose';
 
-let basketModel = mongoose.models.basket;
+const basketSchema = new mongoose.Schema(
+  {
+    cookieId: {
+      type: String,
+      unique: true,
+    },
+    basket: {
+      type: [
+        {
+          itemDbId: String,
+          variantName: String,
+          count: Number,
+        },
+      ],
+      minimize: false,
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { minimize: false }
+);
+
+let basketModel =
+  mongoose.models.basket || mongoose.model('basket', basketSchema);
 
 export async function addToBasket(dataObj) {
   'use server';
   // Need to check if cookieId is already in basketDB & add if not.
   // Also change itemDbId in basketDB to object with count rather than array
   // Need to revalidate fetchBasket in layout.js on basketDB change
-  let query = { cookieId: dataObj['cookieId'] };
+  let query = { cookieId: dataObj.cookieId };
 
   let fetchBasket = await basketModel.find(query);
 

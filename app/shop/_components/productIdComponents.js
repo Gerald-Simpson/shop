@@ -21,7 +21,7 @@ export function ProductImage(props) {
   return (
     <div className='flex w-1/2'>
       <div
-        className='flex flex-col relative left-12 justify-center items-center w-12 h-full text-3xl font-extralight hover:bg-cyan-100/50 cursor-pointer'
+        className='flex flex-col relative left-12 justify-center items-center w-12 h-full text-3xl font-extralight hover:bg-cyan-100/50 cursor-pointer select-none'
         onClick={() => {
           prevImg();
         }}
@@ -36,7 +36,7 @@ export function ProductImage(props) {
         }
       ></img>
       <div
-        className='flex flex-col relative right-12 justify-center items-center w-12 h-full text-3xl font-extralight hover:bg-cyan-100/50 cursor-pointer'
+        className='flex flex-col relative right-12 justify-center items-center w-12 h-full text-3xl font-extralight hover:bg-cyan-100/50 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}

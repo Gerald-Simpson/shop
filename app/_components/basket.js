@@ -232,36 +232,32 @@ function priceCount(inStock) {
 function QuantityControl(props) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
-      <div className='flex w-full justify-center hover:bg-slate-200 border-r'>
-        <button
-          onClick={() => {
-            decrementBasketAndClearCache(
-              props.cookieId,
-              props.itemDbId,
-              props.variantName
-            );
-          }}
-          className='text-l select-none'
-        >
-          &#x2212;
-        </button>
+      <div
+        className='flex w-full justify-center items-center hover:bg-slate-200 border-r text-l select-none cursor-pointer'
+        onClick={() => {
+          decrementBasketAndClearCache(
+            props.cookieId,
+            props.itemDbId,
+            props.variantName
+          );
+        }}
+      >
+        &#x2212;
       </div>
-      <div className='flex w-full justify-center text-center'>
-        <p className='text-xs'>{props.quantity}</p>
+      <div className='flex w-full justify-center items-center'>
+        <p className='text-xs select-none'>{props.quantity}</p>
       </div>
-      <div className='flex w-full justify-center hover:bg-slate-200 border-l'>
-        <button
-          onClick={() => {
-            addToBasketAndClearCache(
-              props.cookieId,
-              props.itemDbId,
-              props.variantName
-            );
-          }}
-          className='text-l w-full select-none'
-        >
-          &#x2B;
-        </button>
+      <div
+        className='flex w-full justify-center items-center hover:bg-slate-200 border-l text-l select-none cursor-pointer'
+        onClick={() => {
+          addToBasketAndClearCache(
+            props.cookieId,
+            props.itemDbId,
+            props.variantName
+          );
+        }}
+      >
+        &#x2B;
       </div>
     </div>
   );

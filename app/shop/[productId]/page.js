@@ -3,11 +3,18 @@ import {
   ProductImage,
   ProductInfo,
 } from '../_components/productIdComponents.js';
+import { AddToBasketButton } from '../_components/AddToBasketButton.js';
+import { cookies } from 'next/headers';
 
 //{params.productId}
 //64e63ee03c9fbcb94a36d0ce
 
 export default async function Page({ params }) {
+  let cookieId = '';
+  let cookieList = cookies();
+  if (cookieList.has('id')) {
+    cookieId = cookies().get('id').value;
+  }
   let productInfo = await fetchStockItem(params.productId);
   if (productInfo.length === 0) {
     return (
@@ -29,6 +36,9 @@ export default async function Page({ params }) {
               <ProductInfo
                 productName={productInfo.name}
                 productDescription={productInfo.description}
+                cookieId={cookieId}
+                variantList={JSON.stringify(productInfo.variant)}
+                productId={params.productId}
               />
             </div>
           </main>

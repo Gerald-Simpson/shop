@@ -3,7 +3,6 @@ import {
   ProductImage,
   ProductInfo,
 } from '../_components/productIdComponents.js';
-import { AddToBasketButton } from '../_components/AddToBasketButton.js';
 import { cookies } from 'next/headers';
 
 //{params.productId}

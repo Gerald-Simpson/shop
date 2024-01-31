@@ -2,6 +2,7 @@
 
 import AddToBasketButton from './AddToBasketButton.js';
 import { cookies } from 'next/headers';
+import styles from '../styles.css';
 
 export default async function ItemTile(props) {
   let cookieId = '';

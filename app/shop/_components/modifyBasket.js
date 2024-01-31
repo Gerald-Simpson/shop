@@ -28,7 +28,7 @@ const basketSchema = new mongoose.Schema(
 let basketModel =
   mongoose.models.basket || mongoose.model('basket', basketSchema);
 
-export async function addToBasket(dataObj) {
+export async function addToBasket(dataObj, quantity = 1) {
   'use server';
   // Need to check if cookieId is already in basketDB & add if not.
   // Also change itemDbId in basketDB to object with count rather than array
@@ -45,7 +45,7 @@ export async function addToBasket(dataObj) {
       basket: {
         itemDbId: dataObj['itemDbId'],
         variantName: dataObj.variantName,
-        count: 1,
+        count: quantity,
       },
     });
   } else {
@@ -60,7 +60,7 @@ export async function addToBasket(dataObj) {
       ) {
         position = index;
         // Increment cont in basketCopy
-        basketCopy[index]['count'] += 1;
+        basketCopy[index]['count'] += quantity;
       }
     });
     if (position > -1) {
@@ -72,11 +72,11 @@ export async function addToBasket(dataObj) {
         }
       );
     } else {
-      //If not, add the item to the itemDbId object with value of 1
+      //If not, add the item to the itemDbId object with value of quantity var
       let basketPushItem = {
         itemDbId: dataObj['itemDbId'],
         variantName: dataObj.variantName,
-        count: 1,
+        count: quantity,
       };
       await basketModel.findOneAndUpdate(query, {
         $push: { basket: basketPushItem },

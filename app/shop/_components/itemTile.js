@@ -1,7 +1,8 @@
 'use server';
 
-import AddToBasketButton from './AddToBasketButton.js';
 import { cookies } from 'next/headers';
+import styles from '../styles.css';
+import Link from 'next/link';
 
 export default async function ItemTile(props) {
   let cookieId = '';
@@ -11,7 +12,10 @@ export default async function ItemTile(props) {
   }
   if (props.outStock === undefined || false) {
     return (
-      <div className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
+      <Link
+        href={'/shop/' + props.itemDbId}
+        className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'
+      >
         <div className='tileImg' sizes='22%'>
           <img
             className='tileImgOne z-0'
@@ -32,12 +36,7 @@ export default async function ItemTile(props) {
           <h3 className='text-base'>{props.name}</h3>
           <p className='text-sm'>{props.price}</p>
         </div>
-        <AddToBasketButton
-          cookieId={cookieId}
-          itemDbId={String(props.itemDbId)}
-          variantName={props.variantName}
-        />
-      </div>
+      </Link>
     );
   } else if (props.outStock === true) {
     return (

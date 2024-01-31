@@ -1,7 +1,6 @@
 'use server';
 
 import Link from 'next/link';
-import styles from './styles.css';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
 import NavBar from '../_components/navBar';
@@ -26,7 +25,7 @@ export default async function Shop() {
 // This could be changed to reduce server load by finding each item by Id from the DB instead
 async function renderedTiles() {
   let stockData = await fetchStock();
-  return stockData.map(async (data, index) => {
+  return stockData.map(async (data) => {
     let stockCount = 0;
     let minPrice = '';
     data.variant.forEach((vari) => {
@@ -87,6 +86,9 @@ const stockSchema = new mongoose.Schema({
   },
   categories: {
     type: Object,
+  },
+  pictureCount: {
+    type: Number,
   },
 });
 

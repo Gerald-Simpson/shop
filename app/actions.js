@@ -10,16 +10,20 @@ import {
 export async function addToBasketAndClearCache(
   cookieId,
   itemDbId,
-  variantName
+  variantName,
+  quantity = 1
 ) {
   'use server';
   if (cookieId == '') {
   } else {
-    await addToBasket({
-      cookieId: cookieId,
-      itemDbId: itemDbId,
-      variantName: variantName,
-    });
+    await addToBasket(
+      {
+        cookieId: cookieId,
+        itemDbId: itemDbId,
+        variantName: variantName,
+      },
+      quantity
+    );
     revalidateTag('basketTag');
   }
 }

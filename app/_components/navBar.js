@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import Basket from './basket.js';
 import { unstable_noStore as noStore } from 'next/cache';
 import { decrementBasketAndClearCache } from '../actions.js';
+import NavBut from './navClient.js';
 
 export default async function NavBar(props) {
   let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
@@ -15,28 +16,35 @@ export default async function NavBar(props) {
     cookieId = cookies().get('id').value;
   }
   return (
-    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-backgroundBlue px-80'>
-      <Link href='/' className='text-4xl'>
-        Logo
-      </Link>
-      <div className='flex w-2/4 justify-evenly'>
-        <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
-        <NavLink
-          title={'PORTFOLIO'}
-          href={'/portfolio'}
-          activePath={props.activePath}
-        />
-        <NavLink title={'SHOP'} href={'/shop'} activePath={props.activePath} />
-        <NavLink
-          title={'COMMISSIONS'}
-          href={'/commissions'}
-          activePath={props.activePath}
-        />
-        <Basket
-          comparedBasket={comparedBasket}
-          basketCount={await fetchBasketCount()}
-          cookieId={cookieId}
-        />
+    <div className='w-screen h-16 flex flex-col items-center bg-backgroundBlue'>
+      <div className='w-full h-16 max-w-[1280px] flex items-center justify-between font-mono text-sm'>
+        <NavBut className='md:hidden' activePath={props.activePath} />
+        <Link href='/' className='text-4xl px-4'>
+          Logo
+        </Link>
+        <div className='flex justify-end md:justify-evenly md:w-2/4 px-4'>
+          <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
+          <NavLink
+            title={'PORTFOLIO'}
+            href={'/portfolio'}
+            activePath={props.activePath}
+          />
+          <NavLink
+            title={'SHOP'}
+            href={'/shop'}
+            activePath={props.activePath}
+          />
+          <NavLink
+            title={'COMMISSIONS'}
+            href={'/commissions'}
+            activePath={props.activePath}
+          />
+          <Basket
+            comparedBasket={comparedBasket}
+            basketCount={await fetchBasketCount()}
+            cookieId={cookieId}
+          />
+        </div>
       </div>
     </div>
   );
@@ -129,7 +137,7 @@ async function NavLink(props) {
       <Link
         id={'nav' + props.title}
         href={props.href}
-        className={'text-textAccent select-none'}
+        className={'text-textAccent select-none hidden md:flex'}
       >
         {props.title}
       </Link>
@@ -139,7 +147,7 @@ async function NavLink(props) {
       <Link
         id={'nav' + props.title}
         href={props.href}
-        className={'hover:text-textAccent select-none'}
+        className={'hover:text-textAccent select-none hidden md:flex'}
       >
         {props.title}
       </Link>

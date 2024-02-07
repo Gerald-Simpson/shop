@@ -25,9 +25,9 @@ export default async function Page({ params }) {
     return (
       <div className='h-screen flex flex-col items-center'>
         <NavBar activePath={'/shop'} />
-        <div className='pageRemainder pt-5'>
-          <main className='flex w-full justify-between'>
-            <div className='flex w-full pt-5'>
+        <div className='flex max-w-[1280px] pt-5'>
+          <main className='flex w-full'>
+            <div className='flex flex-col items-center w-full pt-5 sm:flex-row sm:justify-center'>
               <ProductImage
                 productId={params.productId}
                 pictureCount={productInfo.pictureCount}

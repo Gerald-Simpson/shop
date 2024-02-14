@@ -11,9 +11,9 @@ export default async function Shop() {
   return (
     <div className='h-screen flex flex-col items-center'>
       <NavBar activePath={'/shop'} />
-      <div className='pageRemainder'>
+      <div className='flex flex-col items-center'>
         <h1 className='mainTitle'>Shop</h1>
-        <main className='flex flex-wrap w-full justify-between'>
+        <main className='grid grid-cols-2 max-w-[1280px] w-full justify-between sm:grid-cols-3 md:grid-cols-4'>
           {builtTiles}
         </main>
       </div>

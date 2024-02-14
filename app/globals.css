@@ -28,12 +28,3 @@
   font-weight: 300;
   padding: 5rem 0rem;
 }
-
-.pageRemainder {
-  display: flex;
-  flex-direction: column;
-  height: 90%;
-  min-width: 1240px;
-  max-width: 1240px;
-  align-items: center;
-}

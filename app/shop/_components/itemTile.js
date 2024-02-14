@@ -14,20 +14,16 @@ export default async function ItemTile(props) {
     return (
       <Link
         href={'/shop/' + props.itemDbId}
-        className='flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'
+        className='flex flex-col flex-wrap items-center min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'
       >
-        <div className='tileImg' sizes='22%'>
+        <div className='tileImg'>
           <img
             className='tileImgOne z-0'
-            width='280'
-            height='280'
             src={props.img1}
             alt={'Picture 1 of ' + props.description}
           />
           <img
             className='tileImgTwo z-0'
-            width='280'
-            height='280'
             src={props.img2}
             alt={'Picture 2 of ' + props.description}
           />
@@ -40,19 +36,15 @@ export default async function ItemTile(props) {
     );
   } else if (props.outStock === true) {
     return (
-      <div className=' opacity-50 flex flex-col flex-wrap items-center max-w-[23%] min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
+      <div className=' opacity-50 flex flex-col flex-wrap items-center px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
         <div className='tileImg' sizes='22%'>
           <img
             className='tileImgOne z-0'
-            width='280'
-            height='280'
             src={props.img1}
             alt={'Picture 1 of ' + props.description}
           />
           <img
             className='tileImgTwo z-0'
-            width='280'
-            height='280'
             src={props.img2}
             alt={'Picture 2 of ' + props.description}
           />

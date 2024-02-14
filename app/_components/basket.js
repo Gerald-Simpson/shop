@@ -10,6 +10,7 @@ import {
   decrementBasketAndClearCache,
 } from '../actions.js';
 
+/*BASKET {props.basketCount}*/
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
   const toggleBasket = () => basketChange(!showBasket);
@@ -18,13 +19,22 @@ export default function Basket(props) {
   };
   if (showBasket === false) {
     return (
-      <button
-        id={'navBasket'}
-        className={'hover:text-textAccent select-none'}
-        onClick={() => toggleBasket()}
-      >
-        BASKET {props.basketCount}
-      </button>
+      <div>
+        <button
+          id={'navBasket'}
+          className={'hover:text-textAccent select-none hidden md:flex'}
+          onClick={() => toggleBasket()}
+        >
+          BASKET {props.basketCount}
+        </button>
+        <button
+          id={'navBasket'}
+          className={'text-xl hover:text-textAccent select-none md:hidden'}
+          onClick={() => toggleBasket()}
+        >
+          &#128722;
+        </button>
+      </div>
     );
   } else
     return (
@@ -39,12 +49,12 @@ export default function Basket(props) {
         <div
           onClick={() => toggleBasket()}
           className={
-            'flex flex-col items-end fixed inset-0 w-screen h-full z-50 bg-slate-500/50'
+            'flex flex-col items-end fixed top-0 right-0 w-screen h-full z-50 bg-slate-500/50'
           }
         >
           <div
             onClick={(e) => handleChildClick(e)}
-            className='flex flex-col items-center justify-between w-1/4 h-full my-2 mx-2 rounded-xl bg-white'
+            className='flex flex-col items-center justify-between w-full h-full mt-2 rounded-t-xl bg-white md:rounded-xl md:mr-2 md: mb-2 md:max-w-[480px]'
           >
             <div className='flex flex-col h-full items-center w-full'>
               <div className='flex flex-row w-full px-5 justify-between'>

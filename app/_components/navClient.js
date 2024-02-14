@@ -9,7 +9,7 @@ export default function NavBut(props) {
   const toggleNav = () => navChange(!showNav);
   if (showNav === false) {
     return (
-      <div className=''>
+      <div className='md:hidden'>
         <button className='text-3xl px-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
@@ -17,13 +17,13 @@ export default function NavBut(props) {
     );
   } else if (showNav === true) {
     return (
-      <div className=''>
+      <div className='h-screen'>
         <button className='text-3xl px-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
         <div
           className='h-min absolute flex flex-col bg-backgroundBlue
-          inset-y-16 inset-x-0 w-screen z-50 box-border border-y border-slate-400'
+          inset-y-16 inset-x-0 w-screen z-50 box-border border-y border-slate-400 z-50'
         >
           <Link
             id='navHome'
@@ -54,6 +54,10 @@ export default function NavBut(props) {
             COMMISSIONS
           </Link>
         </div>
+        <div
+          className='h-screen absolute inset-y-16 inset-x-0 w-screenz-40'
+          onClick={() => toggleNav()}
+        ></div>
       </div>
     );
   }

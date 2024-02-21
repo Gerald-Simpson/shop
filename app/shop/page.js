@@ -23,6 +23,11 @@ export default async function Shop() {
 // map through each item of stock & if there is stock, render a item tile
 // This could be changed to reduce server load by finding each item by Id from the DB instead
 export async function renderedTiles(stockData) {
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
   return stockData.map(async (data) => {
     let stockCount = 0;
     let minPrice = '';
@@ -34,6 +39,7 @@ export async function renderedTiles(stockData) {
         minPrice = vari.price;
       }
     });
+    minPrice = parseFloat(minPrice).toLocaleString('en-US', priceOptions);
     if (stockCount > 0) {
       return (
         <ItemTile

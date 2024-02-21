@@ -62,7 +62,6 @@ export function ProductInfo(props) {
     maximumFractionDigits: 2,
   };
   let productDescription = props.productDescription;
-  console.log(productDescription);
   productDescription = productDescription.map((description) => {
     return (
       <div>

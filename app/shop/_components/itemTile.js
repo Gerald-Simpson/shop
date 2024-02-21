@@ -20,12 +20,12 @@ export default async function ItemTile(props) {
           <img
             className='tileImgOne z-0'
             src={props.img1}
-            alt={'Picture 1 of ' + props.description}
+            alt={'Picture 1 of ' + props.name}
           />
           <img
             className='tileImgTwo z-0'
             src={props.img2}
-            alt={'Picture 2 of ' + props.description}
+            alt={'Picture 2 of ' + props.name}
           />
         </div>
         <div className='flex flex-col items-center text-center mx-[1rem] my-[0.5rem]'>
@@ -41,12 +41,12 @@ export default async function ItemTile(props) {
           <img
             className='tileImgOne z-0'
             src={props.img1}
-            alt={'Picture 1 of ' + props.description}
+            alt={'Picture 1 of ' + props.name}
           />
           <img
             className='tileImgTwo z-0'
             src={props.img2}
-            alt={'Picture 2 of ' + props.description}
+            alt={'Picture 2 of ' + props.name}
           />
         </div>
         <div className='flex flex-col items-center text-center mx-[1rem] my-[0.5rem]'>

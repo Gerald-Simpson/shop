@@ -22,7 +22,7 @@ export function ProductImage(props) {
   return (
     <div className='flex relative w-auto mx-2 max-w-[550px] md:ml-4'>
       <div
-        className='flex flex-col absolute pl-2 left-0 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-cyan-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute pl-2 left-0 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           prevImg();
         }}
@@ -36,7 +36,7 @@ export function ProductImage(props) {
         className='min-w-[250px]'
       ></img>
       <div
-        className='flex flex-col absolute pr-2 right-0 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-cyan-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute pr-2 right-0 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}

@@ -22,7 +22,7 @@ export default function NavBut(props) {
           &#8801;
         </button>
         <div
-          className='h-min absolute flex flex-col bg-backgroundBlue
+          className='h-min absolute flex flex-col bg-gray-200
           inset-y-16 inset-x-0 w-screen z-40 box-border border-y border-slate-400'
         >
           <Link

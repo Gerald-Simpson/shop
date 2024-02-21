@@ -22,21 +22,27 @@ export default async function NavBar(props) {
         <Link href='/' className='text-4xl px-4'>
           Logo
         </Link>
-        <div className='flex justify-end md:justify-evenly md:w-2/4 px-4'>
+        <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 px-4'>
           <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
           <NavLink
-            title={'PORTFOLIO'}
-            href={'/portfolio'}
-            activePath={props.activePath}
-          />
-          <NavLink
-            title={'SHOP'}
+            title={'SHOP ALL'}
             href={'/shop'}
             activePath={props.activePath}
           />
           <NavLink
-            title={'COMMISSIONS'}
-            href={'/commissions'}
+            title={'ESPRESSO'}
+            href={'/'}
+            activePath={props.activePath}
+          />
+          <NavLink
+            title={'GRINDERS'}
+            href={'/'}
+            activePath={props.activePath}
+          />
+          <NavLink title={'BREWERS'} href={'/'} activePath={props.activePath} />
+          <NavLink
+            title={'ACCESSORIES'}
+            href={'/'}
             activePath={props.activePath}
           />
           <Basket
@@ -69,8 +75,8 @@ const stockSchema = new mongoose.Schema({
   price: {
     type: String,
   },
-  categories: {
-    type: Object,
+  mainCategory: {
+    type: String,
   },
   pictureCount: {
     type: Number,

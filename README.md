@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Custom ecommerce site with CMS for a small business
 
-## Getting Started
+This project is a current work in progress and a live version of the main fork can be viewed [here](https://gerald-simpson.com).
 
-First, run the development server:
+The main focus of this project was to hone the integration of frontend and backend skills I acquired through freeCodeCamp courses.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+In addition, the project aimed to develop a simple, custom, ecommerce site. This site would offer the flexibility for customers to update content using a CMS, providing an alternative to selling on Etsy while minimizing monthly expenses.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Next.js
+  - Following the deprecation of Create-React-App, I chose Next.js because of my interest in it's server-side rendering and directory-based routing, along with it's extensive adoption.
+- Tailwind CSS
+  - Tailwind integrated well with Next.js, enabling styling to be conveniently managed alongside other code.
+- MongoDB
+  - Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, thus opted for MongoDB.
+- Stripe
+  - Stripe appeared to provide a straightforward integration at an affordable price point for payment processing.
+- CMS (TBD)
+- Authentication (TBD)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Upcoming Changes
 
-## Learn More
+Here's what I've got planned next for the project:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Simplify the site by removing the portfolio and commissions sections, instead using the navigation bar to switch between browsing products by category.
+- Choose a ficticeous shop name and logo, add more product listings to the site and update the site style to match.
+- Create a shop name and logo, add more product listings to the site, and update the overall site style to match.
+- Research and implement the best CMS and authentication solution.
+- Spend more time on the frontend design to create a more polished and user experience.

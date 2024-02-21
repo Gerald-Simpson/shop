@@ -63,8 +63,8 @@ const stockSchema = new mongoose.Schema({
   price: {
     type: String,
   },
-  categories: {
-    type: Object,
+  mainCategory: {
+    type: String,
   },
   pictureCount: {
     type: Number,

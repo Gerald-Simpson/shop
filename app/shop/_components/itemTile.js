@@ -14,7 +14,7 @@ export default async function ItemTile(props) {
     return (
       <Link
         href={'/shop/' + props.itemDbId}
-        className='flex flex-col flex-wrap items-center min-w-[10%] px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'
+        className='flex flex-col flex-wrap items-center min-w-[10%] px-[0.25rem] mx-[0.25rem]'
       >
         <div className='tileImg'>
           <img
@@ -36,7 +36,7 @@ export default async function ItemTile(props) {
     );
   } else if (props.outStock === true) {
     return (
-      <div className=' opacity-50 flex flex-col flex-wrap items-center px-[0.25rem] py-[1rem] mx-[0.25rem] my-[1rem]'>
+      <div className=' opacity-50 flex flex-col flex-wrap items-center px-[0.25rem] mx-[0.25rem]'>
         <div className='tileImg' sizes='22%'>
           <img
             className='tileImgOne z-0'

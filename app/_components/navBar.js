@@ -31,18 +31,22 @@ export default async function NavBar(props) {
           />
           <NavLink
             title={'ESPRESSO'}
-            href={'/'}
+            href={'/shop/espresso'}
             activePath={props.activePath}
           />
           <NavLink
             title={'GRINDERS'}
-            href={'/'}
+            href={'/shop/grinders'}
             activePath={props.activePath}
           />
-          <NavLink title={'BREWERS'} href={'/'} activePath={props.activePath} />
+          <NavLink
+            title={'BREWERS'}
+            href={'/shop/brewers'}
+            activePath={props.activePath}
+          />
           <NavLink
             title={'ACCESSORIES'}
-            href={'/'}
+            href={'/shop/accessories'}
             activePath={props.activePath}
           />
           <Basket

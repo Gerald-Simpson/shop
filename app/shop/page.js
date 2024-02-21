@@ -1,13 +1,12 @@
 'use server';
 
-import Link from 'next/link';
 import ItemTile from './_components/itemTile';
 import { cache } from 'react';
 import NavBar from '../_components/navBar';
 import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function Shop() {
-  let builtTiles = await renderedTiles();
+  let builtTiles = await renderedTiles(await fetchStock());
   return (
     <div className='h-screen flex flex-col items-center'>
       <NavBar activePath={'/shop'} />
@@ -23,8 +22,7 @@ export default async function Shop() {
 
 // map through each item of stock & if there is stock, render a item tile
 // This could be changed to reduce server load by finding each item by Id from the DB instead
-async function renderedTiles() {
-  let stockData = await fetchStock();
+export async function renderedTiles(stockData) {
   return stockData.map(async (data) => {
     let stockCount = 0;
     let minPrice = '';

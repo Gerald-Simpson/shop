@@ -83,13 +83,10 @@ const stockSchema = new mongoose.Schema({
     type: String,
   },
   description: {
-    type: String,
+    type: [String],
   },
   variant: {
     type: [{ name: String, price: String, stock: Number }],
-  },
-  price: {
-    type: String,
   },
   mainCategory: {
     type: String,

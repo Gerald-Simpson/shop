@@ -25,9 +25,9 @@ export default async function Page({ params }) {
     return (
       <div className='h-screen flex flex-col items-center'>
         <NavBar activePath={'/shop'} />
-        <div className='flex max-w-[1280px] pt-5'>
+        <div className='flex max-w-[1200px] pt-5'>
           <main className='flex w-full'>
-            <div className='flex flex-col w-full pt-5 sm:flex-row sm:justify-center'>
+            <div className='flex flex-col w-full pt-5 sm:flex-row sm:items-start'>
               <ProductImage
                 productId={params.productId}
                 pictureCount={productInfo.pictureCount}
@@ -55,13 +55,10 @@ const stockSchema = new mongoose.Schema({
     type: String,
   },
   description: {
-    type: String,
+    type: [String],
   },
   variant: {
     type: [{ name: String, price: String, stock: Number }],
-  },
-  price: {
-    type: String,
   },
   mainCategory: {
     type: String,

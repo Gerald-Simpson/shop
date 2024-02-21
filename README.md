@@ -23,7 +23,6 @@ In addition, the project aimed to develop a simple, custom, ecommerce site. This
 
 Here's what I've got planned next for the project:
 
-- Simplify the site by removing the portfolio and commissions sections, instead using the navigation bar to switch between browsing products by category.
 - Choose a ficticeous shop name and logo, add more product listings to the site and update the site style to match.
 - Create a shop name and logo, add more product listings to the site, and update the overall site style to match.
 - Research and implement the best CMS and authentication solution.

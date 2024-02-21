@@ -7,6 +7,7 @@ import Basket from './basket.js';
 import { unstable_noStore as noStore } from 'next/cache';
 import { decrementBasketAndClearCache } from '../actions.js';
 import NavBut from './navClient.js';
+import Image from 'next/image';
 
 export default async function NavBar(props) {
   let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
@@ -16,44 +17,55 @@ export default async function NavBar(props) {
     cookieId = cookies().get('id').value;
   }
   return (
-    <div className='w-screen h-16 flex flex-col items-center bg-backgroundBlue'>
-      <div className='w-full h-16 max-w-[1280px] flex items-center justify-between font-mono text-sm'>
-        <NavBut className='md:hidden' activePath={props.activePath} />
-        <Link href='/' className='text-4xl px-4'>
-          Logo
-        </Link>
-        <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 px-4'>
-          <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
-          <NavLink
-            title={'SHOP ALL'}
-            href={'/shop'}
-            activePath={props.activePath}
-          />
-          <NavLink
-            title={'ESPRESSO'}
-            href={'/shop/espresso'}
-            activePath={props.activePath}
-          />
-          <NavLink
-            title={'GRINDERS'}
-            href={'/shop/grinders'}
-            activePath={props.activePath}
-          />
-          <NavLink
-            title={'BREWERS'}
-            href={'/shop/brewers'}
-            activePath={props.activePath}
-          />
-          <NavLink
-            title={'ACCESSORIES'}
-            href={'/shop/accessories'}
-            activePath={props.activePath}
-          />
-          <Basket
-            comparedBasket={comparedBasket}
-            basketCount={await fetchBasketCount()}
-            cookieId={cookieId}
-          />
+    <div>
+      <div className='w-screen h-7 flex justify-center items-center bg-black/[.87] text-white text-[11px]'>
+        Free delivery on orders over £25
+      </div>
+      <div className='w-screen h-16 flex flex-col items-center bg-gray-100'>
+        <div className='w-full h-16 max-w-[1280px] flex items-center justify-between font-mono text-sm'>
+          <NavBut className='md:hidden' activePath={props.activePath} />
+          <div className='w-[40px] h-[40px] relative md:inset-x-4'>
+            <Link href='/' className='text-4xl'>
+              <Image
+                src={'/logo.png'}
+                alt='Logo for coffee shop.'
+                fill={true}
+              />
+            </Link>
+          </div>
+          <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 px-4'>
+            <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
+            <NavLink
+              title={'SHOP ALL'}
+              href={'/shop'}
+              activePath={props.activePath}
+            />
+            <NavLink
+              title={'ESPRESSO'}
+              href={'/shop/espresso'}
+              activePath={props.activePath}
+            />
+            <NavLink
+              title={'GRINDERS'}
+              href={'/shop/grinders'}
+              activePath={props.activePath}
+            />
+            <NavLink
+              title={'BREWERS'}
+              href={'/shop/brewers'}
+              activePath={props.activePath}
+            />
+            <NavLink
+              title={'ACCESSORIES'}
+              href={'/shop/accessories'}
+              activePath={props.activePath}
+            />
+            <Basket
+              comparedBasket={comparedBasket}
+              basketCount={await fetchBasketCount()}
+              cookieId={cookieId}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -71,13 +83,10 @@ const stockSchema = new mongoose.Schema({
     type: String,
   },
   description: {
-    type: String,
+    type: [String],
   },
   variant: {
     type: [{ name: String, price: String, stock: Number }],
-  },
-  price: {
-    type: String,
   },
   mainCategory: {
     type: String,

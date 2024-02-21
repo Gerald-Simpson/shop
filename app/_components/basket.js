@@ -192,6 +192,11 @@ function CombinedBasketTiles(props) {
 }
 
 function BasketTile(props) {
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
   return (
     <div className='flex flex-row justify-between w-full p-5 items-center border-b'>
       <img width='90' height='90' src={props.img} />
@@ -223,7 +228,13 @@ function BasketTile(props) {
           >
             Remove
           </button>
-          <p>£{(props.price * props.quantity).toFixed(2).toString()}</p>
+          <p>
+            £
+            {(props.price * props.quantity).toLocaleString(
+              'en-US',
+              priceOptions
+            )}
+          </p>
         </div>
       </div>
     </div>
@@ -231,12 +242,17 @@ function BasketTile(props) {
 }
 
 function priceCount(inStock) {
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
   if (inStock.length === 0) return '0.00';
   let basketPriceCount = 0.0;
   inStock.forEach((entry) => {
     basketPriceCount += entry.quantity * entry.price;
   });
-  return basketPriceCount.toFixed(2).toString();
+  return basketPriceCount.toLocaleString('en-US', priceOptions);
 }
 
 function QuantityControl(props) {

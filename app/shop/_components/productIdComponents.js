@@ -20,9 +20,9 @@ export function ProductImage(props) {
     }
   };
   return (
-    <div className='flex relative w-auto mx-2 max-w-[550px] md:ml-4'>
+    <div className='flex relative w-auto mx-2 max-w-[650px] md:ml-4'>
       <div
-        className='flex flex-col absolute pl-2 left-0 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-cyan-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute pl-2 left-0 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           prevImg();
         }}
@@ -33,10 +33,10 @@ export function ProductImage(props) {
         src={
           '/productImages/' + props.productId + '/img' + currentImage + '.jpg'
         }
-        className='min-w-[250px]'
+        className='min-w-[250px] object-contain'
       ></img>
       <div
-        className='flex flex-col absolute pr-2 right-0 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-cyan-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute pr-2 right-0 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}
@@ -56,6 +56,20 @@ export function ProductInfo(props) {
   const [currentVariant, changeVariant] = useState(variantList[0].name);
   const [currentQuantity, changeQuantity] = useState(1);
   let optionArr = [];
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+  let productDescription = props.productDescription;
+  productDescription = productDescription.map((description) => {
+    return (
+      <div>
+        <p className='text-base text-left font-light'>{description}</p>
+        <br />
+      </div>
+    );
+  });
   variantList.forEach((variant) => {
     if (variant.stock > 0) {
       optionArr.push(
@@ -71,15 +85,47 @@ export function ProductInfo(props) {
       );
     }
   });
+  if (Object.keys(variantKey).length === 1) {
+    return (
+      <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>
+        <h1 className='text-2xl text-left font-normal py-4'>
+          {props.productName}
+        </h1>
+        <div>{productDescription}</div>
+        <QuantityControlProduct
+          currentQuantity={currentQuantity}
+          changeQuantity={changeQuantity}
+        />
+        <p className='text-xl text-left font-normal pt-6'>
+          £
+          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions
+          )}
+        </p>
+        <button
+          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70'
+          onClick={() =>
+            addToBasketAndClearCache(
+              props.cookieId,
+              props.productId,
+              currentVariant,
+              currentQuantity
+            ).then(changeQuantity(1))
+          }
+        >
+          Add To Cart
+        </button>
+      </div>
+    );
+  }
   if (variantKey[currentVariant].stock > 0) {
     return (
       <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>
         <h1 className='text-2xl text-left font-normal py-4'>
           {props.productName}
         </h1>
-        <p className='text-base text-left font-light'>
-          {props.productDescription}
-        </p>
+        <div>{productDescription}</div>
         <select
           className='mt-8 py-2 px-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
@@ -94,7 +140,11 @@ export function ProductInfo(props) {
           changeQuantity={changeQuantity}
         />
         <p className='text-xl text-left font-normal pt-6'>
-          £{(variantKey[currentVariant].price * currentQuantity).toFixed(2)}
+          £
+          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions
+          )}
         </p>
         <button
           className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70'
@@ -117,9 +167,7 @@ export function ProductInfo(props) {
         <h1 className='text-2xl text-left font-normal py-4'>
           {props.productName}
         </h1>
-        <p className='text-base text-left font-light'>
-          {props.productDescription}
-        </p>
+        <div>{productDescription}</div>
         <select
           className='mt-8 py-2 px-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
@@ -134,7 +182,11 @@ export function ProductInfo(props) {
           changeQuantity={changeQuantity}
         />
         <p className='text-xl text-left font-normal pt-6'>
-          £{(variantKey[currentVariant].price * currentQuantity).toFixed(2)}
+          £
+          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions
+          )}
         </p>
         <button className='w-40 mt-4 py-2 text-white bg-black/60 cursor-default'>
           Out of Stock

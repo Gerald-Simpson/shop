@@ -17,13 +17,13 @@ export default function NavBut(props) {
     );
   } else if (showNav === true) {
     return (
-      <div className='h-screen'>
+      <div className='md:hidden'>
         <button className='text-3xl px-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
         <div
-          className='h-min absolute flex flex-col bg-backgroundBlue
-          inset-y-16 inset-x-0 w-screen z-50 box-border border-y border-slate-400 z-50'
+          className='h-min absolute flex flex-col bg-gray-200
+          inset-y-16 inset-x-0 w-screen z-40 box-border border-y border-slate-400'
         >
           <Link
             id='navHome'
@@ -33,29 +33,43 @@ export default function NavBut(props) {
             HOME
           </Link>
           <Link
-            id='navPortfolio'
-            href='/portfolio'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
-          >
-            PORTFOLIO
-          </Link>
-          <Link
             id='navShop'
             href='/shop'
             className='select-none py-4 px-4 text-lg border-t border-slate-400'
           >
-            SHOP
+            SHOP ALL
           </Link>
           <Link
-            id='navCommissions'
-            href='/commissions'
+            id='navEspresso'
+            href='/shop/espresso'
             className='select-none py-4 px-4 text-lg border-t border-slate-400'
           >
-            COMMISSIONS
+            ESPRESSO
+          </Link>
+          <Link
+            id='navGrinders'
+            href='/shop/grinders'
+            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+          >
+            GRINDERS
+          </Link>
+          <Link
+            id='navBrewers'
+            href='/shop/brewers'
+            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+          >
+            BREWERS
+          </Link>
+          <Link
+            id='navAccessories'
+            href='/shop/accessories'
+            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+          >
+            ACCESSORIES
           </Link>
         </div>
         <div
-          className='h-screen absolute inset-y-16 inset-x-0 w-screenz-40'
+          className='h-screen absolute inset-y-16 inset-x-0 w-screen z-30'
           onClick={() => toggleNav()}
         ></div>
       </div>

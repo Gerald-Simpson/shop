@@ -11,7 +11,7 @@ export default async function Shop() {
     <div className='h-screen flex flex-col items-center'>
       <NavBar activePath={'/shop'} />
       <div className='flex flex-col items-center'>
-        <h1 className='text-3xl font-light py-4 md:py-14'>Shop</h1>
+        <h1 className='text-3xl font-light py-4 md:py-14'>Shop All</h1>
         <main className='grid grid-cols-2 max-w-[1280px] w-full justify-between sm:grid-cols-3 md:grid-cols-4'>
           {builtTiles}
         </main>
@@ -23,6 +23,11 @@ export default async function Shop() {
 // map through each item of stock & if there is stock, render a item tile
 // This could be changed to reduce server load by finding each item by Id from the DB instead
 export async function renderedTiles(stockData) {
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
   return stockData.map(async (data) => {
     let stockCount = 0;
     let minPrice = '';
@@ -34,6 +39,7 @@ export async function renderedTiles(stockData) {
         minPrice = vari.price;
       }
     });
+    minPrice = parseFloat(minPrice).toLocaleString('en-US', priceOptions);
     if (stockCount > 0) {
       return (
         <ItemTile
@@ -74,13 +80,10 @@ const stockSchema = new mongoose.Schema({
     type: String,
   },
   description: {
-    type: String,
+    type: [String],
   },
   variant: {
     type: [{ name: String, price: String, stock: Number }],
-  },
-  price: {
-    type: String,
   },
   mainCategory: {
     type: String,

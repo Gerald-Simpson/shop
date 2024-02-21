@@ -7,7 +7,7 @@ import NavBar from './_components/navBar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'test tab title',
+  title: 'Coffee Shop',
   description: 'Built by Gerald Simpson',
 };
 

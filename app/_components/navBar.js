@@ -7,6 +7,7 @@ import Basket from './basket.js';
 import { unstable_noStore as noStore } from 'next/cache';
 import { decrementBasketAndClearCache } from '../actions.js';
 import NavBut from './navClient.js';
+import Image from 'next/image';
 
 export default async function NavBar(props) {
   let comparedBasket = compareBasket(await fetchBasket(), await fetchStock());
@@ -19,9 +20,11 @@ export default async function NavBar(props) {
     <div className='w-screen h-16 flex flex-col items-center bg-backgroundBlue'>
       <div className='w-full h-16 max-w-[1280px] flex items-center justify-between font-mono text-sm'>
         <NavBut className='md:hidden' activePath={props.activePath} />
-        <Link href='/' className='text-4xl px-4'>
-          Logo
-        </Link>
+        <div className='w-[40px] h-[40px] relative md:inset-x-4'>
+          <Link href='/' className='text-4xl'>
+            <Image src={'/logo.png'} alt='Logo for coffee shop.' fill={true} />
+          </Link>
+        </div>
         <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 px-4'>
           <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
           <NavLink

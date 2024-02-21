@@ -71,6 +71,47 @@ export function ProductInfo(props) {
       );
     }
   });
+  if (Object.keys(variantKey).length === 1) {
+    return (
+      <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>
+        <h1 className='text-2xl text-left font-normal py-4'>
+          {props.productName}
+        </h1>
+        <p className='text-base text-left font-light'>
+          {props.productDescription}
+        </p>
+        <p
+          className='mt-6 bg-white'
+          name='variants'
+          id='variants'
+          value={currentVariant}
+          onChange={(e) => changeVariant(e.target.value)}
+        >
+          {optionArr}
+        </p>
+        <QuantityControlProduct
+          currentQuantity={currentQuantity}
+          changeQuantity={changeQuantity}
+        />
+        <p className='text-xl text-left font-normal pt-6'>
+          £{(variantKey[currentVariant].price * currentQuantity).toFixed(2)}
+        </p>
+        <button
+          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70'
+          onClick={() =>
+            addToBasketAndClearCache(
+              props.cookieId,
+              props.productId,
+              currentVariant,
+              currentQuantity
+            ).then(changeQuantity(1))
+          }
+        >
+          Add To Cart
+        </button>
+      </div>
+    );
+  }
   if (variantKey[currentVariant].stock > 0) {
     return (
       <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>

@@ -4,6 +4,7 @@ import ItemTile from './_components/itemTile';
 import { cache } from 'react';
 import NavBar from '../_components/navBar';
 import { unstable_noStore as noStore } from 'next/cache';
+import stockSchemaData from '../_components/schemas.js';
 
 export default async function Shop() {
   let builtTiles = await renderedTiles(await fetchStock());
@@ -74,27 +75,10 @@ const mongoose = require('mongoose');
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI);
 
-// Set DB schema
-const stockSchema = new mongoose.Schema({
-  name: {
-    type: String,
-  },
-  description: {
-    type: [String],
-  },
-  variant: {
-    type: [{ name: String, price: String, stock: Number }],
-  },
-  mainCategory: {
-    type: String,
-  },
-  pictureCount: {
-    type: Number,
-  },
-});
-
 // Create DB model
-let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
+let stockModel =
+  mongoose.models.stock ||
+  mongoose.model('stock', new mongoose.Schema(stockSchemaData));
 
 export const fetchStock = async function () {
   noStore();

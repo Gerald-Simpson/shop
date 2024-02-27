@@ -1,29 +1,8 @@
 'use server';
 import mongoose from 'mongoose';
+import basketSchemaData from '../../_components/schemas.js';
 
-const basketSchema = new mongoose.Schema(
-  {
-    cookieId: {
-      type: String,
-      unique: true,
-    },
-    basket: {
-      type: [
-        {
-          itemDbId: String,
-          variantName: String,
-          count: Number,
-        },
-      ],
-      minimize: false,
-    },
-    lastUpdated: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  { minimize: false }
-);
+const basketSchema = new mongoose.Schema(basketSchemaData, { minimize: false });
 
 let basketModel =
   mongoose.models.basket || mongoose.model('basket', basketSchema);

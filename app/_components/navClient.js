@@ -23,7 +23,7 @@ export default function NavBut(props) {
         </button>
         <div
           className='h-min absolute flex flex-col bg-gray-200
-          inset-y-16 inset-x-0 w-screen z-40 box-border border-y border-slate-400'
+          inset-y-[92px] inset-x-0 w-screen z-40 box-border border-y border-slate-400'
         >
           <Link
             id='navHome'

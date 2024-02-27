@@ -18,25 +18,4 @@ const stockSchemaData = {
   },
 };
 
-const basketSchemaData = {
-  cookieId: {
-    type: String,
-    unique: true,
-  },
-  basket: {
-    type: [
-      {
-        itemDbId: String,
-        variantName: String,
-        count: Number,
-      },
-    ],
-    minimize: false,
-  },
-  lastUpdated: {
-    type: Date,
-    default: Date.now,
-  },
-};
-
-export default { stockSchemaData, basketSchemaData };
+export default stockSchemaData;

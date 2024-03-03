@@ -5,30 +5,30 @@ import Image from 'next/image';
 
 export default async function Home() {
   return (
-    <div className='h-screen flex flex-col items-center'>
+    <div className='h-screen flex flex-col items-center min-w-[250px]'>
       <NavBar activePath={'/'} />
-      <main className='flex flex-col w-full items-center'>
-        <div className='flex flex-col items-center w-full pt-16'>
+      <main className='flex flex-col w-full min-w-[250px]'>
+        <div className='flex flex-col items-center text-center w-full min-w-[250px] pt-8 md:pt-16'>
           <img
             alt='Background image of coffee beans.'
             src='/cover.jpg'
-            className='absolute object-cover object-bottom brightness-[57%] h-[700px] w-full z-0'
+            className='absolute object-cover object-bottom brightness-[57%] w-full min-w-[250px] z-0 h-[700px]'
           />
-          <h1 className='text-5xl font-semibold pt-44 text-white z-10'>
+          <h1 className=' font-semibold text-white z-10 pt-20 md:pt-44 text-3xl md:text-5xl'>
             Single Origin Coffee
           </h1>
           <p className='self-center text-xl py-4 text-white z-10'>
             Browse our range of house blends and singel source coffees.
           </p>
-          <div className='flex pt-8'>
+          <div className='flex flex-col pt-8 content-center items-center md:flex-row'>
             <Link
-              className='flex flex-col w-[400px] h-12 justify-center items-center text-center font-medium bg-white mr-10 z-20'
+              className='flex flex-col h-12 justify-center items-center text-center font-medium bg-white z-20 mb-8 md:mb-0 w-[200px] md:w-[300px] lg:w-[400px] md:mr-10 hover:bg-transparent hover:text-white hover:border-2 hover:border-white '
               href={'/shop/coffee'}
             >
               <p>Shop Coffee</p>
             </Link>
             <Link
-              className='flex flex-col w-[400px] h-12 justify-center items-center text-center font-medium text-white border-2 border-white bg-transparent z-20'
+              className='flex flex-col h-12 justify-center items-center text-center font-medium text-white border-2 border-white bg-transparent z-20 w-[200px] md:w-[300px] lg:w-[400px] hover:bg-white hover:text-black hover:border-0'
               href={'/shop/brewers'}
             >
               <p>Browse Brewers</p>

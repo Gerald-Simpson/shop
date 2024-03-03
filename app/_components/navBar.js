@@ -41,8 +41,8 @@ export default async function NavBar(props) {
               activePath={props.activePath}
             />
             <NavLink
-              title={'ESPRESSO'}
-              href={'/shop/espresso'}
+              title={'COFFEE'}
+              href={'/shop/coffee'}
               activePath={props.activePath}
             />
             <NavLink

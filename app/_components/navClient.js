@@ -40,11 +40,11 @@ export default function NavBut(props) {
             SHOP ALL
           </Link>
           <Link
-            id='navEspresso'
-            href='/shop/espresso'
+            id='navCoffee'
+            href='/shop/coffee'
             className='select-none py-4 px-4 text-lg border-t border-slate-400'
           >
-            ESPRESSO
+            COFFEE
           </Link>
           <Link
             id='navGrinders'

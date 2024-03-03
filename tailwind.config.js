@@ -14,10 +14,11 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        textAccent: '#8CC9FF',
+        textAccent: '#cc733f',
         backgroundBlue: '#cce5ff',
       },
     },
   },
   plugins: [],
 };
+//textAccent: '#8CC9FF',

@@ -10,6 +10,7 @@ import {
   decrementBasketAndClearCache,
 } from '../actions.js';
 
+//&#128722;
 /*BASKET {props.basketCount}*/
 export default function Basket(props) {
   const [showBasket, basketChange] = useState(false);
@@ -27,13 +28,14 @@ export default function Basket(props) {
         >
           BASKET {props.basketCount}
         </button>
-        <button
+        <img
           id={'navBasket'}
           className={'text-xl hover:text-textAccent select-none md:hidden'}
+          src='/basket.png'
+          width='25px'
+          height='25px'
           onClick={() => toggleBasket()}
-        >
-          &#128722;
-        </button>
+        />
       </div>
     );
   } else

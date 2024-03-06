@@ -18,7 +18,7 @@ export default async function Home() {
             Single Origin Coffee
           </h1>
           <p className='self-center text-xl py-4 text-white z-10'>
-            Browse our range of house blends and singel source coffees.
+            Browse our range of house blends and single source coffees.
           </p>
           <div className='flex flex-col pt-8 content-center items-center md:flex-row'>
             <Link

@@ -20,9 +20,9 @@ export function ProductImage(props) {
     }
   };
   return (
-    <div className='flex relative w-auto mx-2 max-w-[650px] md:ml-4'>
+    <div className='flex relative w-auto mx-2 max-w-[650px] md:ml-4 min-w-[200px]'>
       <div
-        className='flex flex-col absolute pl-2 left-0 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute left-0 ml-2 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           prevImg();
         }}
@@ -33,10 +33,10 @@ export function ProductImage(props) {
         src={
           '/productImages/' + props.productId + '/img' + currentImage + '.jpg'
         }
-        className='min-w-[250px] object-contain'
+        className='min-w-[200px] object-contain'
       ></img>
       <div
-        className='flex flex-col absolute pr-2 right-0 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute right-0 mr-2 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}
@@ -87,7 +87,7 @@ export function ProductInfo(props) {
   });
   if (Object.keys(variantKey).length === 1) {
     return (
-      <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>
+      <div className='flex flex-col items-center mx-10 sm:items-start sm:w-3/5 md:2/5'>
         <h1 className='text-2xl text-left font-normal py-4'>
           {props.productName}
         </h1>
@@ -104,7 +104,7 @@ export function ProductInfo(props) {
           )}
         </p>
         <button
-          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70'
+          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
           onClick={() =>
             addToBasketAndClearCache(
               props.cookieId,
@@ -121,13 +121,13 @@ export function ProductInfo(props) {
   }
   if (variantKey[currentVariant].stock > 0) {
     return (
-      <div className='flex flex-col items-center px-10 sm:items-start sm:w-3/5 md:2/5'>
+      <div className='flex flex-col items-center mx-10 sm:items-start sm:w-3/5 md:2/5'>
         <h1 className='text-2xl text-left font-normal py-4'>
           {props.productName}
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 px-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}
@@ -147,7 +147,7 @@ export function ProductInfo(props) {
           )}
         </p>
         <button
-          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70'
+          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
           onClick={() =>
             addToBasketAndClearCache(
               props.cookieId,
@@ -169,7 +169,7 @@ export function ProductInfo(props) {
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 px-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 mx-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}

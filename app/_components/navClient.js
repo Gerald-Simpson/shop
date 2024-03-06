@@ -44,7 +44,7 @@ export default function NavBut(props) {
             href='/shop/coffee'
             className='select-none py-4 px-4 text-lg border-t border-slate-400'
           >
-            COFFEE
+            COFFE ESPRESSO
           </Link>
           <Link
             id='navGrinders'

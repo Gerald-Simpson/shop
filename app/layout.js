@@ -1,8 +1,6 @@
-import { headers } from 'next/headers';
-import { cookies } from 'next/headers';
 import './globals.css';
 import { Inter } from 'next/font/google';
-import NavBar from './_components/navBar';
+import GlobalContextProvider from '../stateProvider.js';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,7 +12,9 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <GlobalContextProvider>{children}</GlobalContextProvider>
+      </body>
     </html>
   );
 }

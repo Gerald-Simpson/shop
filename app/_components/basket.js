@@ -1,7 +1,7 @@
 'use client';
 
 //import { toggleBasket } from './navButtonAction.js';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Suspense } from 'react';
 import checkOut from '../api/checkout_sessions.js';
 import { removeFromBasketAndClearCache } from '../actions.js';
@@ -9,11 +9,12 @@ import {
   addToBasketAndClearCache,
   decrementBasketAndClearCache,
 } from '../actions.js';
+import { GlobalContext } from '../../stateProvider.js';
 
 //&#128722;
 /*BASKET {props.basketCount}*/
 export default function Basket(props) {
-  const [showBasket, basketChange] = useState(false);
+  const { showBasket, basketChange } = useContext(GlobalContext);
   const toggleBasket = () => basketChange(!showBasket);
   const handleChildClick = (e) => {
     e.stopPropagation();
@@ -60,7 +61,6 @@ export default function Basket(props) {
           >
             <div className='flex flex-col h-full items-center w-full'>
               <div className='flex flex-row w-full px-5 justify-between'>
-                <div></div>
                 <h1 className='my-4'>Your Basket</h1>
                 <button
                   className='text-lg hover:text-red-700 select-none'

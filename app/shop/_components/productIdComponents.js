@@ -2,6 +2,8 @@
 //64e63ee03c9fbcb94a36d0ce
 import { useState } from 'react';
 import { addToBasketAndClearCache } from '../../actions.js';
+import { GlobalContext } from '../../../stateProvider.js';
+import { useContext } from 'react';
 
 export function ProductImage(props) {
   const [currentImage, changeImage] = useState(1);
@@ -50,6 +52,7 @@ export function ProductImage(props) {
 export function ProductInfo(props) {
   let variantList = JSON.parse(props.variantList);
   let variantKey = {};
+  const { basketChange } = useContext(GlobalContext);
   variantList.forEach((variant) => {
     variantKey[variant.name] = { price: variant.price, stock: variant.stock };
   });
@@ -111,7 +114,9 @@ export function ProductInfo(props) {
               props.productId,
               currentVariant,
               currentQuantity
-            ).then(changeQuantity(1))
+            )
+              .then(changeQuantity(1))
+              .then(basketChange(true))
           }
         >
           Add To Cart
@@ -154,7 +159,9 @@ export function ProductInfo(props) {
               props.productId,
               currentVariant,
               currentQuantity
-            ).then(changeQuantity(1))
+            )
+              .then(changeQuantity(1))
+              .then(basketChange(true))
           }
         >
           Add To Cart

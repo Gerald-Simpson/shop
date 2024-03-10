@@ -33,7 +33,7 @@ export default async function NavBar(props) {
               />
             </Link>
           </div>
-          <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 px-4'>
+          <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 mx-4'>
             <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
             <NavLink
               title={'SHOP ALL'}

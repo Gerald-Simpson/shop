@@ -10,7 +10,7 @@ export default function NavBut(props) {
   if (showNav === false) {
     return (
       <div className='md:hidden'>
-        <button className='text-3xl px-4 md:hidden' onClick={() => toggleNav()}>
+        <button className='text-3xl mx-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
       </div>
@@ -18,7 +18,7 @@ export default function NavBut(props) {
   } else if (showNav === true) {
     return (
       <div className='md:hidden'>
-        <button className='text-3xl px-4 md:hidden' onClick={() => toggleNav()}>
+        <button className='text-3xl mx-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
         <div
@@ -28,42 +28,42 @@ export default function NavBut(props) {
           <Link
             id='navHome'
             href='/'
-            className='select-none py-4 px-4 text-lg border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-slate-400'
           >
             HOME
           </Link>
           <Link
             id='navShop'
             href='/shop'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
             SHOP ALL
           </Link>
           <Link
             id='navCoffee'
             href='/shop/coffee'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
             COFFE ESPRESSO
           </Link>
           <Link
             id='navGrinders'
             href='/shop/grinders'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
             GRINDERS
           </Link>
           <Link
             id='navBrewers'
             href='/shop/brewers'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
             BREWERS
           </Link>
           <Link
             id='navAccessories'
             href='/shop/accessories'
-            className='select-none py-4 px-4 text-lg border-t border-slate-400'
+            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
             ACCESSORIES
           </Link>

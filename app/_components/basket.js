@@ -57,10 +57,11 @@ export default function Basket(props) {
         >
           <div
             onClick={(e) => handleChildClick(e)}
-            className='flex flex-col items-center justify-between w-full h-full mt-2 rounded-t-xl bg-white md:rounded-xl md:mr-2 md: mb-2 md:max-w-[480px]'
+            className='flex flex-col items-center justify-between w-full h-full bg-white md:rounded-xl md:mt-2 md:mr-2 md:mb-2 md:max-w-[480px]'
           >
             <div className='flex flex-col h-full items-center w-full'>
-              <div className='flex flex-row w-full px-5 justify-between'>
+              <div className='flex flex-row w-full px-5 justify-between items-center'>
+                <div></div>
                 <h1 className='my-4'>Your Basket</h1>
                 <button
                   className='text-lg hover:text-red-700 select-none'
@@ -202,7 +203,7 @@ function BasketTile(props) {
   return (
     <div className='flex flex-row justify-between w-full p-5 items-center border-b'>
       <img width='90' height='90' src={props.img} />
-      <div className='flex justify-between w-full h-full px-3'>
+      <div className='flex justify-between w-full h-full mx-3'>
         <div className='flex flex-col h-full justify-start py-2'>
           <p className='text-xs font-bold underline underline-offset-1'>
             {props.name}

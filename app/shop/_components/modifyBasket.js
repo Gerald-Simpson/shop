@@ -1,5 +1,9 @@
 'use server';
-import mongoose from 'mongoose';
+
+const mongoose = require('mongoose');
+
+// Connect to DB
+mongoose.connect(process.env.MONGO_URI);
 
 const basketSchema = new mongoose.Schema(
   {
@@ -41,9 +45,9 @@ export async function addToBasket(dataObj, quantity = 1) {
     // Basket not created
     // Create basket & add item
     basketModel.create({
-      cookieId: dataObj['cookieId'],
+      cookieId: dataObj.cookieId,
       basket: {
-        itemDbId: dataObj['itemDbId'],
+        itemDbId: dataObj.itemDbId,
         variantName: dataObj.variantName,
         count: quantity,
       },

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 export default function Footer() {
   return (
-    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white px-80'>
+    <div className='w-full h-20 flex items-center justify-between font-mono text-sm bg-white mx-80'>
       <Link href='/' className='text-4xl'>
         Footer
       </Link>

@@ -6,6 +6,7 @@ import {
   removeFromBasket,
   decrementBasket,
 } from './shop/_components/modifyBasket.js';
+import stockSchemaData from './_components/schemas.js';
 
 export async function addToBasketAndClearCache(
   cookieId,
@@ -48,7 +49,8 @@ export async function removeFromBasketAndClearCache(
 export async function decrementBasketAndClearCache(
   cookieId,
   itemDbId,
-  variantName
+  variantName,
+  num = 1
 ) {
   'user server';
   if (cookieId == '') {
@@ -57,7 +59,69 @@ export async function decrementBasketAndClearCache(
       cookieId: cookieId,
       itemDbId: itemDbId,
       variantName: variantName,
+      num: num,
     });
     revalidateTag('basketTag');
   }
+}
+
+export async function reduceStock(cookieId) {
+  const mongoose = require('mongoose');
+
+  // Connect to DB
+  mongoose.connect(process.env.MONGO_URI);
+
+  const basketSchema = new mongoose.Schema(
+    {
+      cookieId: {
+        type: String,
+        unique: true,
+      },
+      basket: {
+        type: [
+          {
+            itemDbId: String,
+            variantName: String,
+            count: Number,
+          },
+        ],
+        minimize: false,
+      },
+      lastUpdated: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+    { minimize: false }
+  );
+
+  let stockModel =
+    mongoose.models.stock ||
+    mongoose.model('stock', new mongoose.Schema(stockSchemaData));
+
+  let basketModel =
+    mongoose.models.basket || mongoose.model('basket', basketSchema);
+
+  let basket = await basketModel.findOne({ cookieId: cookieId }, 'basket');
+  basket = basket.basket;
+
+  // Cycle through basket item
+  basket.forEach(async (basketObj) => {
+    let stockVariants = await stockModel.findById(
+      { _id: basketObj.itemDbId },
+      'variant'
+    );
+    // Then cycle through stock items & find items that match
+    let stockVariantsCopy = stockVariants.variant;
+    stockVariantsCopy.forEach(async (variant, index) => {
+      // If the items match, reduce the stock by the amount in the basket
+      if (variant.name === basketObj.variantName) {
+        stockVariantsCopy[index].stock -= basketObj.count;
+        await stockModel.findByIdAndUpdate(
+          { _id: basketObj.itemDbId },
+          { $set: { variant: stockVariantsCopy } }
+        );
+      }
+    });
+  });
 }

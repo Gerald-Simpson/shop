@@ -123,14 +123,14 @@ export async function removeFromBasket(dataObj) {
   }
 }
 
-export async function decrementBasket(dataObj) {
+export async function decrementBasket(dataObj, num = 1) {
   'use server';
   // Check if cookieId is in basketDB
   let query = { cookieId: dataObj['cookieId'] };
 
   let fetchBasket = await basketModel.find(query);
 
-  if (fetchBasket.length === 0) {
+  if (fetchBasket.length == 0) {
     // Basket not created
     // Do nothing
   } else {
@@ -141,12 +141,14 @@ export async function decrementBasket(dataObj) {
         obj.itemDbId === dataObj['itemDbId'] &&
         obj.variantName === dataObj.variantName
       ) {
-        if (obj.count <= 1) {
-          // Delete obj in basketCopy
-          basketCopy.splice(index, 1);
-        } else {
-          // Decrement count value
-          basketCopy[index].count -= 1;
+        for (let i = 0; i < num; i++) {
+          if (obj.count <= 1) {
+            // Delete obj in basketCopy
+            basketCopy.splice(index, 1);
+          } else {
+            // Decrement count value
+            basketCopy[index].count -= 1;
+          }
         }
       }
     });
@@ -158,4 +160,16 @@ export async function decrementBasket(dataObj) {
       }
     );
   }
+}
+
+export async function emptyBasket(cookieId) {
+  'use server';
+
+  // Replace basket with empty array
+  await basketModel.findOneAndUpdate(
+    { cookieId: cookieId },
+    {
+      $set: { basket: [], lastUpdated: Date.now() },
+    }
+  );
 }

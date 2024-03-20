@@ -71,6 +71,8 @@ async function compareBasket() {
 }
 
 export default async function checkOut() {
+  let cookieList = cookies();
+  let cookieId = cookieList.get('id')['value'];
   // Create Checkout Sessions from body params.
   // check DB for details on items in
   const session = await stripe.checkout.sessions.create({
@@ -79,6 +81,10 @@ export default async function checkOut() {
     success_url: `${process.env.HOST_NAME}/`,
     cancel_url: `${process.env.HOST_NAME}/`,
     automatic_tax: { enabled: true },
+    client_reference_id: cookieId,
   });
+  let tester = await compareBasket();
+  //console.log(tester[0]);
+  //console.log(tester[0].price_data.product_data);
   redirect(session.url);
 }

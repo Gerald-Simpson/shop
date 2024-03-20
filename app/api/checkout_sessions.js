@@ -43,7 +43,7 @@ async function compareBasket() {
                   unit_amount: parseFloat(vari.price) * 100,
                   product_data: {
                     name: stockItem.name + ' - ' + vari.name,
-                    description: stockItem.description,
+                    description: stockItem.description.join(' '),
                   },
                 },
                 quantity: basketItem.count,
@@ -55,7 +55,7 @@ async function compareBasket() {
                   unit_amount: parseFloat(vari.price) * 100,
                   product_data: {
                     name: stockItem.name + ' - ' + vari.name,
-                    description: stockItem.description,
+                    description: stockItem.description.join(' '),
                   },
                 },
                 quantity: vari.stock,

@@ -17,7 +17,6 @@ export async function POST(request) {
 
     // ... handle other event types
     default:
-    //console.log(`Unhandled event type ${body.type}`);
   }
   return new Response(JSON.stringify({ received: true }));
 }

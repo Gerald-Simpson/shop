@@ -114,7 +114,7 @@ export const fetchStock = async function () {
 //
 
 // Currently does not cache but will look at caching & re-validating when necessary later
-async function fetchBasket() {
+export const fetchBasket = async function () {
   let cookieList = cookies();
   if (!cookieList.has('id')) {
     return [];
@@ -134,7 +134,7 @@ async function fetchBasket() {
     console.error(err);
     return [];
   }
-}
+};
 
 async function basketCount(data) {
   if (data.length === 0) return ' 0';
@@ -215,15 +215,17 @@ function compareBasket(basketData, stockData) {
                   });
                   inStockQuantity += vari.stock;
                 }
-                outStock.push({
-                  name: stockItem.name,
-                  variant: vari.name,
-                  price: vari.price,
-                  description: stockItem.description,
-                  quantity: basketItem.count - vari.stock,
-                  itemDbId: basketItem.itemDbId,
-                });
-                outStockQuantity += basketItem.count - vari.stock;
+                if (basketItem.count - vari.stock > 0) {
+                  outStock.push({
+                    name: stockItem.name,
+                    variant: vari.name,
+                    price: vari.price,
+                    description: stockItem.description,
+                    quantity: basketItem.count - vari.stock,
+                    itemDbId: basketItem.itemDbId,
+                  });
+                  outStockQuantity += basketItem.count - vari.stock;
+                }
               }
             }
           });

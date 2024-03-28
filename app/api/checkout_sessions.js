@@ -3,31 +3,14 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { fetchStock } from '../shop/page.js';
+import { revalidateTag } from 'next/cache';
+import { fetchBasket } from '../_components/navBar.js';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-async function fetchBasket() {
-  let cookieList = cookies();
-  if (!cookieList.has('id')) {
-    return [];
-  }
-  let res = await fetch(process.env.HOST_NAME + '/api/fetch-basket', {
-    method: 'GET',
-    cache: 'no-store',
-    headers: {
-      cookieId: cookies().get('id')['value'],
-    },
-  });
-
-  const data = await res.json();
-
-  if (data.length === 0) return null;
-
-  return data.basket;
-}
-
 async function compareBasket() {
   let basketData = await fetchBasket();
+  basketData = basketData.basket;
   let stockData = await fetchStock();
   let lineItems = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
@@ -70,7 +53,7 @@ async function compareBasket() {
   return lineItems;
 }
 
-export default async function checkOut() {
+async function checkOut() {
   let cookieList = cookies();
   let cookieId = cookieList.get('id')['value'];
   // Create Checkout Sessions from body params.
@@ -83,8 +66,57 @@ export default async function checkOut() {
     automatic_tax: { enabled: true },
     client_reference_id: cookieId,
   });
-  let tester = await compareBasket();
-  //console.log(tester[0]);
-  //console.log(tester[0].price_data.product_data);
   redirect(session.url);
 }
+
+async function removeOutStock(inStock) {
+  let cookieList = cookies();
+  let cookieId = cookieList.get('id')['value'];
+  const mongoose = require('mongoose');
+
+  // Connect to DB
+  mongoose.connect(process.env.MONGO_URI);
+
+  const basketSchema = new mongoose.Schema(
+    {
+      cookieId: {
+        type: String,
+        unique: true,
+      },
+      basket: {
+        type: [
+          {
+            itemDbId: String,
+            variantName: String,
+            count: Number,
+          },
+        ],
+        minimize: false,
+      },
+      lastUpdated: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+    { minimize: false }
+  );
+
+  let basketModel =
+    mongoose.models.basket || mongoose.model('basket', basketSchema);
+
+  // On checkout update basket to only contain in stock items
+  let newInStock = [];
+  inStock.forEach((stock) => {
+    newInStock.push({
+      itemDbId: stock.itemDbId,
+      variantName: stock.variant,
+      count: stock.quantity,
+    });
+  });
+
+  await basketModel
+    .findOneAndUpdate({ cookieId: cookieId }, { $set: { basket: newInStock } })
+    .then(revalidateTag('basketTag'));
+}
+
+export { checkOut, removeOutStock };

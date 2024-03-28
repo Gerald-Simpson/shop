@@ -3,7 +3,7 @@
 //import { toggleBasket } from './navButtonAction.js';
 import { useState, useContext } from 'react';
 import { Suspense } from 'react';
-import checkOut from '../api/checkout_sessions.js';
+import { checkOut, removeOutStock } from '../api/checkout_sessions.js';
 import { removeFromBasketAndClearCache } from '../actions.js';
 import {
   addToBasketAndClearCache,
@@ -101,7 +101,11 @@ function CheckoutOverlay(props) {
             £{priceCount(props.comparedBasket.inStock)}
           </h5>
         </div>
-        <form className='w-full h-full px-4' action={checkOut}>
+        <form
+          className='w-full h-full px-4'
+          action={checkOut}
+          onClick={() => removeOutStock(props.comparedBasket.inStock)}
+        >
           <button className='bg-blue-500 w-full h-10 rounded-md select-none'>
             Checkout
           </button>

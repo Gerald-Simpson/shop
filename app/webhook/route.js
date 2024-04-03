@@ -1,4 +1,4 @@
-import { emptyBasket } from '../shop/_components/modifyBasket.js';
+import { emptyBasket } from '../actions';
 import { reduceStock } from '../actions.js';
 //stripe trigger payment_intent.succeeded
 //stripe listen --forward-to localhost:3000/webhook

@@ -1,9 +1,9 @@
 'use client';
 //64e63ee03c9fbcb94a36d0ce
 import { useState } from 'react';
-import { addToBasketAndClearCache } from '../../actions.js';
 import { GlobalContext } from '../../../stateProvider.js';
 import { useContext } from 'react';
+import { addToBasket } from '@/app/actions.js';
 
 export function ProductImage(props) {
   const [currentImage, changeImage] = useState(1);
@@ -109,7 +109,7 @@ export function ProductInfo(props) {
         <button
           className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
           onClick={() =>
-            addToBasketAndClearCache(
+            addToBasket(
               props.cookieId,
               props.productId,
               currentVariant,
@@ -154,7 +154,7 @@ export function ProductInfo(props) {
         <button
           className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
           onClick={() =>
-            addToBasketAndClearCache(
+            addToBasket(
               props.cookieId,
               props.productId,
               currentVariant,

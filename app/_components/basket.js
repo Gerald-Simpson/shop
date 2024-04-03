@@ -1,18 +1,13 @@
 'use client';
 
-//import { toggleBasket } from './navButtonAction.js';
 import { useState, useContext } from 'react';
 import { Suspense } from 'react';
-import { checkOut, removeOutStock } from '../api/checkout_sessions.js';
-import { removeFromBasketAndClearCache } from '../actions.js';
-import {
-  addToBasketAndClearCache,
-  decrementBasketAndClearCache,
-} from '../actions.js';
+import { checkOut } from '../api/checkout_sessions.js';
 import { GlobalContext } from '../../stateProvider.js';
+import { addToBasket, removeFromBasket, decrementBasket } from '../actions.js';
+import { removeOutOfStock } from '../actions.js';
 
-//&#128722;
-/*BASKET {props.basketCount}*/
+//&#128722 old trolley
 export default function Basket(props) {
   const { showBasket, basketChange } = useContext(GlobalContext);
   const toggleBasket = () => basketChange(!showBasket);
@@ -104,7 +99,7 @@ function CheckoutOverlay(props) {
         <form
           className='w-full h-full px-4'
           action={checkOut}
-          onClick={() => removeOutStock(props.comparedBasket.inStock)}
+          onClick={() => removeOutOfStock(props.cookieId)}
         >
           <button className='bg-blue-500 w-full h-10 rounded-md select-none'>
             Checkout
@@ -225,7 +220,7 @@ function BasketTile(props) {
         <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
           <button
             onClick={() => {
-              removeFromBasketAndClearCache(
+              removeFromBasket(
                 props.cookieId,
                 props.itemDbId,
                 props.variantName
@@ -268,11 +263,7 @@ function QuantityControl(props) {
       <div
         className='flex w-full justify-center items-center hover:bg-slate-200 border-r text-l select-none cursor-pointer'
         onClick={() => {
-          decrementBasketAndClearCache(
-            props.cookieId,
-            props.itemDbId,
-            props.variantName
-          );
+          decrementBasket(props.cookieId, props.itemDbId, props.variantName);
         }}
       >
         &#x2212;
@@ -283,11 +274,7 @@ function QuantityControl(props) {
       <div
         className='flex w-full justify-center items-center hover:bg-slate-200 border-l text-l select-none cursor-pointer'
         onClick={() => {
-          addToBasketAndClearCache(
-            props.cookieId,
-            props.itemDbId,
-            props.variantName
-          );
+          addToBasket(props.cookieId, props.itemDbId, props.variantName);
         }}
       >
         &#x2B;

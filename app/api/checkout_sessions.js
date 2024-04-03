@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { fetchStock } from '../shop/page.js';
 import { revalidateTag } from 'next/cache';
 import { fetchBasket } from '../_components/navBar.js';
+import { basketSchema } from '../_components/schemas.js';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -76,30 +77,6 @@ async function removeOutStock(inStock) {
 
   // Connect to DB
   mongoose.connect(process.env.MONGO_URI);
-
-  const basketSchema = new mongoose.Schema(
-    {
-      cookieId: {
-        type: String,
-        unique: true,
-      },
-      basket: {
-        type: [
-          {
-            itemDbId: String,
-            variantName: String,
-            count: Number,
-          },
-        ],
-        minimize: false,
-      },
-      lastUpdated: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-    { minimize: false }
-  );
 
   let basketModel =
     mongoose.models.basket || mongoose.model('basket', basketSchema);

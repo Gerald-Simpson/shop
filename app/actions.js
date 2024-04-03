@@ -6,7 +6,7 @@ import {
   removeFromBasket,
   decrementBasket,
 } from './shop/_components/modifyBasket.js';
-import stockSchemaData from './_components/schemas.js';
+import { stockSchema, basketSchema } from './_components/schemas.js';
 
 export async function addToBasketAndClearCache(
   cookieId,
@@ -71,33 +71,8 @@ export async function reduceStock(cookieId) {
   // Connect to DB
   mongoose.connect(process.env.MONGO_URI);
 
-  const basketSchema = new mongoose.Schema(
-    {
-      cookieId: {
-        type: String,
-        unique: true,
-      },
-      basket: {
-        type: [
-          {
-            itemDbId: String,
-            variantName: String,
-            count: Number,
-          },
-        ],
-        minimize: false,
-      },
-      lastUpdated: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-    { minimize: false }
-  );
-
   let stockModel =
-    mongoose.models.stock ||
-    mongoose.model('stock', new mongoose.Schema(stockSchemaData));
+    mongoose.models.stock || mongoose.model('stock', stockSchema);
 
   let basketModel =
     mongoose.models.basket || mongoose.model('basket', basketSchema);

@@ -3,13 +3,12 @@
 // File contains all functions that fetch or modify DB's
 
 import { revalidateTag } from 'next/cache';
-import { stockSchema, basketSchema } from './_components/schemas.js';
 import { unstable_noStore as noStore } from 'next/cache';
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { stockSchema, basketSchema } from './_components/schemas.ts';
 
 // Connect to DB
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI!);
 
 // Create DB model
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
@@ -17,7 +16,7 @@ let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 let basketModel =
   mongoose.models.basket || mongoose.model('basket', basketSchema);
 
-export async function fetchBasket(cookieId) {
+export async function fetchBasket(cookieId: string) {
   if (cookieId === '') {
     return [];
   }
@@ -38,12 +37,19 @@ export async function fetchBasket(cookieId) {
   }
 }
 
-export async function fetchBasketCount(cookieId) {
+interface basketItem {
+  itemDbId: string;
+  variantName: string;
+  count: number;
+  _id: string;
+}
+
+export async function fetchBasketCount(cookieId: string) {
   let data = await fetchBasket(cookieId);
   if (data.length === 0) return ' 0';
   let basketItemCount = 0;
-  await data.basket.forEach((entry) => {
-    basketItemCount += entry['count'];
+  await data.basket.forEach((entry: basketItem) => {
+    basketItemCount += entry.count;
   });
   return basketItemCount;
 }
@@ -59,12 +65,12 @@ export async function fetchStock() {
   }
 }
 
-export async function fetchStockWithQuery(query) {
+export async function fetchStockWithQuery(query: { mainCategory: string }) {
   noStore();
   return await stockModel.find(query);
 }
 
-export async function fetchStockWithId(productId) {
+export async function fetchStockWithId(productId: string) {
   noStore();
   try {
     let response = await stockModel.find({ _id: productId });
@@ -75,11 +81,37 @@ export async function fetchStockWithId(productId) {
   }
 }
 
-export async function compareBasket(cookieId) {
+interface stockListItem {
+  name: string;
+  variant: string;
+  price: string;
+  description: [string];
+  quantity: number;
+  itemDbId: string;
+}
+
+interface stockDbItem {
+  name: string;
+  variant: [
+    {
+      name: string;
+      price: string;
+      stock: number;
+      _id: string;
+    },
+  ];
+  price: string;
+  description: [string];
+  quantity: number;
+  itemDbId: string;
+  _id: string;
+}
+
+export async function compareBasket(cookieId: string) {
   let basketData = await fetchBasket(cookieId);
   let stockData = await fetchStock();
-  let inStock = [];
-  let outStock = [];
+  let inStock: stockListItem[] = [];
+  let outStock: stockListItem[] = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
   let inStockQuantity = 0;
   let outStockQuantity = 0;
@@ -91,8 +123,8 @@ export async function compareBasket(cookieId) {
       outStockQuantity: 0,
     };
   } else {
-    basketData.basket.forEach((basketItem) => {
-      stockData.forEach((stockItem) => {
+    basketData.basket.forEach((basketItem: basketItem) => {
+      stockData.forEach((stockItem: stockDbItem) => {
         if (basketItem.itemDbId === String(stockItem._id)) {
           stockItem.variant.forEach((vari) => {
             if (vari.name === basketItem.variantName) {
@@ -145,14 +177,13 @@ export async function compareBasket(cookieId) {
 }
 
 export async function addToBasket(
-  cookieId,
-  itemDbId,
-  variantName,
-  quantity = 1
+  cookieId: string,
+  itemDbId: string,
+  variantName: string,
+  quantity = 1,
 ) {
   if (cookieId != '') {
     let foundBasket = await fetchBasket(cookieId);
-    console.log(foundBasket);
     if (foundBasket.length === 0) {
       // Basket not created
       // Create basket & add item
@@ -169,7 +200,7 @@ export async function addToBasket(
       let position = -1;
       // Basket already exists
       // Check if item already in basket
-      basketCopy.forEach((obj, index) => {
+      basketCopy.forEach((obj: basketItem, index: number) => {
         if (obj.itemDbId === itemDbId && obj.variantName === variantName) {
           position = index;
           // Increment cont in basketCopy
@@ -182,7 +213,7 @@ export async function addToBasket(
           { 'basket.itemDbId': itemDbId },
           {
             $set: { basket: basketCopy, lastUpdated: Date.now() },
-          }
+          },
         );
       } else {
         //If not, add the item to the itemDbId object with value of quantity var
@@ -196,7 +227,7 @@ export async function addToBasket(
           {
             $push: { basket: basketPushItem },
             $set: { lastUpdated: Date.now() },
-          }
+          },
         );
       }
     }
@@ -205,7 +236,11 @@ export async function addToBasket(
   }
 }
 
-export async function removeFromBasket(cookieId, itemDbId, variantName) {
+export async function removeFromBasket(
+  cookieId: string,
+  itemDbId: string,
+  variantName: string,
+) {
   if (cookieId != '') {
     let foundBasket = await fetchBasket(cookieId);
 
@@ -213,7 +248,7 @@ export async function removeFromBasket(cookieId, itemDbId, variantName) {
       let basketCopy = foundBasket['basket'];
       // Basket already exists
       // Check if item is in basket
-      basketCopy.forEach((obj, index) => {
+      basketCopy.forEach((obj: basketItem, index: number) => {
         if (obj.itemDbId === itemDbId && obj.variantName === variantName) {
           // Delete obj in basketCopy
           basketCopy.splice(index, 1);
@@ -221,10 +256,10 @@ export async function removeFromBasket(cookieId, itemDbId, variantName) {
       });
       // Replace basket with updated basketCopy
       await basketModel.findOneAndUpdate(
-        { 'basket.itemDbId': itemDbId },
+        { cookieId: cookieId },
         {
           $set: { basket: basketCopy, lastUpdated: Date.now() },
-        }
+        },
       );
     }
     revalidateTag('basketTag');
@@ -232,10 +267,10 @@ export async function removeFromBasket(cookieId, itemDbId, variantName) {
 }
 
 export async function decrementBasket(
-  cookieId,
-  itemDbId,
-  variantName,
-  num = 1
+  cookieId: string,
+  itemDbId: string,
+  variantName: string,
+  num = 1,
 ) {
   'user server';
   if (cookieId != '') {
@@ -244,7 +279,7 @@ export async function decrementBasket(
     if (foundBasket.length != 0) {
       let basketCopy = foundBasket['basket'];
       // Basket already exists
-      basketCopy.forEach((obj, index) => {
+      basketCopy.forEach((obj: basketItem, index: number) => {
         if (obj.itemDbId === itemDbId && obj.variantName === variantName) {
           for (let i = 0; i < num; i++) {
             if (obj.count <= 1) {
@@ -262,53 +297,55 @@ export async function decrementBasket(
         { 'basket.itemDbId': itemDbId },
         {
           $set: { basket: basketCopy, lastUpdated: Date.now() },
-        }
+        },
       );
     }
     revalidateTag('basketTag');
   }
 }
 
-export async function emptyBasket(cookieId) {
+export async function emptyBasket(cookieId: string) {
   // Replace basket with empty array
   await basketModel.findOneAndUpdate(
     { cookieId: cookieId },
     {
       $set: { basket: [], lastUpdated: Date.now() },
-    }
+    },
   );
 }
 
-export async function reduceStock(cookieId) {
+export async function reduceStock(cookieId: string) {
   let basket = await basketModel.findOne({ cookieId: cookieId }, 'basket');
   basket = basket.basket;
 
   // Cycle through basket item
-  basket.forEach(async (basketObj) => {
+  basket.forEach(async (basketObj: basketItem) => {
     let stockVariants = await stockModel.findById(
       { _id: basketObj.itemDbId },
-      'variant'
+      'variant',
     );
     // Then cycle through stock items & find items that match
     let stockVariantsCopy = stockVariants.variant;
-    stockVariantsCopy.forEach(async (variant, index) => {
+    stockVariantsCopy.forEach(async (variant: stockDbItem, index: number) => {
       // If the items match, reduce the stock by the amount in the basket
       if (variant.name === basketObj.variantName) {
         stockVariantsCopy[index].stock -= basketObj.count;
         await stockModel.findByIdAndUpdate(
           { _id: basketObj.itemDbId },
-          { $set: { variant: stockVariantsCopy } }
+          { $set: { variant: stockVariantsCopy } },
         );
       }
     });
   });
 }
 
-export async function removeOutOfStock(cookieId) {
-  let inStock = await compareBasket(cookieId).inStock;
+export async function removeOutOfStock(cookieId: string) {
+  let inStock: stockListItem[] = await compareBasket(cookieId).then(
+    (allStock) => allStock.inStock,
+  );
   // On checkout update basket to only contain in stock items
-  let newInStock = [];
-  inStock.forEach((stock) => {
+  let newInStock: Omit<basketItem, '_id'>[] = [];
+  inStock.forEach((stock: stockListItem) => {
     newInStock.push({
       itemDbId: stock.itemDbId,
       variantName: stock.variant,
@@ -318,5 +355,5 @@ export async function removeOutOfStock(cookieId) {
 
   await basketModel
     .findOneAndUpdate({ cookieId: cookieId }, { $set: { basket: newInStock } })
-    .then(revalidateTag('basketTag'));
+    .then(revalidateTag('basketTag')!);
 }

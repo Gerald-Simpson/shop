@@ -1,11 +1,14 @@
 'use client';
 //64e63ee03c9fbcb94a36d0ce
 import { useState } from 'react';
-import { GlobalContext } from '../../../stateProvider.js';
+import { GlobalContext } from '../../../stateProvider.tsx';
 import { useContext } from 'react';
-import { addToBasket } from '@/app/actions.js';
+import { addToBasket } from '../../actions.tsx';
 
-export function ProductImage(props) {
+export function ProductImage(props: {
+  productId: string;
+  pictureCount: number;
+}) {
   const [currentImage, changeImage] = useState(1);
   const nextImg = () => {
     if (props.pictureCount == currentImage) {
@@ -49,42 +52,64 @@ export function ProductImage(props) {
   );
 }
 
-export function ProductInfo(props) {
+interface stockVariantItem {
+  name: string;
+  price: string;
+  stock: number;
+  _id: string;
+}
+
+interface variantKey {
+  [key: string]: {
+    price: string;
+    stock: number;
+  };
+}
+
+export function ProductInfo(props: {
+  productName: string;
+  productDescription: string[];
+  cookieId: string;
+  variantList: string;
+  productId: string;
+}) {
   let variantList = JSON.parse(props.variantList);
-  let variantKey = {};
-  const { basketChange } = useContext(GlobalContext);
-  variantList.forEach((variant) => {
+  let variantKey: variantKey = {};
+  const { basketChange }: any = useContext(GlobalContext);
+  variantList.forEach((variant: stockVariantItem) => {
     variantKey[variant.name] = { price: variant.price, stock: variant.stock };
   });
   const [currentVariant, changeVariant] = useState(variantList[0].name);
   const [currentQuantity, changeQuantity] = useState(1);
-  let optionArr = [];
+  let optionArr: JSX.Element[] = [];
   const priceOptions = {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   };
-  let productDescription = props.productDescription;
-  productDescription = productDescription.map((description) => {
-    return (
-      <div>
-        <p className='text-base text-left font-light'>{description}</p>
-        <br />
-      </div>
-    );
-  });
-  variantList.forEach((variant) => {
+  let productDescriptionString = props.productDescription;
+  let productDescription: JSX.Element[] = productDescriptionString.map(
+    (description) => {
+      return (
+        <div>
+          <p className='text-base text-left font-light'>{description}</p>
+          <br />
+        </div>
+      );
+    },
+  );
+  variantList.forEach((variant: stockVariantItem) => {
     if (variant.stock > 0) {
       optionArr.push(
         <option value={variant.name} key={variant.name}>
           {variant.name}
-        </option>
+        </option>,
       );
     } else {
       optionArr.push(
         <option value={variant.name} key={variant.name}>
           {variant.name} - Out of Stock
-        </option>
+        </option>,
       );
     }
   });
@@ -101,23 +126,22 @@ export function ProductInfo(props) {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
-            'en-US',
-            priceOptions
-          )}
+          {(
+            parseFloat(variantKey.currentVariant.price) * currentQuantity
+          ).toLocaleString('en-US', priceOptions)}
         </p>
         <button
           className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
-          onClick={() =>
+          onClick={() => {
             addToBasket(
               props.cookieId,
               props.productId,
               currentVariant,
-              currentQuantity
+              currentQuantity,
             )
-              .then(changeQuantity(1))
-              .then(basketChange(true))
-          }
+              .then(() => changeQuantity(1))
+              .then(() => basketChange(true));
+          }}
         >
           Add To Cart
         </button>
@@ -146,10 +170,9 @@ export function ProductInfo(props) {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
-            'en-US',
-            priceOptions
-          )}
+          {(
+            parseFloat(variantKey[currentVariant].price) * currentQuantity
+          ).toLocaleString('en-US', priceOptions)}
         </p>
         <button
           className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
@@ -158,10 +181,10 @@ export function ProductInfo(props) {
               props.cookieId,
               props.productId,
               currentVariant,
-              currentQuantity
+              currentQuantity,
             )
-              .then(changeQuantity(1))
-              .then(basketChange(true))
+              .then(() => changeQuantity(1))
+              .then(() => basketChange(true))
           }
         >
           Add To Cart
@@ -190,10 +213,9 @@ export function ProductInfo(props) {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
-            'en-US',
-            priceOptions
-          )}
+          {(
+            parseFloat(variantKey[currentVariant].price) * currentQuantity
+          ).toLocaleString('en-US', priceOptions)}
         </p>
         <button className='w-40 mt-4 py-2 text-white bg-black/60 cursor-default'>
           Out of Stock
@@ -203,7 +225,10 @@ export function ProductInfo(props) {
   }
 }
 
-function QuantityControlProduct(props) {
+function QuantityControlProduct(props: {
+  currentQuantity: number;
+  changeQuantity: Function;
+}) {
   const decQuantity = () => {
     if (props.currentQuantity != 1) {
       props.changeQuantity(props.currentQuantity - 1);

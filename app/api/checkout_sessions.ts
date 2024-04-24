@@ -2,23 +2,49 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { fetchBasket, fetchStock } from '../actions.js';
+import { fetchBasket, fetchStock } from '../actions.tsx';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 let cookieList = cookies();
-let cookieId = cookieList.get('id')['value'];
+let cookieId = cookieList.get('id')!.value;
+
+interface lineItems {
+  price_data: {
+    currency: string;
+    unit_amount: number;
+    product_data: {
+      name: string;
+      description: string;
+    };
+  };
+  quantity: number;
+}
 
 async function compareBasket() {
+  interface basketItem {
+    itemDbId: string;
+    variantName: string;
+    count: number;
+    _id: string;
+  }
+
+  interface stockVariantItem {
+    name: string;
+    price: string;
+    stock: number;
+    _id: string;
+  }
+
   let basketData = await fetchBasket(cookieId);
   basketData = basketData.basket;
-  let stockData = await fetchStock(cookieId);
-  let lineItems = [];
+  let stockData = await fetchStock();
+  let lineItems: lineItems[] = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
-  basketData.forEach((basketItem) => {
+  basketData.forEach((basketItem: basketItem) => {
     stockData.forEach((stockItem) => {
       if (basketItem.itemDbId === String(stockItem._id)) {
-        stockItem.variant.forEach((vari) => {
+        stockItem.variant.forEach((vari: stockVariantItem) => {
           if (vari.name === basketItem.variantName) {
             if (vari.stock > basketItem.count) {
               lineItems.push({

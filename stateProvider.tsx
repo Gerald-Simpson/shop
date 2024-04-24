@@ -1,10 +1,10 @@
 'use client';
 
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 
-export const GlobalContext = createContext();
+export const GlobalContext = createContext({});
 
-function GlobalContextProvider({ children }) {
+function GlobalContextProvider({ children }: { children: React.ReactNode }) {
   let [showBasket, basketChange] = useState(false);
   return (
     <GlobalContext.Provider value={{ showBasket, basketChange }}>

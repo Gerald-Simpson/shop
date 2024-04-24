@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import { headers } from 'next/headers';
-import { basketSchema } from '../../_components/schemas.js';
+import { basketSchema } from '../../_components/schemas.ts';
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
 // Connect to stock DB
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI!);
 
 // Create DB model
 let basketModel =
@@ -12,7 +12,7 @@ let basketModel =
 
 export async function GET() {
   const headersList = headers();
-  const cookieId = headersList.get('cookieId') || cookies().get('id')['value'];
+  const cookieId = headersList.get('cookieId') || cookies().get('id')!.value;
   const res = await basketModel.find({
     cookieId: cookieId,
   });

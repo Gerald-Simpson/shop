@@ -2,10 +2,10 @@
 
 import { useState, useContext } from 'react';
 import { Suspense } from 'react';
-import { checkOut } from '../api/checkout_sessions.js';
-import { GlobalContext } from '../../stateProvider.js';
-import { addToBasket, removeFromBasket, decrementBasket } from '../actions.js';
-import { removeOutOfStock } from '../actions.js';
+import { checkOut } from '../api/checkout_sessions.ts';
+import { GlobalContext } from '../../stateProvider.tsx';
+import { addToBasket, removeFromBasket, decrementBasket } from '../actions.tsx';
+import { removeOutOfStock } from '../actions.tsx';
 
 //&#128722 old trolley
 export default function Basket(props) {
@@ -187,7 +187,7 @@ function CombinedBasketTiles(props) {
             itemDbId={item.itemDbId}
           />
         );
-      })
+      }),
     );
     return inTiles.concat(outTiles);
   }
@@ -223,7 +223,7 @@ function BasketTile(props) {
               removeFromBasket(
                 props.cookieId,
                 props.itemDbId,
-                props.variantName
+                props.variantName,
               );
             }}
             className='text-xs hover:text-red-700 select-none'
@@ -234,7 +234,7 @@ function BasketTile(props) {
             £
             {(props.price * props.quantity).toLocaleString(
               'en-US',
-              priceOptions
+              priceOptions,
             )}
           </p>
         </div>

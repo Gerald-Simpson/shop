@@ -1,11 +1,8 @@
 'use server';
 
 import ItemTile from './_components/itemTile';
-import { cache } from 'react';
 import NavBar from '../_components/navBar';
-import { unstable_noStore as noStore } from 'next/cache';
-import { stockSchema } from '../_components/schemas.js';
-import { fetchStock } from '../actions.js';
+import { fetchStock } from '../actions.tsx';
 
 export default async function Shop() {
   return (
@@ -23,9 +20,26 @@ export default async function Shop() {
   );
 }
 
+interface stockDbItem {
+  name: string;
+  variant: [
+    {
+      name: string;
+      price: string;
+      stock: number;
+      _id: string;
+    },
+  ];
+  price: string;
+  description: [string];
+  quantity: number;
+  itemDbId: string;
+  _id: string;
+}
+
 // map through each item of stock & if there is stock, render a item tile
 // This could be changed to reduce server load by finding each item by Id from the DB instead
-export async function renderedTiles(stockData) {
+export async function renderedTiles(stockData: stockDbItem[]) {
   const priceOptions = {
     style: 'decimal',
     minimumFractionDigits: 2,

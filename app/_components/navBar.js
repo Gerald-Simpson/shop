@@ -9,10 +9,10 @@ import {
   fetchBasketCount,
   fetchStock,
   compareBasket,
-} from '../actions.js';
+} from '../actions.tsx';
 import NavBut from './navClient.js';
 import Image from 'next/image';
-import { stockSchema } from './schemas.js';
+import { stockSchema } from './schemas.ts';
 
 export default async function NavBar(props) {
   let cookieId = '';

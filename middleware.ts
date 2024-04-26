@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
-export function middleware(request) {
+export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // if client has cookie id, do nothing, otherwise create universally unique identifier (UUID)

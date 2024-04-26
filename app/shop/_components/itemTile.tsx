@@ -1,14 +1,24 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import styles from '../styles.css';
 import Link from 'next/link';
 
-export default async function ItemTile(props) {
+interface tileProps {
+  img1: string;
+  img2: string;
+  price: string;
+  name: string;
+  itemDbId: string;
+  descriptions: string;
+  variantName: string;
+  outStock?: boolean;
+}
+
+export default async function ItemTile(props: tileProps) {
   let cookieId = '';
   let cookieList = cookies();
   if (cookieList.has('id')) {
-    cookieId = cookies().get('id').value;
+    cookieId = cookies().get('id')!.value;
   }
   if (props.outStock === undefined || false) {
     return (
@@ -37,7 +47,7 @@ export default async function ItemTile(props) {
   } else if (props.outStock === true) {
     return (
       <div className=' opacity-50 flex flex-col flex-wrap items-center mx-[0.25rem] mx-[0.25rem]'>
-        <div className='tileImg' sizes='22%'>
+        <div className='tileImg'>
           <img
             className='tileImgOne z-0'
             src={props.img1}

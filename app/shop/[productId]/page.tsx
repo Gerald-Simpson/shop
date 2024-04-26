@@ -4,17 +4,19 @@ import NavBar from '../../_components/navBar.js';
 import {
   ProductImage,
   ProductInfo,
-} from '../_components/productIdComponents.js';
+} from '../_components/productIdComponents.tsx';
 import { cookies } from 'next/headers';
-import { fetchStockWithId } from '@/app/actions.js';
+import { fetchStockWithId } from '../../actions.tsx';
 
-//{params.productId}
-
-export default async function Page({ params }) {
+export default async function Page({
+  params,
+}: {
+  params: { productId: string };
+}) {
   let cookieId = '';
   let cookieList = cookies();
   if (cookieList.has('id')) {
-    cookieId = cookies().get('id').value;
+    cookieId = cookies().get('id')!.value;
   }
   let productInfo = await fetchStockWithId(params.productId);
   if (productInfo.length === 0) {

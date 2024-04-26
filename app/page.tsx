@@ -1,7 +1,5 @@
 import Link from 'next/link';
 import NavBar from './_components/navBar';
-import styles from './styles.css';
-import Image from 'next/image';
 
 export default async function Home() {
   return (
@@ -39,10 +37,3 @@ export default async function Home() {
     </div>
   );
 }
-/*
-      style={{
-        backgroundImage: 'url(/cover.jpg)',
-      }}
-      objectFit='cover'
-      objectPosition='bottom'
- */

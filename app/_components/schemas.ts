@@ -1,6 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const stockSchema = new mongoose.Schema({
+interface stockInterface {
+  name: string;
+  description: [string];
+  variant: [{ name: string; price: string; stock: number }];
+  mainCategory: string;
+  pictureCount: number;
+}
+
+const stockSchema = new mongoose.Schema<stockInterface>({
   name: {
     type: String,
   },
@@ -18,7 +26,13 @@ const stockSchema = new mongoose.Schema({
   },
 });
 
-const basketSchema = new mongoose.Schema(
+interface basketInterface {
+  cookieId: string;
+  basket: [{ itemDbId: string; variantName: string; count: number }];
+  lastUpdated: Date;
+}
+
+const basketSchema = new mongoose.Schema<basketInterface>(
   {
     cookieId: {
       type: String,
@@ -39,7 +53,7 @@ const basketSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { minimize: false }
+  { minimize: false },
 );
 
 export { stockSchema, basketSchema };

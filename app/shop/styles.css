@@ -1,20 +1,20 @@
 .tileImg {
-  position: relative;
+    position: relative;
 }
 
 .tileImgOne {
-  position: absolute;
-  opacity: 1;
+    position: absolute;
+    opacity: 1;
 }
 
 .tileImg:hover .tileImgOne {
-  opacity: 0;
+    opacity: 0;
 }
 
 .tileImgTwo {
-  opacity: 0;
+    opacity: 0;
 }
 
 .tileImg:hover .tileImgTwo {
-  opacity: 1;
+    opacity: 1;
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import '../styles.css';
 import Link from 'next/link';
 
 interface tileProps {
@@ -9,7 +10,7 @@ interface tileProps {
   price: string;
   name: string;
   itemDbId: string;
-  descriptions: string;
+  description: [string];
   variantName: string;
   outStock?: boolean;
 }

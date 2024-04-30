@@ -54,10 +54,28 @@ export async function fetchBasketCount(cookieId: string) {
   return basketItemCount;
 }
 
-export async function fetchStock() {
+interface stockDbItem {
+  name: string;
+  variant: [
+    {
+      name: string;
+      price: string;
+      stock: number;
+      _id: string;
+    },
+  ];
+  price: string;
+  description: [string];
+  quantity: number;
+  itemDbId: string;
+  _id: string;
+}
+
+export async function fetchStock(): Promise<stockDbItem[]> {
   noStore();
+  let response: stockDbItem[];
   try {
-    let response = await stockModel.find({});
+    response = await stockModel.find({});
     return response;
   } catch (err) {
     console.error(err);

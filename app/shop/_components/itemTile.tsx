@@ -4,6 +4,72 @@ import { cookies } from 'next/headers';
 import '../styles.css';
 import Link from 'next/link';
 
+interface stockDbItem {
+  name: string;
+  variant: [
+    {
+      name: string;
+      price: string;
+      stock: number;
+      _id: string;
+    },
+  ];
+  price: string;
+  description: [string];
+  quantity: number;
+  itemDbId: string;
+  _id: string;
+}
+
+// map through each item of stock & if there is stock, render a item tile
+// This could be changed to reduce server load by finding each item by Id from the DB instead
+export async function renderedTiles(stockData: stockDbItem[]) {
+  const priceOptions = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+  return stockData.map(async (data) => {
+    let stockCount = 0;
+    let minPrice = '';
+    data.variant.forEach((vari) => {
+      stockCount += vari.stock;
+      if (minPrice === '') {
+        minPrice = vari.price;
+      } else if (parseFloat(minPrice) > parseFloat(vari.price)) {
+        minPrice = vari.price;
+      }
+    });
+    minPrice = parseFloat(minPrice).toLocaleString('en-US', priceOptions);
+    if (stockCount > 0) {
+      return (
+        <ItemTile
+          img1={'/productImages/' + data['_id'] + '/tile.jpg'}
+          img2={'/productImages/' + data['_id'] + '/tileHover.jpg'}
+          price={'£' + minPrice}
+          name={data['name']}
+          itemDbId={data['_id']}
+          description={data.description}
+          variantName={data.variant[0].name}
+        />
+      );
+    } else {
+      return (
+        <ItemTile
+          img1={'/productImages/' + data['_id'] + '/tile.jpg'}
+          img2={'/productImages/' + data['_id'] + '/tileHover.jpg'}
+          price={'£' + minPrice}
+          name={data['name']}
+          itemDbId={data['_id']}
+          description={data.description}
+          variantName={data.variant[0].name}
+          outStock={true}
+        />
+      );
+    }
+  });
+}
+
 interface tileProps {
   img1: string;
   img2: string;

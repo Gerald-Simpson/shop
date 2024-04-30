@@ -1,6 +1,6 @@
 'use server';
 
-import { renderedTiles } from '../page.tsx';
+import { renderedTiles } from '../_components/itemTile.tsx';
 import NavBar from '../../_components/navBar';
 import { fetchStockWithQuery } from '../../actions.tsx';
 

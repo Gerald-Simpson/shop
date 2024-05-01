@@ -27,7 +27,7 @@ export default async function Page({
     );
   } else {
     return (
-      <div className='h-screen w-screen flex flex-col items-center min-w-[200px]'>
+      <div className='h-screen w-screen flex flex-col items-center min-w-[100px]'>
         <NavBar activePath={'/shop'} />
         <div className='flex max-w-[1200px] pt-5'>
           <main className='flex w-full'>

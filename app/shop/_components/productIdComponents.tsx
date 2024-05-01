@@ -162,7 +162,7 @@ export function ProductInfo(props: {
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 pl-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 pl-2 w-full h-auto min-w-[50px] bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}
@@ -205,7 +205,7 @@ export function ProductInfo(props: {
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 pl-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 pl-2 w-full min-w-[50px] h-auto bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}

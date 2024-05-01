@@ -6,6 +6,7 @@ import { checkOut } from '../api/checkout_sessions.ts';
 import { GlobalContext } from '../../stateProvider.tsx';
 import { addToBasket, removeFromBasket, decrementBasket } from '../actions.tsx';
 import { removeOutOfStock } from '../actions.tsx';
+import { space, inter } from '../fonts.ts';
 
 //&#128722 old trolley
 export default function Basket(props) {
@@ -16,13 +17,17 @@ export default function Basket(props) {
   };
   if (showBasket === false) {
     return (
-      <div>
+      <div className={inter.className}>
         <button
           id={'navBasket'}
-          className={'hover:text-textAccent select-none hidden md:flex'}
+          className={
+            'hover:text-textAccent select-none hidden md:flex ' +
+            space.className
+          }
           onClick={() => toggleBasket()}
         >
-          BASKET {props.basketCount}
+          Basket&nbsp;
+          <span className='text-sm'>{props.basketCount}</span>
         </button>
         <img
           id={'navBasket'}
@@ -36,13 +41,13 @@ export default function Basket(props) {
     );
   } else
     return (
-      <div>
+      <div className={inter.className}>
         <button
           id={'navBasket'}
-          className={'hover:text-textAccent select-none'}
+          className={'hover:text-textAccent select-none ' + space.className}
           onClick={() => toggleBasket()}
         >
-          BASKET {props.basketCount}
+          Basket {props.basketCount}
         </button>
         <div
           onClick={() => toggleBasket()}
@@ -54,7 +59,7 @@ export default function Basket(props) {
             onClick={(e) => handleChildClick(e)}
             className='flex flex-col items-center justify-between w-full h-full bg-white md:rounded-xl md:mt-2 md:mr-2 md:mb-2 md:max-w-[480px]'
           >
-            <div className='flex flex-col h-full items-center w-full'>
+            <div className='flex flex-col h-full max-h-screen overflow-auto items-center w-full'>
               <div className='flex flex-row w-full px-5 justify-between items-center'>
                 <div></div>
                 <h1 className='my-4'>Your Basket</h1>
@@ -152,7 +157,7 @@ function CombinedBasketTiles(props) {
   } else if (inStock.length === 0 && outStock.length === 0) {
     return (
       <div className='flex h-full w-full flex-col text-center content-center'>
-        <h2 className='text-lg pt-10'>YOUR BASKET IS EMPTY!</h2>
+        <h2 className='text-lg pt-10'>Your Basket Is Empty!</h2>
       </div>
     );
   } else if (outStock.length > 0) {
@@ -204,10 +209,10 @@ function BasketTile(props) {
       <img width='90' height='90' src={props.img} />
       <div className='flex justify-between w-full h-full mx-3'>
         <div className='flex flex-col h-full justify-start py-2'>
-          <p className='text-xs font-bold underline underline-offset-1'>
+          <p className='text-xs font-bold underline underline-offset-2'>
             {props.name}
           </p>
-          <p className='pt-2 text-xs font-bold'>{props.variantName}</p>
+          <p className='pt-2 text-xs'>{props.variantName}</p>
           <div className='pt-2'>
             <QuantityControl
               quantity={props.quantity}

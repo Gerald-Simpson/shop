@@ -12,7 +12,7 @@ import {
 } from '../actions.tsx';
 import NavBut from './navClient.js';
 import Image from 'next/image';
-import { stockSchema } from './schemas.ts';
+import { space, inter } from '../fonts.ts';
 
 export default async function NavBar(props) {
   let cookieId = '';
@@ -22,7 +22,12 @@ export default async function NavBar(props) {
   }
   return (
     <div>
-      <div className='w-screen h-7 flex justify-center items-center bg-black/[.87] text-white text-[11px]'>
+      <div
+        className={
+          'w-screen h-7 flex justify-center items-center bg-black/[.87] text-white text-[11px] ' +
+          space.className
+        }
+      >
         Free delivery on orders over £25
       </div>
       <div className='w-screen h-16 flex flex-col items-center bg-gray-100'>
@@ -37,30 +42,35 @@ export default async function NavBar(props) {
               />
             </Link>
           </div>
-          <div className='flex justify-end md:justify-around md:w-5/6 lg:w-4/6 mx-4'>
-            <NavLink title={'HOME'} href={'/'} activePath={props.activePath} />
+          <div
+            className={
+              'flex justify-end md:justify-around md:w-5/6 lg:w-4/6 mx-4 ' +
+              space.className
+            }
+          >
+            <NavLink title={'Home'} href={'/'} activePath={props.activePath} />
             <NavLink
-              title={'SHOP ALL'}
+              title={'Shop All'}
               href={'/shop'}
               activePath={props.activePath}
             />
             <NavLink
-              title={'COFFEE'}
+              title={'Coffee'}
               href={'/shop/coffee'}
               activePath={props.activePath}
             />
             <NavLink
-              title={'GRINDERS'}
+              title={'Grinders'}
               href={'/shop/grinders'}
               activePath={props.activePath}
             />
             <NavLink
-              title={'BREWERS'}
+              title={'Brewers'}
               href={'/shop/brewers'}
               activePath={props.activePath}
             />
             <NavLink
-              title={'ACCESSORIES'}
+              title={'Accessories'}
               href={'/shop/accessories'}
               activePath={props.activePath}
             />

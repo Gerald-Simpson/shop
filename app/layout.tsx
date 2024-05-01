@@ -1,8 +1,6 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
 import GlobalContextProvider from '../stateProvider.tsx';
-
-const inter = Inter({ subsets: ['latin'] });
+import { space, inter } from './fonts';
 
 export const metadata = {
   title: 'Coffee Shop',
@@ -15,8 +13,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>
+    <html lang='en' className={space.className}>
+      <body>
         <GlobalContextProvider>{children}</GlobalContextProvider>
       </body>
     </html>

@@ -60,7 +60,7 @@ export default function Basket(props) {
             className='flex flex-col items-center justify-between w-full h-full bg-white md:rounded-xl md:mt-2 md:mr-2 md:mb-2 md:max-w-[480px]'
           >
             <div className='flex flex-col h-full max-h-screen overflow-auto items-center w-full'>
-              <div className='flex flex-row w-full px-5 justify-between items-center'>
+              <div className='flex flex-row w-auto mx-5 justify-between items-center'>
                 <div></div>
                 <h1 className='my-4'>Your Basket</h1>
                 <button
@@ -93,20 +93,20 @@ function CheckoutOverlay(props) {
   if (props.comparedBasket.inStock.length > 0) {
     return (
       <div className='flex flex-col items-center w-full border-t h-24'>
-        <div className='w-full h-auto flex justify-between px-4 pt-4 pb-1'>
-          <h5 className='text-xs'>
+        <div className='w-full h-auto flex justify-between pt-4 pb-1'>
+          <h5 className='text-xs ml-4'>
             Subtotal ({props.comparedBasket.inStockQuantity} Items)
           </h5>
-          <h5 className='text-xs'>
+          <h5 className='text-xs mr-4'>
             £{priceCount(props.comparedBasket.inStock)}
           </h5>
         </div>
         <form
-          className='w-full h-full px-4'
+          className='flex w-full h-full'
           action={checkOut}
           onClick={() => removeOutOfStock(props.cookieId)}
         >
-          <button className='bg-blue-500 w-full h-10 rounded-md select-none'>
+          <button className='bg-blue-500 w-full mx-4 h-10 rounded-md select-none'>
             Checkout
           </button>
         </form>
@@ -115,17 +115,17 @@ function CheckoutOverlay(props) {
   } else {
     return (
       <div className='flex flex-col items-center w-full border-t h-24'>
-        <div className='w-full h-auto flex justify-between px-4 pt-4 pb-1'>
-          <h5 className='text-xs'>
+        <div className='w-full h-auto flex justify-between pt-4 pb-1'>
+          <h5 className='text-xs ml-4'>
             Subtotal ({props.comparedBasket.inStockQuantity} Items)
           </h5>
-          <h5 className='text-xs'>
+          <h5 className='text-xs mr-4'>
             £{priceCount(props.comparedBasket.inStock)}
           </h5>
         </div>
-        <form className='w-full h-full px-4' action={checkOut}>
+        <form className='flex w-full h-full' action={checkOut}>
           <button
-            className='bg-gray-300 w-full h-10 rounded-md select-none'
+            className='bg-gray-300 w-full mx-4 h-10 rounded-md select-none'
             disabled
           >
             Checkout

@@ -228,7 +228,7 @@ export async function addToBasket(
       if (position > -1) {
         // Replace basket with updated basketCopy
         await basketModel.findOneAndUpdate(
-          { 'basket.itemDbId': itemDbId },
+          { cookieId: cookieId },
           {
             $set: { basket: basketCopy, lastUpdated: Date.now() },
           },
@@ -249,7 +249,6 @@ export async function addToBasket(
         );
       }
     }
-
     revalidateTag('basketTag');
   }
 }
@@ -312,7 +311,7 @@ export async function decrementBasket(
       });
       // Replace basket with updated basketCopy
       await basketModel.findOneAndUpdate(
-        { 'basket.itemDbId': itemDbId },
+        { cookieId: cookieId },
         {
           $set: { basket: basketCopy, lastUpdated: Date.now() },
         },

@@ -24,5 +24,6 @@ I wanted to create a simple, custom ecommerce site that would offer flexibility 
 Here's what I've got planned next for the project:
 
 - Create a shop name and logo, and update the site style to match. - Complete
-- Research and implement the best CMS and authentication solution.
+- Convert project to typescript. - Complete
 - Spend more time on the frontend design to create a more polished and user experience.
+- Research and implement the best CMS and authentication solution.

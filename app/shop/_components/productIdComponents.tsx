@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { GlobalContext } from '../../../stateProvider.tsx';
 import { useContext } from 'react';
 import { addToBasket } from '../../actions.tsx';
+import { inter, space } from '../../fonts.ts';
 
 export function ProductImage(props: {
   productId: string;
@@ -25,9 +26,14 @@ export function ProductImage(props: {
     }
   };
   return (
-    <div className='flex relative w-auto md:mx-2 max-w-[650px] md:ml-4 min-w-[100px] min-h-[100px]'>
+    <div
+      className={
+        'flex relative w-auto md:mx-2 max-w-[650px] md:ml-4 min-w-[100px] min-h-[100px] ' +
+        inter.className
+      }
+    >
       <div
-        className='flex flex-col absolute left-0 pl-2 justify-center items-start w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute left-0 pl-2 justify-center items-start w-24 h-full text-3xl font-normal sm:hover:bg-slate-100/50 cursor-pointer select-none '
         onClick={() => {
           prevImg();
         }}
@@ -41,7 +47,7 @@ export function ProductImage(props: {
         className='min-w-[100px] object-contain'
       ></img>
       <div
-        className='flex flex-col absolute right-0 pr-2 justify-center items-end w-24 h-full text-3xl font-extralight sm:hover:bg-slate-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute right-0 pr-2 justify-center items-end w-24 h-full text-3xl font-normal sm:hover:bg-slate-100/50 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}
@@ -156,7 +162,7 @@ export function ProductInfo(props: {
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 pl-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}
@@ -199,7 +205,7 @@ export function ProductInfo(props: {
         </h1>
         <div>{productDescription}</div>
         <select
-          className='mt-8 py-2 mx-4 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
+          className='mt-8 py-2 pl-2 bg-white border-r-8 border-transparent outline outline-1 outline-slate-300'
           name='variants'
           id='variants'
           value={currentVariant}

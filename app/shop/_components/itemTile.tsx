@@ -91,7 +91,7 @@ export default async function ItemTile(props: tileProps) {
     return (
       <Link
         href={'/shop/' + props.itemDbId}
-        className='flex flex-col flex-wrap items-center min-w-[10%] mx-[0.25rem] mx-[0.25rem]'
+        className='flex flex-col flex-wrap items-center min-w-[10%] mx-[0.7rem] mb-[2.5rem]'
       >
         <div className='tileImg'>
           <img

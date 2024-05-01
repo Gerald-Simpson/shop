@@ -60,11 +60,11 @@ export default function Basket(props) {
             className='flex flex-col items-center justify-between w-full h-full bg-white md:rounded-xl md:mt-2 md:mr-2 md:mb-2 md:max-w-[480px]'
           >
             <div className='flex flex-col h-full max-h-screen overflow-auto items-center w-full'>
-              <div className='flex flex-row w-auto mx-5 justify-between items-center'>
-                <div></div>
+              <div className='flex flex-row w-full justify-between items-center'>
+                <div className='ml-5'></div>
                 <h1 className='my-4'>Your Basket</h1>
                 <button
-                  className='text-lg hover:text-red-700 select-none'
+                  className='text-lg hover:text-red-700 select-none mr-5'
                   onClick={() => toggleBasket()}
                 >
                   &#x2715;

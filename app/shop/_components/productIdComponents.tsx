@@ -223,7 +223,7 @@ export function ProductInfo(props: {
             parseFloat(variantKey[currentVariant].price) * currentQuantity
           ).toLocaleString('en-US', priceOptions)}
         </p>
-        <button className='w-40 mt-4 py-2 text-white bg-black/60 cursor-default'>
+        <button className='w-40 mt-4 py-2 text-white bg-black/60 cursor-default mb-20'>
           Out of Stock
         </button>
       </div>

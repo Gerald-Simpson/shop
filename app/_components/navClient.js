@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import NavLink from './navBar.js';
+import { space, inter } from '../fonts.ts';
 
 export default function NavBut(props) {
   const [showNav, navChange] = useState(false);
@@ -17,7 +18,7 @@ export default function NavBut(props) {
     );
   } else if (showNav === true) {
     return (
-      <div className='md:hidden'>
+      <div className={'md:hidden ' + space.className}>
         <button className='text-3xl mx-4 md:hidden' onClick={() => toggleNav()}>
           &#8801;
         </button>
@@ -30,42 +31,42 @@ export default function NavBut(props) {
             href='/'
             className='select-none py-4 mx-4 text-lg border-slate-400'
           >
-            HOME
+            Home
           </Link>
           <Link
             id='navShop'
             href='/shop'
             className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
-            SHOP ALL
+            Shop All
           </Link>
           <Link
             id='navCoffee'
             href='/shop/coffee'
             className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
-            COFFE ESPRESSO
+            Coffee
           </Link>
           <Link
             id='navGrinders'
             href='/shop/grinders'
             className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
-            GRINDERS
+            Grinders
           </Link>
           <Link
             id='navBrewers'
             href='/shop/brewers'
             className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
-            BREWERS
+            Brewers
           </Link>
           <Link
             id='navAccessories'
             href='/shop/accessories'
             className='select-none py-4 mx-4 text-lg border-t border-slate-400'
           >
-            ACCESSORIES
+            Accessories
           </Link>
         </div>
         <div

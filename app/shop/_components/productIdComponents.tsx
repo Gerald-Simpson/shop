@@ -137,7 +137,7 @@ export function ProductInfo(props: {
           ).toLocaleString('en-US', priceOptions)}
         </p>
         <button
-          className='w-40 mt-4 py-2 bg-black text-orange-900/90 sm:hover:bg-orange-900 mb-20'
+          className='w-40 mt-4 py-2 bg-black bg-orange-900/90 sm:hover:bg-orange-900 mb-20'
           onClick={() => {
             addToBasket(
               props.cookieId,
@@ -243,7 +243,7 @@ function QuantityControlProduct(props: {
   return (
     <div className='flex justify-evenly h-12 items-center w-36 border mt-8'>
       <div
-        className='flex w-full h-full justify-center items-center sm:bg-hoverColor/30 sm:hover:bg-hoverColor/30 border-r text-2xl select-none cursor-pointer'
+        className='flex w-full h-full justify-center items-center sm:hover:bg-hoverColor/30 border-r text-2xl select-none cursor-pointer'
         onClick={() => {
           decQuantity();
         }}

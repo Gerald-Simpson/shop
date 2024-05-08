@@ -4,16 +4,39 @@ import { useState, useContext } from 'react';
 import { Suspense } from 'react';
 import { checkOut } from '../api/checkout_sessions.ts';
 import { GlobalContext } from '../../stateProvider.tsx';
-import { addToBasket, removeFromBasket, decrementBasket } from '../actions.tsx';
+import {
+  addToBasket,
+  removeFromBasket,
+  decrementBasket,
+  stockListItem,
+} from '../actions.tsx';
 import { removeOutOfStock } from '../actions.tsx';
 import { space, inter } from '../fonts.ts';
 import Link from 'next/link';
 
+interface inOutStockItem {
+  name: string;
+  variant: string;
+  price: number;
+  description: string;
+  quantity: number;
+  itemDbId: string;
+}
+
 //&#128722 old trolley
-export default function Basket(props) {
-  const { showBasket, basketChange } = useContext(GlobalContext);
+export default function Basket(props: {
+  comparedBasket: {
+    inStock: stockListItem[];
+    outStock: stockListItem[];
+    inStockQuantity: number;
+    outStockQuantity: number;
+  };
+  basketCount: number;
+  cookieId: string;
+}) {
+  const { showBasket, basketChange }: any = useContext(GlobalContext);
   const toggleBasket = () => basketChange(!showBasket);
-  const handleChildClick = (e) => {
+  const handleChildClick = (e: any) => {
     e.stopPropagation();
   };
   if (showBasket === false) {
@@ -86,6 +109,7 @@ export default function Basket(props) {
             <CheckoutOverlay
               comparedBasket={props.comparedBasket}
               basketCount={props.basketCount}
+              cookieId={props.cookieId}
             />
           </div>
         </div>
@@ -93,7 +117,16 @@ export default function Basket(props) {
     );
 }
 
-function CheckoutOverlay(props) {
+function CheckoutOverlay(props: {
+  comparedBasket: {
+    inStock: stockListItem[];
+    outStock: stockListItem[];
+    inStockQuantity: number;
+    outStockQuantity: number;
+  };
+  basketCount: number;
+  cookieId: string;
+}) {
   if (props.comparedBasket.inStock.length > 0) {
     return (
       <div className='flex flex-col items-center w-full border-t h-24'>
@@ -140,7 +173,15 @@ function CheckoutOverlay(props) {
   }
 }
 
-function CombinedBasketTiles(props) {
+function CombinedBasketTiles(props: {
+  comparedBasket: {
+    inStock: stockListItem[];
+    outStock: stockListItem[];
+    inStockQuantity: number;
+    outStockQuantity: number;
+  };
+  cookieId: string;
+}) {
   let inStock = props.comparedBasket.inStock;
   let outStock = props.comparedBasket.outStock;
 
@@ -149,7 +190,7 @@ function CombinedBasketTiles(props) {
       return (
         <BasketTile
           name={item.name}
-          id={item.name + ' ' + item.variantName}
+          id={item.name + ' ' + item.variant}
           variantName={item.variant}
           price={item.price.toString()}
           quantity={item.quantity}
@@ -170,6 +211,7 @@ function CombinedBasketTiles(props) {
       return (
         <BasketTile
           name={item.name}
+          id={item.name + ' ' + item.variant}
           variantName={item.variant}
           price={item.price.toString()}
           quantity={item.quantity}
@@ -179,7 +221,7 @@ function CombinedBasketTiles(props) {
         />
       );
     });
-    let outTiles = [
+    let outTiles: any[] = [
       <div className='flex flex-col text-center py-5'>
         <h2 className='text-xs'>Below items not included as out of stock</h2>
       </div>,
@@ -189,6 +231,7 @@ function CombinedBasketTiles(props) {
         return (
           <BasketTile
             name={item.name}
+            id={item.name + ' ' + item.variant}
             variantName={item.variant}
             price={item.price.toString()}
             quantity={item.quantity}
@@ -203,7 +246,18 @@ function CombinedBasketTiles(props) {
   }
 }
 
-function BasketTile(props) {
+function BasketTile(props: {
+  name: string;
+  id: string;
+  variantName: string;
+  price: string;
+  quantity: number;
+  img: string;
+  cookieId: string;
+  itemDbId: string;
+}) {
+  const { showBasket, basketChange }: any = useContext(GlobalContext);
+  const toggleBasket = () => basketChange(!showBasket);
   const priceOptions = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -252,7 +306,7 @@ function BasketTile(props) {
           </button>
           <p>
             £
-            {(props.price * props.quantity).toLocaleString(
+            {(parseFloat(props.price) * props.quantity).toLocaleString(
               'en-US',
               priceOptions,
             )}
@@ -263,7 +317,7 @@ function BasketTile(props) {
   );
 }
 
-function priceCount(inStock) {
+function priceCount(inStock: stockListItem[]) {
   const priceOptions = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -272,12 +326,17 @@ function priceCount(inStock) {
   if (inStock.length === 0) return '0.00';
   let basketPriceCount = 0.0;
   inStock.forEach((entry) => {
-    basketPriceCount += entry.quantity * entry.price;
+    basketPriceCount += entry.quantity * parseFloat(entry.price);
   });
   return basketPriceCount.toLocaleString('en-US', priceOptions);
 }
 
-function QuantityControl(props) {
+function QuantityControl(props: {
+  quantity: number;
+  cookieId: string;
+  itemDbId: string;
+  variantName: string;
+}) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
       <div

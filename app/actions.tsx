@@ -46,7 +46,7 @@ interface basketItem {
 
 export async function fetchBasketCount(cookieId: string) {
   let data = await fetchBasket(cookieId);
-  if (data.length === 0) return ' 0';
+  if (data.length === 0) return 0;
   let basketItemCount = 0;
   await data.basket.forEach((entry: basketItem) => {
     basketItemCount += entry.count;
@@ -99,7 +99,7 @@ export async function fetchStockWithId(productId: string) {
   }
 }
 
-interface stockListItem {
+export interface stockListItem {
   name: string;
   variant: string;
   price: string;

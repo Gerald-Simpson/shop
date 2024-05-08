@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { space, inter } from '../fonts.ts';
 
-export default function NavBut(props) {
+export default function NavBut(props: {
+  activePath: string;
+  className: string;
+}) {
   const [showNav, navChange] = useState(false);
   const toggleNav = () => navChange(!showNav);
   if (showNav === false) {
@@ -61,7 +64,11 @@ export default function NavBut(props) {
   }
 }
 
-export function NavLinkMobile(props) {
+export function NavLinkMobile(props: {
+  title: string;
+  href: string;
+  activePath: string;
+}) {
   if (props.href === props.activePath) {
     return (
       <Link

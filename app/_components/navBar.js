@@ -20,6 +20,7 @@ export default async function NavBar(props) {
   if (cookieList.has('id')) {
     cookieId = cookies().get('id').value;
   }
+  let test = props.activePath;
   return (
     <div>
       <div
@@ -32,7 +33,7 @@ export default async function NavBar(props) {
       </div>
       <div className='w-screen h-16 flex flex-col items-center bg-gray-100'>
         <div className='w-full h-16 max-w-[1280px] flex items-center justify-between font-mono text-sm'>
-          <NavBut className='md:hidden' activePath={props.activePath} />
+          <NavBut className='md:hidden' activePath={test} />
           <div className='w-[40px] h-[40px] relative md:inset-x-4'>
             <Link href='/' className='text-4xl'>
               <Image
@@ -48,7 +49,7 @@ export default async function NavBar(props) {
               space.className
             }
           >
-            <NavLink title={'Home'} href={'/'} activePath={props.activePath} />
+            <NavLink title={'Home'} href={'/'} activePath={test} />
             <NavLink
               title={'Shop All'}
               href={'/shop'}
@@ -92,7 +93,7 @@ async function NavLink(props) {
       <Link
         id={'nav' + props.title}
         href={props.href}
-        className={'text-textAccent select-none hidden md:flex'}
+        className={'text-textAccent font-bold select-none hidden md:flex'}
       >
         {props.title}
       </Link>
@@ -102,7 +103,9 @@ async function NavLink(props) {
       <Link
         id={'nav' + props.title}
         href={props.href}
-        className={'hover:text-textAccent select-none hidden md:flex'}
+        className={
+          'hover:text-textAccent hover:font-bold select-none hidden md:flex'
+        }
       >
         {props.title}
       </Link>

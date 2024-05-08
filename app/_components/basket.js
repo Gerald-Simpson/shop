@@ -7,6 +7,7 @@ import { GlobalContext } from '../../stateProvider.tsx';
 import { addToBasket, removeFromBasket, decrementBasket } from '../actions.tsx';
 import { removeOutOfStock } from '../actions.tsx';
 import { space, inter } from '../fonts.ts';
+import Link from 'next/link';
 
 //&#128722 old trolley
 export default function Basket(props) {
@@ -21,7 +22,7 @@ export default function Basket(props) {
         <button
           id={'navBasket'}
           className={
-            'hover:text-textAccent select-none hidden md:flex ' +
+            'hover:font-bold hover:text-textAccent select-none hidden md:flex ' +
             space.className
           }
           onClick={() => toggleBasket()}
@@ -44,7 +45,10 @@ export default function Basket(props) {
       <div className={inter.className}>
         <button
           id={'navBasket'}
-          className={'hover:text-textAccent select-none ' + space.className}
+          className={
+            'hover:text-textAccent hover:font-bold select-none ' +
+            space.className
+          }
           onClick={() => toggleBasket()}
         >
           Basket {props.basketCount}
@@ -106,7 +110,7 @@ function CheckoutOverlay(props) {
           action={checkOut}
           onClick={() => removeOutOfStock(props.cookieId)}
         >
-          <button className='bg-blue-500 w-full mx-4 h-10 rounded-md select-none'>
+          <button className='bg-orange-900/90 hover:bg-orange-900 text-white w-full mx-4 h-10 rounded-md select-none'>
             Checkout
           </button>
         </form>
@@ -125,7 +129,7 @@ function CheckoutOverlay(props) {
         </div>
         <form className='flex w-full h-full' action={checkOut}>
           <button
-            className='bg-gray-300 w-full mx-4 h-10 rounded-md select-none'
+            className='bg-orange-900/50 w-full mx-4 h-10 rounded-md select-none'
             disabled
           >
             Checkout
@@ -145,6 +149,7 @@ function CombinedBasketTiles(props) {
       return (
         <BasketTile
           name={item.name}
+          id={item.name + ' ' + item.variantName}
           variantName={item.variant}
           price={item.price.toString()}
           quantity={item.quantity}
@@ -206,13 +211,23 @@ function BasketTile(props) {
   };
   return (
     <div className='flex flex-row justify-between w-full p-5 items-center border-b'>
-      <img width='90' height='90' src={props.img} />
+      <Link
+        className='contents'
+        href={'/shop/' + props.itemDbId}
+        onClick={() => toggleBasket()}
+      >
+        <img width='90' height='90' src={props.img} />
+      </Link>
       <div className='flex justify-between w-full h-full mx-3'>
         <div className='flex flex-col h-full justify-start py-2'>
-          <p className='text-xs font-bold underline underline-offset-2'>
-            {props.name}
-          </p>
-          <p className='pt-2 text-xs'>{props.variantName}</p>
+          <Link
+            className='contents'
+            href={'/shop/' + props.itemDbId}
+            onClick={() => toggleBasket()}
+          >
+            <p className='text-xs font-bold'>{props.name}</p>
+          </Link>
+          <p className='pt-2 pb-1 text-xs'>{props.variantName}</p>
           <div className='pt-2'>
             <QuantityControl
               quantity={props.quantity}
@@ -231,7 +246,7 @@ function BasketTile(props) {
                 props.variantName,
               );
             }}
-            className='text-xs hover:text-red-700 select-none'
+            className='text-xs hover:text-textAccent hover:font-bold select-none'
           >
             Remove
           </button>
@@ -266,7 +281,7 @@ function QuantityControl(props) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
       <div
-        className='flex w-full justify-center items-center hover:bg-slate-200 border-r text-l select-none cursor-pointer'
+        className='flex w-full justify-center items-center hover:bg-hoverColor/30 border-r text-l select-none cursor-pointer'
         onClick={() => {
           decrementBasket(props.cookieId, props.itemDbId, props.variantName);
         }}
@@ -277,7 +292,7 @@ function QuantityControl(props) {
         <p className='text-xs select-none'>{props.quantity}</p>
       </div>
       <div
-        className='flex w-full justify-center items-center hover:bg-slate-200 border-l text-l select-none cursor-pointer'
+        className='flex w-full justify-center items-center hover:bg-hoverColor/30 border-l text-l select-none cursor-pointer'
         onClick={() => {
           addToBasket(props.cookieId, props.itemDbId, props.variantName);
         }}

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import NavLink from './navBar.js';
 import { space, inter } from '../fonts.ts';
 
 export default function NavBut(props) {
@@ -26,54 +25,64 @@ export default function NavBut(props) {
           className='h-min absolute flex flex-col bg-gray-200
           inset-y-[92px] inset-x-0 w-screen z-40 box-border border-y border-slate-400'
         >
-          <Link
-            id='navHome'
-            href='/'
-            className='select-none py-4 mx-4 text-lg border-slate-400'
-          >
-            Home
-          </Link>
-          <Link
-            id='navShop'
+          <NavLinkMobile title='Home' href='/' activePath={props.activePath} />
+          <NavLinkMobile
+            title='Shop All'
             href='/shop'
-            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
-          >
-            Shop All
-          </Link>
-          <Link
-            id='navCoffee'
+            activePath={props.activePath}
+          />
+          <NavLinkMobile
+            title='Coffee'
             href='/shop/coffee'
-            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
-          >
-            Coffee
-          </Link>
-          <Link
-            id='navGrinders'
+            activePath={props.activePath}
+          />
+          <NavLinkMobile
+            title='Grinders'
             href='/shop/grinders'
-            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
-          >
-            Grinders
-          </Link>
-          <Link
-            id='navBrewers'
+            activePath={props.activePath}
+          />
+          <NavLinkMobile
+            title='Brewers'
             href='/shop/brewers'
-            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
-          >
-            Brewers
-          </Link>
-          <Link
-            id='navAccessories'
+            activePath={props.activePath}
+          />
+          <NavLinkMobile
+            title='Accessories'
             href='/shop/accessories'
-            className='select-none py-4 mx-4 text-lg border-t border-slate-400'
-          >
-            Accessories
-          </Link>
+            activePath={props.activePath}
+          />
         </div>
         <div
           className='h-screen absolute inset-y-16 inset-x-0 w-screen z-30'
           onClick={() => toggleNav()}
         ></div>
       </div>
+    );
+  }
+}
+
+export function NavLinkMobile(props) {
+  if (props.href === props.activePath) {
+    return (
+      <Link
+        id={'nav' + props.title}
+        href={props.href}
+        className={
+          'font-bold text-textAccent select-none py-4 mx-4 text-lg border-t border-slate-400'
+        }
+      >
+        {props.title}
+      </Link>
+    );
+  } else {
+    return (
+      <Link
+        id={'nav' + props.title}
+        href={props.href}
+        className={'select-none py-4 mx-4 text-lg border-t border-slate-400'}
+      >
+        {props.title}
+      </Link>
     );
   }
 }

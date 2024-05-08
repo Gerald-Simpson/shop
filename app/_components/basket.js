@@ -22,7 +22,7 @@ export default function Basket(props) {
         <button
           id={'navBasket'}
           className={
-            'hover:font-bold hover:text-textAccent select-none hidden md:flex ' +
+            'hover:font-bold sm:hover:text-textAccent select-none hidden md:flex ' +
             space.className
           }
           onClick={() => toggleBasket()}
@@ -32,7 +32,7 @@ export default function Basket(props) {
         </button>
         <img
           id={'navBasket'}
-          className={'text-xl hover:text-textAccent select-none md:hidden'}
+          className={'text-xl sm:hover:text-textAccent select-none md:hidden'}
           src='/basket.png'
           width='25px'
           height='25px'
@@ -46,7 +46,7 @@ export default function Basket(props) {
         <button
           id={'navBasket'}
           className={
-            'hover:text-textAccent hover:font-bold select-none ' +
+            'hover:text-textAccent sm:hover:font-bold select-none ' +
             space.className
           }
           onClick={() => toggleBasket()}
@@ -68,7 +68,7 @@ export default function Basket(props) {
                 <div className='ml-5'></div>
                 <h1 className='my-4'>Your Basket</h1>
                 <button
-                  className='text-lg hover:text-red-700 select-none mr-5'
+                  className='text-lg sm:hover:text-red-700 select-none mr-5'
                   onClick={() => toggleBasket()}
                 >
                   &#x2715;
@@ -110,7 +110,7 @@ function CheckoutOverlay(props) {
           action={checkOut}
           onClick={() => removeOutOfStock(props.cookieId)}
         >
-          <button className='bg-orange-900/90 hover:bg-orange-900 text-white w-full mx-4 h-10 rounded-md select-none'>
+          <button className='bg-orange-900/90 sm:hover:bg-orange-900 text-white w-full mx-4 h-10 rounded-md select-none'>
             Checkout
           </button>
         </form>
@@ -246,7 +246,7 @@ function BasketTile(props) {
                 props.variantName,
               );
             }}
-            className='text-xs hover:text-textAccent hover:font-bold select-none'
+            className='text-xs sm:hover:text-textAccent sm:hover:font-bold select-none'
           >
             Remove
           </button>
@@ -281,7 +281,7 @@ function QuantityControl(props) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
       <div
-        className='flex w-full justify-center items-center hover:bg-hoverColor/30 border-r text-l select-none cursor-pointer'
+        className='flex w-full justify-center items-center sm:hover:bg-hoverColor/30 border-r text-l select-none cursor-pointer'
         onClick={() => {
           decrementBasket(props.cookieId, props.itemDbId, props.variantName);
         }}
@@ -292,7 +292,7 @@ function QuantityControl(props) {
         <p className='text-xs select-none'>{props.quantity}</p>
       </div>
       <div
-        className='flex w-full justify-center items-center hover:bg-hoverColor/30 border-l text-l select-none cursor-pointer'
+        className='flex w-full justify-center items-center sm:hover:bg-hoverColor/30 border-l text-l select-none cursor-pointer'
         onClick={() => {
           addToBasket(props.cookieId, props.itemDbId, props.variantName);
         }}

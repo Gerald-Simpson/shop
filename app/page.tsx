@@ -20,13 +20,13 @@ export default async function Home() {
           </p>
           <div className='flex flex-col pt-8 content-center items-center md:flex-row'>
             <Link
-              className='flex flex-col h-12 justify-center items-center text-center font-normal bg-white z-20 mb-8 md:mb-0 w-[200px] md:w-[300px] lg:w-[400px] md:mr-10 hover:bg-transparent hover:text-white hover:border-2 hover:border-white '
+              className='flex flex-col h-12 justify-center items-center text-center font-normal bg-white z-20 mb-8 md:mb-0 w-[200px] md:w-[300px] lg:w-[400px] md:mr-10 sm:hover:bg-transparent sm:hover:text-white sm:hover:border-2 sm:hover:border-white '
               href={'/shop/coffee'}
             >
               <p>Shop Coffee</p>
             </Link>
             <Link
-              className='flex flex-col h-12 justify-center items-center text-center font-normal text-white border-2 border-white bg-transparent z-20 w-[200px] md:w-[300px] lg:w-[400px] hover:bg-white hover:text-black hover:border-0'
+              className='flex flex-col h-12 justify-center items-center text-center font-normal text-white border-2 border-white bg-transparent z-20 w-[200px] md:w-[300px] lg:w-[400px] sm:hover:bg-white sm:hover:text-black sm:hover:border-0'
               href={'/shop/brewers'}
             >
               <p>Browse Brewers</p>

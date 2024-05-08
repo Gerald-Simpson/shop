@@ -104,7 +104,7 @@ async function NavLink(props) {
         id={'nav' + props.title}
         href={props.href}
         className={
-          'hover:text-textAccent hover:font-bold select-none hidden md:flex'
+          'hover:text-textAccent sm:hover:font-bold select-none hidden md:flex'
         }
       >
         {props.title}

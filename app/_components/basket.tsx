@@ -326,7 +326,7 @@ function priceCount(inStock: stockListItem[]) {
   if (inStock.length === 0) return '0.00';
   let basketPriceCount = 0.0;
   inStock.forEach((entry) => {
-    basketPriceCount += entry.quantity * entry.price;
+    basketPriceCount += entry.quantity * parseFloat(entry.price);
   });
   return basketPriceCount.toLocaleString('en-US', priceOptions);
 }

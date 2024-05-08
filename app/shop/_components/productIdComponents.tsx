@@ -33,7 +33,7 @@ export function ProductImage(props: {
       }
     >
       <div
-        className='flex flex-col absolute left-0 pl-2 justify-center items-start w-24 h-full text-3xl font-normal sm:hover:bg-slate-100/50 cursor-pointer select-none '
+        className='flex flex-col absolute left-0 pl-2 justify-center items-start w-24 h-full text-3xl font-normal sm:hover:bg-hoverColor/30 cursor-pointer select-none '
         onClick={() => {
           prevImg();
         }}
@@ -47,7 +47,7 @@ export function ProductImage(props: {
         className='min-w-[100px] object-contain'
       ></img>
       <div
-        className='flex flex-col absolute right-0 pr-2 justify-center items-end w-24 h-full text-3xl font-normal sm:hover:bg-slate-100/50 cursor-pointer select-none'
+        className='flex flex-col absolute right-0 pr-2 justify-center items-end w-24 h-full text-3xl font-normal sm:hover:bg-hoverColor/30 cursor-pointer select-none'
         onClick={() => {
           nextImg();
         }}
@@ -137,7 +137,7 @@ export function ProductInfo(props: {
           ).toLocaleString('en-US', priceOptions)}
         </p>
         <button
-          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
+          className='w-40 mt-4 py-2 bg-black text-orange-900/90 hover:bg-orange-900 mb-20'
           onClick={() => {
             addToBasket(
               props.cookieId,
@@ -181,7 +181,7 @@ export function ProductInfo(props: {
           ).toLocaleString('en-US', priceOptions)}
         </p>
         <button
-          className='w-40 mt-4 py-2 bg-black text-white hover:bg-black/70 mb-20'
+          className='w-40 mt-4 py-2 bg-orange-900/90 text-white hover:bg-orange-900 mb-20'
           onClick={() =>
             addToBasket(
               props.cookieId,
@@ -223,7 +223,7 @@ export function ProductInfo(props: {
             parseFloat(variantKey[currentVariant].price) * currentQuantity
           ).toLocaleString('en-US', priceOptions)}
         </p>
-        <button className='w-40 mt-4 py-2 text-white bg-black/60 cursor-default mb-20'>
+        <button className='w-40 mt-4 py-2 text-white bg-orange-900/50 cursor-default mb-20'>
           Out of Stock
         </button>
       </div>
@@ -243,7 +243,7 @@ function QuantityControlProduct(props: {
   return (
     <div className='flex justify-evenly h-12 items-center w-36 border mt-8'>
       <div
-        className='flex w-full h-full justify-center items-center hover:bg-slate-200 border-r text-2xl select-none cursor-pointer'
+        className='flex w-full h-full justify-center items-center hover:bg-hoverColor/30 border-r text-2xl select-none cursor-pointer'
         onClick={() => {
           decQuantity();
         }}
@@ -254,7 +254,7 @@ function QuantityControlProduct(props: {
         <p className='text-md select-none'>{props.currentQuantity}</p>
       </div>
       <div
-        className='flex w-full h-full justify-center items-center hover:bg-slate-200 border-l text-2xl select-none cursor-pointer'
+        className='flex w-full h-full justify-center items-center hover:bg-hoverColor/30 border-l text-2xl select-none cursor-pointer'
         onClick={() => {
           props.changeQuantity(props.currentQuantity + 1);
         }}

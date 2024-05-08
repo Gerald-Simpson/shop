@@ -12,7 +12,7 @@ export default async function Home() {
             src='/cover.jpg'
             className='absolute object-cover object-bottom brightness-[57%] w-full min-w-[250px] z-0 h-[700px]'
           />
-          <h1 className=' font-bold text-white z-10 pt-20 md:pt-44 text-3xl md:text-5xl'>
+          <h1 className=' font-bold text-white z-10 pt-20 md:pb-2 md:pt-44 text-3xl md:text-5xl'>
             Single Origin Coffee
           </h1>
           <p className='self-center text-xl py-4 text-white z-10'>

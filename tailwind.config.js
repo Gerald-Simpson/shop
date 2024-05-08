@@ -15,7 +15,12 @@ module.exports = {
       },
       colors: {
         textAccent: '#cc733f',
+        hoverColor: '#ffb554',
+        //@ 30% transparency
         backgroundBlue: '#cce5ff',
+        //Buttons -orange/900/90 active,
+        // -orange/900 hover
+        // -orange/50 inactive
       },
     },
   },

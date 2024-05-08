@@ -3,22 +3,22 @@
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
-import Basket from './basket.js';
+import Basket from './basket.tsx';
 import {
   fetchBasket,
   fetchBasketCount,
   fetchStock,
   compareBasket,
 } from '../actions.tsx';
-import NavBut from './navClient.js';
+import NavBut from './navClient.tsx';
 import Image from 'next/image';
 import { space, inter } from '../fonts.ts';
 
-export default async function NavBar(props) {
+export default async function NavBar(props: { activePath: string }) {
   let cookieId = '';
   let cookieList = cookies();
   if (cookieList.has('id')) {
-    cookieId = cookies().get('id').value;
+    cookieId = cookies().get('id')!.value;
   }
   let test = props.activePath;
   return (
@@ -87,7 +87,11 @@ export default async function NavBar(props) {
   );
 }
 
-async function NavLink(props) {
+async function NavLink(props: {
+  title: string;
+  href: string;
+  activePath: string;
+}) {
   if (props.href === props.activePath) {
     return (
       <Link

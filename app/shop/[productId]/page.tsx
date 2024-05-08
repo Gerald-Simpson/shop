@@ -1,6 +1,6 @@
 'use server';
 
-import NavBar from '../../_components/navBar.js';
+import NavBar from '../../_components/navBar.tsx';
 import {
   ProductImage,
   ProductInfo,

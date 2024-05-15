@@ -1,6 +1,7 @@
 import './globals.css';
 import GlobalContextProvider from '../stateProvider.tsx';
 import { space, inter } from './fonts';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export const metadata = {
   title: 'Coffee Shop',
@@ -15,7 +16,9 @@ export default async function RootLayout({
   return (
     <html lang='en' className={space.className}>
       <body>
-        <GlobalContextProvider>{children}</GlobalContextProvider>
+        <UserProvider>
+          <GlobalContextProvider>{children}</GlobalContextProvider>
+        </UserProvider>
       </body>
     </html>
   );

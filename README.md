@@ -18,7 +18,7 @@ I wanted to create a simple, custom ecommerce site that would offer flexibility 
   - Stripe provided a straightforward integration at an affordable price for payment processing.
 - Auth0
   - I chose Auth0 for its straightforward implementation, polished client UI, extensive adoption and compatibility, with the added benefit of a free tier pricing option.
-- Authentication (TBD)
+- CMS (TBD)
 
 ## Upcoming changes
 

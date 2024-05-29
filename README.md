@@ -16,8 +16,9 @@ I wanted to create a simple, custom ecommerce site that would offer flexibility 
   - Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, so opted for MongoDB.
 - Stripe
   - Stripe provided a straightforward integration at an affordable price for payment processing.
+- Auth0
+  - I chose Auth0 for its straightforward implementation, polished client UI, extensive adoption and compatibility, with the added benefit of a free tier pricing option.
 - CMS (TBD)
-- Authentication (TBD)
 
 ## Upcoming changes
 
@@ -25,5 +26,5 @@ Here's what I've got planned next for the project:
 
 - Create a shop name and logo, and update the site style to match. - Complete
 - Convert project to typescript. - Complete
-- Spend more time on the frontend design to create a more polished and user experience.
-- Research and implement the best CMS and authentication solution.
+- Enhance the frontend design by selecting fonts and color schemes that align with the products being sold. - In progress
+- Research and implement the best CMS and authentication solution. - In progress

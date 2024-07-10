@@ -1,5 +1,12 @@
 'use server';
 
+import {
+  basketItem,
+  stockDbItem,
+  stockVariants,
+  stockListItem,
+} from './controllers.ts';
+
 // File contains all functions that fetch or modify DB's
 
 import { revalidateTag } from 'next/cache';
@@ -37,13 +44,6 @@ export async function fetchBasket(cookieId: string) {
   }
 }
 
-interface basketItem {
-  itemDbId: string;
-  variantName: string;
-  count: number;
-  _id: string;
-}
-
 export async function fetchBasketCount(cookieId: string) {
   let data = await fetchBasket(cookieId);
   if (data.length === 0) return 0;
@@ -52,23 +52,6 @@ export async function fetchBasketCount(cookieId: string) {
     basketItemCount += entry.count;
   });
   return basketItemCount;
-}
-
-interface stockDbItem {
-  name: string;
-  variant: [
-    {
-      name: string;
-      price: string;
-      stock: number;
-      _id: string;
-    },
-  ];
-  price: string;
-  description: [string];
-  quantity: number;
-  itemDbId: string;
-  _id: string;
 }
 
 export async function fetchStock(): Promise<stockDbItem[]> {
@@ -96,38 +79,18 @@ export async function fetchStockWithQuery(query: { mainCategory: string }) {
 export async function fetchStockWithId(productId: string) {
   noStore();
   try {
-    let response = await stockModel.find({ _id: productId });
+    let tempRes = await stockModel.find({ _id: productId });
+    let response: stockDbItem[];
+    if (tempRes != null) {
+      response = tempRes;
+    } else {
+      throw new Error('Failed fetching stock with id.');
+    }
     return response[0];
   } catch (err) {
     console.error(err + ': Failed fetching stock with id.');
     throw new Error(err + ': Failed fetching stock with id.');
   }
-}
-
-export interface stockListItem {
-  name: string;
-  variant: string;
-  price: string;
-  description: [string];
-  quantity: number;
-  itemDbId: string;
-}
-
-interface stockDbItem {
-  name: string;
-  variant: [
-    {
-      name: string;
-      price: string;
-      stock: number;
-      _id: string;
-    },
-  ];
-  price: string;
-  description: [string];
-  quantity: number;
-  itemDbId: string;
-  _id: string;
 }
 
 export async function compareBasket(cookieId: string) {
@@ -389,12 +352,19 @@ export async function reduceStock(cookieId: string) {
 
   // Cycle through basket item
   basket.forEach(async (basketObj: basketItem) => {
-    let stockVariants: any = {};
+    let stockVariants: stockDbItem;
     try {
-      stockVariants = await stockModel.findById(
+      let tempRes = await stockModel.findById(
         { _id: basketObj.itemDbId },
         'variant',
       );
+      if (tempRes != null) {
+        stockVariants = tempRes;
+      } else {
+        throw new Error(
+          'Failed fetching stock variants in reduceStock function.',
+        );
+      }
     } catch (err) {
       console.error(
         err + ': Failed fetching stock variants in reduceStock function.',
@@ -405,7 +375,7 @@ export async function reduceStock(cookieId: string) {
     }
 
     // Then cycle through stock items & find items that match
-    let stockVariantsCopy = stockVariants.variant;
+    let stockVariantsCopy: stockVariants = stockVariants.variant;
     stockVariantsCopy.forEach(async (variant: stockDbItem, index: number) => {
       // If the items match, reduce the stock by the amount in the basket
       if (variant.name === basketObj.variantName) {

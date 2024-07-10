@@ -6,7 +6,7 @@ import {
   ProductInfo,
 } from '../_components/productIdComponents.tsx';
 import { cookies } from 'next/headers';
-import { fetchStockWithId } from '../../actions.tsx';
+import { fetchStockWithId } from '../../serverActions/viewActions.tsx';
 
 export default async function Page({
   params,

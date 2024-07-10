@@ -21,13 +21,12 @@ interface stockDbItem {
   _id: string;
 }
 
-interface stockVariants {
+interface stockVariantItem {
   name: string;
   price: string;
   stock: number;
   _id: string;
 }
-[];
 
 interface stockListItem {
   name: string;
@@ -38,4 +37,4 @@ interface stockListItem {
   itemDbId: string;
 }
 
-export { basketItem, stockDbItem, stockVariants, stockListItem };
+export type { basketItem, stockDbItem, stockVariantItem, stockListItem };

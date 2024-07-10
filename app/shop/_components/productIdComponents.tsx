@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { GlobalContext } from '../../../stateProvider.tsx';
 import { useContext } from 'react';
-import { addToBasket } from '../../actions.tsx';
+import { addToBasket } from '@/app/serverActions/controllerActions.tsx';
 import { inter, space } from '../../fonts.ts';
 
 export function ProductImage(props: {

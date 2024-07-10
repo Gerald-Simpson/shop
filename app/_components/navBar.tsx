@@ -9,7 +9,7 @@ import {
   fetchBasketCount,
   fetchStock,
   compareBasket,
-} from '../actions.tsx';
+} from '../serverActions/viewActions.tsx';
 import NavBut from './navClient.tsx';
 import Image from 'next/image';
 import { space, inter } from '../fonts.ts';

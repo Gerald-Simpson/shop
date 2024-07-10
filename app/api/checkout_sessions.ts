@@ -2,40 +2,19 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { fetchBasket, fetchStock } from '../actions.tsx';
+import { fetchBasket, fetchStock } from '../serverActions/viewActions.tsx';
+import {
+  stockVariantItem,
+  basketItem,
+} from '../_components/generalControllers.ts';
+import { lineItems } from './_components/controllers.ts';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 let cookieList = cookies();
 let cookieId = cookieList.get('id')!.value;
 
-interface lineItems {
-  price_data: {
-    currency: string;
-    unit_amount: number;
-    product_data: {
-      name: string;
-      description: string;
-    };
-  };
-  quantity: number;
-}
-
 async function compareBasket() {
-  interface basketItem {
-    itemDbId: string;
-    variantName: string;
-    count: number;
-    _id: string;
-  }
-
-  interface stockVariantItem {
-    name: string;
-    price: string;
-    stock: number;
-    _id: string;
-  }
-
   let basketData = await fetchBasket(cookieId);
   basketData = basketData.basket;
   let stockData = await fetchStock();

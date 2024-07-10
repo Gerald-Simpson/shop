@@ -2,7 +2,7 @@
 
 import { renderedTiles } from '../_components/itemTile.tsx';
 import NavBar from '../../_components/navBar';
-import { fetchStockWithQuery } from '../../actions.tsx';
+import { fetchStockWithQuery } from '@/app/serverActions/viewActions.tsx';
 
 export default async function Grinders() {
   return (

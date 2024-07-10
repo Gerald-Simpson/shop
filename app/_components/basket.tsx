@@ -8,9 +8,9 @@ import {
   addToBasket,
   removeFromBasket,
   decrementBasket,
-  stockListItem,
-} from '../actions.tsx';
-import { removeOutOfStock } from '../actions.tsx';
+} from '../serverActions/controllerActions.tsx';
+import { removeOutOfStock } from '../serverActions/controllerActions.tsx';
+import { stockListItem } from './generalControllers.ts';
 import { space, inter } from '../fonts.ts';
 import Link from 'next/link';
 

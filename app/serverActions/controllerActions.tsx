@@ -9,6 +9,7 @@ import {
   stockListItem,
 } from '../_components/generalControllers.ts';
 import { revalidateTag } from 'next/cache';
+import prisma from './db.ts';
 
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
@@ -22,6 +23,16 @@ export async function addToBasket(
   quantity = 1,
 ) {
   if (cookieId != '') {
+    /*
+        // Prisma Test
+        await prisma.baskets.create({
+          data: {
+            cookieId: cookieId,
+            variantId: 5,
+            quantity: 5,
+          },
+        });
+            */
     let foundBasket = await fetchBasket(cookieId);
     if (foundBasket.length === 0) {
       // Basket not created

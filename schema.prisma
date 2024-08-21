@@ -1,0 +1,37 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model stockListing {
+    id              Int         @id @default(autoincrement())
+    name            String
+    description     String      @db.LongText
+    pictureCount    Int
+    mainCategory    String
+    minPrice        Float
+    inStock         Boolean
+    hidden          Boolean     @default(false)
+    createdAt       DateTime    @default(now())
+}
+
+model stockVariant {
+    id              Int         @id @default(autoincrement())
+    listingId       Int
+    name            String
+    price           Float
+    stock           Int
+    createdAt       DateTime    @default(now())
+}
+
+model baskets {
+    id              Int         @id @default(autoincrement())
+    cookieId        String
+    variantId       Int
+    quantity        Int
+    createdAt       DateTime    @default(now())
+}

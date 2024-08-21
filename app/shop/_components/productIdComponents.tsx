@@ -5,6 +5,7 @@ import { GlobalContext } from '../../../stateProvider.tsx';
 import { useContext } from 'react';
 import { addToBasket } from '@/app/serverActions/controllerActions.tsx';
 import { inter, space } from '../../fonts.ts';
+import { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 
 export function ProductImage(props: {
   productId: string;
@@ -59,16 +60,20 @@ export function ProductImage(props: {
 }
 
 interface stockVariantItem {
+  id: number;
+  listingId: number;
   name: string;
-  price: string;
+  price: number;
   stock: number;
-  _id: string;
+  createdAt: Date;
 }
 
 interface variantKey {
   [key: string]: {
-    price: string;
+    price: number;
     stock: number;
+    id: number;
+    listingId: number;
   };
 }
 
@@ -76,14 +81,19 @@ export function ProductInfo(props: {
   productName: string;
   productDescription: string[];
   cookieId: string;
-  variantList: string;
+  variantList: stockVariantItem[];
   productId: string;
 }) {
-  let variantList = JSON.parse(props.variantList);
+  let variantList = props.variantList;
   let variantKey: variantKey = {};
   const { basketChange }: any = useContext(GlobalContext);
   variantList.forEach((variant: stockVariantItem) => {
-    variantKey[variant.name] = { price: variant.price, stock: variant.stock };
+    variantKey[variant.name] = {
+      price: variant.price,
+      stock: variant.stock,
+      id: variant.id,
+      listingId: variant.listingId,
+    };
   });
   const [currentVariant, changeVariant] = useState(variantList[0].name);
   const [currentQuantity, changeQuantity] = useState(1);
@@ -105,6 +115,8 @@ export function ProductInfo(props: {
     },
   );
   variantList.forEach((variant: stockVariantItem) => {
+    console.log('test');
+    console.log(variant);
     if (variant.stock > 0) {
       optionArr.push(
         <option value={variant.name} key={variant.name}>
@@ -132,17 +144,17 @@ export function ProductInfo(props: {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(
-            parseFloat(variantKey.currentVariant.price) * currentQuantity
-          ).toLocaleString('en-US', priceOptions)}
+          {(variantKey.currentVariant.price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions,
+          )}
         </p>
         <button
           className='w-40 mt-4 py-2 bg-black bg-orange-900/90 sm:hover:bg-orange-900 mb-20'
           onClick={() => {
             addToBasket(
               props.cookieId,
-              props.productId,
-              currentVariant,
+              variantKey[currentVariant].id,
               currentQuantity,
             )
               .then(() => changeQuantity(1))
@@ -176,17 +188,17 @@ export function ProductInfo(props: {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(
-            parseFloat(variantKey[currentVariant].price) * currentQuantity
-          ).toLocaleString('en-US', priceOptions)}
+          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions,
+          )}
         </p>
         <button
           className='w-40 mt-4 py-2 bg-orange-900/90 text-white sm:hover:bg-orange-900 mb-20'
           onClick={() =>
             addToBasket(
               props.cookieId,
-              props.productId,
-              currentVariant,
+              variantKey[currentVariant].id,
               currentQuantity,
             )
               .then(() => changeQuantity(1))
@@ -219,9 +231,10 @@ export function ProductInfo(props: {
         />
         <p className='text-xl text-left font-normal pt-6'>
           £
-          {(
-            parseFloat(variantKey[currentVariant].price) * currentQuantity
-          ).toLocaleString('en-US', priceOptions)}
+          {(variantKey[currentVariant].price * currentQuantity).toLocaleString(
+            'en-US',
+            priceOptions,
+          )}
         </p>
         <button className='w-40 mt-4 py-2 text-white bg-orange-900/50 cursor-default mb-20'>
           Out of Stock

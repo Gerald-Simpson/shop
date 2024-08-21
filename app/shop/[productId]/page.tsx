@@ -7,6 +7,7 @@ import {
 } from '../_components/productIdComponents.tsx';
 import { cookies } from 'next/headers';
 import { fetchStockWithId } from '../../serverActions/viewActions.tsx';
+import prisma from '../../serverActions/db.ts';
 
 export default async function Page({
   params,
@@ -18,6 +19,11 @@ export default async function Page({
   if (cookieList.has('id')) {
     cookieId = cookies().get('id')!.value;
   }
+  let testPrismaVariants = await prisma.stockVariant.findMany({
+    where: {
+      listingId: 3,
+    },
+  });
   let productInfo = await fetchStockWithId(params.productId);
   if (productInfo.length === 0) {
     return (
@@ -40,7 +46,7 @@ export default async function Page({
                 productName={productInfo.name}
                 productDescription={productInfo.description}
                 cookieId={cookieId}
-                variantList={JSON.stringify(productInfo.variant)}
+                variantList={testPrismaVariants}
                 productId={params.productId}
               />
             </div>

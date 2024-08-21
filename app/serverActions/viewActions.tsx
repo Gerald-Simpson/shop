@@ -6,13 +6,12 @@ import {
   stockVariantItem,
   stockListItem,
 } from '../_components/generalControllers.ts';
-
-// File contains all functions that fetch or modify DB's
-
-import { revalidateTag } from 'next/cache';
 import { unstable_noStore as noStore } from 'next/cache';
 import mongoose from 'mongoose';
 import { stockSchema, basketSchema } from '../_components/schemas.ts';
+import prisma from './db.ts';
+
+// File contains all functions that fetch DB's
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI!);

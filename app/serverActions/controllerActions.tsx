@@ -11,6 +11,8 @@ import {
 import { revalidateTag } from 'next/cache';
 import prisma from './db.ts';
 
+// File contains all functions that modify DB's
+
 let stockModel = mongoose.models.stock || mongoose.model('stock', stockSchema);
 
 let basketModel =
@@ -18,32 +20,30 @@ let basketModel =
 
 export async function addToBasket(
   cookieId: string,
-  itemDbId: string,
-  variantName: string,
+  variantId: number,
   quantity = 1,
 ) {
   if (cookieId != '') {
-    /*
-        // Prisma Test
-        await prisma.baskets.create({
+    try {
+      var foundBasket = await prisma.baskets.findFirst({
+        where: {
+          cookieId: cookieId,
+          variantId: variantId,
+        },
+      });
+    } catch (err) {
+      console.error(err + ': Failed creating new basket.');
+      throw new Error(err + ': Failed creating new basket.');
+    }
+    if (foundBasket == null) {
+      // Basket not created for this variant & cookieId yet
+      // Create basket entry for variant
+      try {
+        const basketItem = await prisma.baskets.create({
           data: {
             cookieId: cookieId,
-            variantId: 5,
-            quantity: 5,
-          },
-        });
-            */
-    let foundBasket = await fetchBasket(cookieId);
-    if (foundBasket.length === 0) {
-      // Basket not created
-      // Create basket & add item
-      try {
-        basketModel.create({
-          cookieId: cookieId,
-          basket: {
-            itemDbId: itemDbId,
-            variantName: variantName,
-            count: quantity,
+            variantId: variantId,
+            quantity: quantity,
           },
         });
       } catch (err) {
@@ -51,62 +51,27 @@ export async function addToBasket(
         throw new Error(err + ': Failed creating new basket.');
       }
     } else {
-      let basketCopy = foundBasket['basket'];
-      let position = -1;
-      // Basket already exists
-      // Check if item already in basket
-      basketCopy.forEach((obj: basketItem, index: number) => {
-        if (obj.itemDbId === itemDbId && obj.variantName === variantName) {
-          position = index;
-          // Increment cont in basketCopy
-          basketCopy[index]['count'] += quantity;
-        }
-      });
-      if (position > -1) {
-        // Replace basket with updated basketCopy
-
-        try {
-          await basketModel.findOneAndUpdate(
-            { cookieId: cookieId },
-            {
-              $set: { basket: basketCopy, lastUpdated: Date.now() },
-            },
-          );
-        } catch (err) {
-          console.error(
-            err + ': Failed updating basket in addToBasket function.',
-          );
-          throw new Error(
-            err + ': Failed updating basket in addToBasket function.',
-          );
-        }
-      } else {
-        //If not, add the item to the itemDbId object with value of quantity var
-        let basketPushItem = {
-          itemDbId: itemDbId,
-          variantName: variantName,
-          count: quantity,
-        };
-        try {
-          await basketModel.findOneAndUpdate(
-            { cookieId: cookieId },
-            {
-              $push: { basket: basketPushItem },
-              $set: { lastUpdated: Date.now() },
-            },
-          );
-        } catch (err) {
-          console.error(
-            err + ': Failed updating basket in addToBasket function.',
-          );
-          throw new Error(
-            err + ': Failed updating basket in addToBasket function.',
-          );
-        }
+      // Bakset is created must add quantity to existing entry
+      try {
+        let updatedBasket = await prisma.baskets.update({
+          where: {
+            id: foundBasket.id,
+          },
+          data: {
+            quantity: foundBasket.quantity + quantity,
+          },
+        });
+      } catch (err) {
+        console.error(
+          err + ': Failed updating basket in addToBasket function.',
+        );
+        throw new Error(
+          err + ': Failed updating basket in addToBasket function.',
+        );
       }
     }
-    revalidateTag('basketTag');
   }
+  revalidateTag('basketTag');
 }
 
 export async function removeFromBasket(

@@ -115,8 +115,6 @@ export function ProductInfo(props: {
     },
   );
   variantList.forEach((variant: stockVariantItem) => {
-    console.log('test');
-    console.log(variant);
     if (variant.stock > 0) {
       optionArr.push(
         <option value={variant.name} key={variant.name}>

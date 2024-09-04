@@ -1,9 +1,34 @@
+import { DateSchemaDefinition } from 'mongoose';
+
 interface basketItem {
-  itemDbId: string;
-  variantName: string;
-  count: number;
-  _id: string;
+  id: number;
+  cookieId: string;
+  variantId: number;
+  quantity: number;
+  createdAt: Date;
 }
+
+interface stockVariant {
+  id: number;
+  listingId: number;
+  name: string;
+  price: number;
+  stock: number;
+  createdAt: Date;
+}
+
+interface stockListing {
+  id: number;
+  name: string;
+  description: string;
+  pictureCount: number;
+  mainCategory: string;
+  minPrice: number;
+  inStock: boolean;
+  hidden: boolean;
+  createdAt: Date;
+}
+
 interface stockDbItem {
   name: string;
   variant: [
@@ -31,10 +56,17 @@ interface stockVariantItem {
 interface stockListItem {
   name: string;
   variant: string;
-  price: string;
-  description: [string];
+  price: number;
+  description: string[];
   quantity: number;
-  itemDbId: string;
+  variantId: number;
 }
 
-export type { basketItem, stockDbItem, stockVariantItem, stockListItem };
+export type {
+  basketItem,
+  stockDbItem,
+  stockVariantItem,
+  stockListItem,
+  stockVariant,
+  stockListing,
+};

@@ -6,7 +6,6 @@ export default async function Page() {
   const supabase = createClient(cookieStore);
 
   const { data: todos } = await supabase.from('todos').select();
-  console.log(todos);
 
   //return <div>{JSON.stringify(todos)}</div>;
   return (

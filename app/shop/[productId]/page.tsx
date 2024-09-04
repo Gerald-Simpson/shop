@@ -6,7 +6,7 @@ import {
   ProductInfo,
 } from '../_components/productIdComponents.tsx';
 import { cookies } from 'next/headers';
-import { fetchStockWithId } from '../../serverActions/viewActions.tsx';
+import { fetchStockListingWithId } from '../../serverActions/viewActions.tsx';
 import prisma from '../../serverActions/db.ts';
 
 export default async function Page({
@@ -24,7 +24,7 @@ export default async function Page({
       listingId: 3,
     },
   });
-  let productInfo = await fetchStockWithId(params.productId);
+  let productInfo = await fetchStockListingWithId(params.productId);
   if (productInfo.length === 0) {
     return (
       <div className='flex justify-center items-center w-full h-screen mainTitle bg-black'>

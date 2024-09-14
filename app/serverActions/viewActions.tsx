@@ -7,8 +7,6 @@ import {
     stockListing,
 } from '../_components/generalControllers.ts';
 import { unstable_noStore as noStore } from 'next/cache';
-import mongoose from 'mongoose';
-import { stockSchema, basketSchema } from '../_components/schemas.ts';
 import prisma from './db.ts';
 
 // File contains all functions that fetch DB's
@@ -23,7 +21,6 @@ export async function fetchBasket(cookieId: string) {
                 cookieId: cookieId,
             },
         });
-        console.log(foundBasket);
         return foundBasket;
     } catch (err) {
         console.error(err);
@@ -109,6 +106,17 @@ export async function fetchStockWithCategory(
     }
 }
 
+export async function fetchAllStockListings(): Promise<stockListing[]> {
+    noStore();
+    try {
+        let stockList = await prisma.stockListing.findMany({});
+        return stockList;
+    } catch (err) {
+        console.error(err + ': Failed fetching all stockListing with id.');
+        throw new Error(err + ': Failed fetching all stockListing with id.');
+    }
+}
+
 export async function fetchStockListingWithId(
     stockListingId: number,
 ): Promise<stockListing> {
@@ -125,6 +133,23 @@ export async function fetchStockListingWithId(
     } catch (err) {
         console.error(err + ': Failed fetching stockListing with id.');
         throw new Error(err + ': Failed fetching stockListing with id.');
+    }
+}
+
+export async function fetchStockListingWithCategory(
+    mainCategory: string,
+): Promise<stockListing[]> {
+    noStore();
+    try {
+        let stockListings = prisma.stockListing.findMany({
+            where: {
+                mainCategory: mainCategory,
+            },
+        });
+        return stockListings;
+    } catch (err) {
+        console.error(err + ': Failed fetching stock with category.');
+        throw new Error(err + ': Failed fetching stock with category.');
     }
 }
 

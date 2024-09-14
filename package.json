@@ -38,6 +38,7 @@
         "@types/react": "18.2.79",
         "braces": ">=3.0.3",
         "encoding": "^0.1.13",
+        "prettier": "3.3.3",
         "typescript": "5.4.5",
         "ws": ">=7.5.10"
     }

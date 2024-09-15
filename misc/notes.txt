@@ -1,8 +1,8 @@
 To dump DB backup:
-mysqldump -u root -p shop > dump.sql
+mysqldump -u gerry -p shop > sandboxShopDump.sql
 
 To load DB backup:
-mysql -u root -p shop < dump.sql
+mysql -u gerry -p shop < sandboxShopDump.sql
 
 cd /opt/bitnami/projects/shop
 pm2 start 'npm run start'

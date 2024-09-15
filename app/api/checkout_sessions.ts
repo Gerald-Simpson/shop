@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { fetchBasket, fetchStock } from '../serverActions/viewActions.tsx';
+import { fetchBasket } from '../serverActions/viewActions.tsx';
 import {
   stockVariantItem,
   basketItem,

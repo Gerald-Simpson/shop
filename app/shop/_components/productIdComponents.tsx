@@ -8,7 +8,7 @@ import { inter, space } from '../../fonts.ts';
 import { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 
 export function ProductImage(props: {
-  productId: string;
+  productId: number;
   pictureCount: number;
 }) {
   const [currentImage, changeImage] = useState(1);
@@ -82,7 +82,7 @@ export function ProductInfo(props: {
   productDescription: string[];
   cookieId: string;
   variantList: stockVariantItem[];
-  productId: string;
+  productId: number;
 }) {
   let variantList = props.variantList;
   let variantKey: variantKey = {};

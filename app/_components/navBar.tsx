@@ -7,7 +7,6 @@ import Basket from './basket.tsx';
 import {
   fetchBasket,
   fetchBasketCount,
-  fetchStock,
   compareBasket,
 } from '../serverActions/viewActions.tsx';
 import NavBut from './navClient.tsx';

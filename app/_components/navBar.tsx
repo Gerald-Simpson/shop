@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { Suspense } from 'react';
 import Basket from './basket.tsx';
 import {
   fetchBasket,

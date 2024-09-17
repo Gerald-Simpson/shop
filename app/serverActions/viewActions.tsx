@@ -5,6 +5,7 @@ import {
   stockListItem,
   stockVariant,
   stockListing,
+  basketCheckoutItem,
 } from '../_components/generalControllers.ts';
 import { unstable_noStore as noStore } from 'next/cache';
 import prisma from './db.ts';
@@ -40,7 +41,7 @@ export async function fetchBasketCount(cookieId: string) {
     });
   } catch (err) {
     console.error(err);
-    return [];
+    return 0;
   }
   if (data.length === 0) return 0;
   let basketItemCount = 0;
@@ -198,8 +199,8 @@ export async function fetchStockListingWithCategory(
 
 export async function compareBasket(cookieId: string) {
   let basketData = await fetchBasket(cookieId);
-  let inStock: stockListItem[] = [];
-  let outStock: stockListItem[] = [];
+  let inStock: basketCheckoutItem[] = [];
+  let outStock: basketCheckoutItem[] = [];
   // For each basket item, if stock of that item is > the basket value, add the item information to the line items to be passed to Stripe
   let inStockQuantity = 0;
   let outStockQuantity = 0;
@@ -217,41 +218,57 @@ export async function compareBasket(cookieId: string) {
       let stockItem = await fetchStockListingWithId(stockVariant.listingId);
       if (basketItem.quantity <= stockVariant.stock) {
         inStock.push({
-          name: stockItem.name,
-          variant: stockVariant.name,
+          stockListName: stockItem.name,
+          variantName: stockVariant.name,
+          combinedName: stockItem.name + ' - ' + stockVariant.name,
           price: stockVariant.price,
-          description: stockItem.description.split(';'),
+          description: stockItem.description.split(';').join(' '),
           quantity: basketItem.quantity,
+          img: '/productImages/' + stockItem.id + '/tile.jpg',
           variantId: basketItem.variantId,
+          basketId: basketItem.id,
+          stockListingId: stockItem.id,
         });
         inStockQuantity += basketItem.quantity;
       } else if (stockVariant.stock > 0) {
         inStock.push({
-          name: stockItem.name,
-          variant: stockVariant.name,
+          stockListName: stockItem.name,
+          variantName: stockVariant.name,
+          combinedName: stockItem.name + ' - ' + stockVariant.name,
           price: stockVariant.price,
-          description: stockItem.description.split(';'),
+          description: stockItem.description.split(';').join(' '),
           quantity: stockVariant.stock,
+          img: '/productImages/' + stockItem.id + '/tile.jpg',
           variantId: basketItem.variantId,
+          basketId: basketItem.id,
+          stockListingId: stockItem.id,
         });
         inStockQuantity += stockVariant.stock;
         outStock.push({
-          name: stockItem.name,
-          variant: stockVariant.name,
+          stockListName: stockItem.name,
+          variantName: stockVariant.name,
+          combinedName: stockItem.name + ' - ' + stockVariant.name,
           price: stockVariant.price,
-          description: stockItem.description.split(';'),
+          description: stockItem.description.split(';').join(' '),
           quantity: basketItem.quantity - stockVariant.stock,
+          img: '/productImages/' + stockItem.id + '/tile.jpg',
           variantId: basketItem.variantId,
+          basketId: basketItem.id,
+          stockListingId: stockItem.id,
         });
         outStockQuantity += basketItem.quantity - stockVariant.stock;
       } else if (stockVariant.stock === 0) {
         outStock.push({
-          name: stockItem.name,
-          variant: stockVariant.name,
+          stockListName: stockItem.name,
+          variantName: stockVariant.name,
+          combinedName: stockItem.name + ' - ' + stockVariant.name,
           price: stockVariant.price,
-          description: stockItem.description.split(';'),
+          description: stockItem.description.split(';').join(' '),
+          img: '/productImages/' + stockItem.id + '/tile.jpg',
           quantity: basketItem.quantity,
           variantId: basketItem.variantId,
+          basketId: basketItem.id,
+          stockListingId: stockItem.id,
         });
         outStockQuantity += basketItem.quantity;
       }

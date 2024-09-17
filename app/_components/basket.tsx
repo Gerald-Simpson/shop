@@ -7,27 +7,18 @@ import { GlobalContext } from '../../stateProvider.tsx';
 import {
   addToBasket,
   removeFromBasket,
-  decrementBasket,
+  decrementBasketById,
 } from '../serverActions/controllerActions.tsx';
 import { removeOutOfStock } from '../serverActions/controllerActions.tsx';
-import { stockListItem } from './generalControllers.ts';
+import { stockListItem, basketCheckoutItem } from './generalControllers.ts';
 import { space, inter } from '../fonts.ts';
 import Link from 'next/link';
-
-interface inOutStockItem {
-  name: string;
-  variant: string;
-  price: number;
-  description: string;
-  quantity: number;
-  itemDbId: string;
-}
 
 //&#128722 old trolley
 export default function Basket(props: {
   comparedBasket: {
-    inStock: stockListItem[];
-    outStock: stockListItem[];
+    inStock: basketCheckoutItem[];
+    outStock: basketCheckoutItem[];
     inStockQuantity: number;
     outStockQuantity: number;
   };
@@ -119,8 +110,8 @@ export default function Basket(props: {
 
 function CheckoutOverlay(props: {
   comparedBasket: {
-    inStock: stockListItem[];
-    outStock: stockListItem[];
+    inStock: basketCheckoutItem[];
+    outStock: basketCheckoutItem[];
     inStockQuantity: number;
     outStockQuantity: number;
   };
@@ -175,8 +166,8 @@ function CheckoutOverlay(props: {
 
 function CombinedBasketTiles(props: {
   comparedBasket: {
-    inStock: stockListItem[];
-    outStock: stockListItem[];
+    inStock: basketCheckoutItem[];
+    outStock: basketCheckoutItem[];
     inStockQuantity: number;
     outStockQuantity: number;
   };
@@ -189,14 +180,17 @@ function CombinedBasketTiles(props: {
     return inStock.map((item) => {
       return (
         <BasketTile
-          name={item.name}
-          id={item.name + ' ' + item.variant}
-          variantName={item.variant}
-          price={item.price.toString()}
+          stockListingName={item.stockListName}
+          variantName={item.variantName}
+          combinedName={item.combinedName}
+          price={item.price}
+          description={item.description}
           quantity={item.quantity}
-          img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+          img={'/productImages/' + item.variantId + '/tile.jpg'}
           cookieId={props.cookieId}
-          itemDbId={item.itemDbId}
+          variantId={item.variantId}
+          basketId={item.basketId}
+          stockListingId={item.stockListingId}
         />
       );
     });
@@ -210,14 +204,17 @@ function CombinedBasketTiles(props: {
     let inTiles = inStock.map((item) => {
       return (
         <BasketTile
-          name={item.name}
-          id={item.name + ' ' + item.variant}
-          variantName={item.variant}
-          price={item.price.toString()}
+          stockListingName={item.stockListName}
+          variantName={item.variantName}
+          combinedName={item.combinedName}
+          price={item.price}
+          description={item.description}
           quantity={item.quantity}
-          img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+          img={'/productImages/' + item.variantId + '/tile.jpg'}
           cookieId={props.cookieId}
-          itemDbId={item.itemDbId}
+          variantId={item.variantId}
+          basketId={item.basketId}
+          stockListingId={item.stockListingId}
         />
       );
     });
@@ -230,14 +227,17 @@ function CombinedBasketTiles(props: {
       outStock.map((item) => {
         return (
           <BasketTile
-            name={item.name}
-            id={item.name + ' ' + item.variant}
-            variantName={item.variant}
-            price={item.price.toString()}
+            stockListingName={item.stockListName}
+            variantName={item.variantName}
+            combinedName={item.combinedName}
+            price={item.price}
+            description={item.description}
             quantity={item.quantity}
-            img={'/productImages/' + item.itemDbId + '/tile.jpg'}
+            img={'/productImages/' + item.variantId + '/tile.jpg'}
             cookieId={props.cookieId}
-            itemDbId={item.itemDbId}
+            variantId={item.variantId}
+            basketId={item.basketId}
+            stockListingId={item.stockListingId}
           />
         );
       }),
@@ -247,14 +247,17 @@ function CombinedBasketTiles(props: {
 }
 
 function BasketTile(props: {
-  name: string;
-  id: string;
+  stockListingName: string;
   variantName: string;
-  price: string;
+  combinedName: string;
+  price: number;
+  description: string;
   quantity: number;
   img: string;
   cookieId: string;
-  itemDbId: string;
+  variantId: number;
+  basketId: number;
+  stockListingId: number;
 }) {
   const { showBasket, basketChange }: any = useContext(GlobalContext);
   const toggleBasket = () => basketChange(!showBasket);
@@ -267,7 +270,7 @@ function BasketTile(props: {
     <div className='flex flex-row justify-between w-full p-5 items-center border-b'>
       <Link
         className='contents'
-        href={'/shop/' + props.itemDbId}
+        href={'/shop/' + props.stockListingId}
         onClick={() => toggleBasket()}
       >
         <img width='90' height='90' src={props.img} />
@@ -276,29 +279,26 @@ function BasketTile(props: {
         <div className='flex flex-col h-full justify-start py-2'>
           <Link
             className='contents'
-            href={'/shop/' + props.itemDbId}
+            href={'/shop/' + props.stockListingId}
             onClick={() => toggleBasket()}
           >
-            <p className='text-xs font-bold'>{props.name}</p>
+            <p className='text-xs font-bold'>{props.stockListingName}</p>
           </Link>
           <p className='pt-2 pb-1 text-xs'>{props.variantName}</p>
           <div className='pt-2'>
             <QuantityControl
               quantity={props.quantity}
               cookieId={props.cookieId}
-              itemDbId={props.itemDbId}
+              variantId={props.variantId}
               variantName={props.variantName}
+              basketId={props.basketId}
             />
           </div>
         </div>
         <div className='flex flex-col h-full w-auto justify-between items-end py-2'>
           <button
             onClick={() => {
-              removeFromBasket(
-                props.cookieId,
-                props.itemDbId,
-                props.variantName,
-              );
+              removeFromBasket(props.cookieId, props.basketId);
             }}
             className='text-xs sm:hover:text-textAccent sm:hover:font-bold select-none'
           >
@@ -306,7 +306,7 @@ function BasketTile(props: {
           </button>
           <p>
             £
-            {(parseFloat(props.price) * props.quantity).toLocaleString(
+            {(props.price * props.quantity).toLocaleString(
               'en-US',
               priceOptions,
             )}
@@ -317,7 +317,7 @@ function BasketTile(props: {
   );
 }
 
-function priceCount(inStock: stockListItem[]) {
+function priceCount(inStock: basketCheckoutItem[]) {
   const priceOptions = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -326,7 +326,7 @@ function priceCount(inStock: stockListItem[]) {
   if (inStock.length === 0) return '0.00';
   let basketPriceCount = 0.0;
   inStock.forEach((entry) => {
-    basketPriceCount += entry.quantity * parseFloat(entry.price);
+    basketPriceCount += entry.quantity * entry.price;
   });
   return basketPriceCount.toLocaleString('en-US', priceOptions);
 }
@@ -334,15 +334,16 @@ function priceCount(inStock: stockListItem[]) {
 function QuantityControl(props: {
   quantity: number;
   cookieId: string;
-  itemDbId: string;
+  variantId: number;
   variantName: string;
+  basketId: number;
 }) {
   return (
     <div className='flex justify-evenly items-center w-16 border'>
       <div
         className='flex w-full justify-center items-center sm:hover:bg-hoverColor/30 border-r text-l select-none cursor-pointer'
         onClick={() => {
-          decrementBasket(props.cookieId, props.itemDbId, props.variantName);
+          decrementBasketById(props.cookieId, props.basketId);
         }}
       >
         &#x2212;
@@ -353,7 +354,7 @@ function QuantityControl(props: {
       <div
         className='flex w-full justify-center items-center sm:hover:bg-hoverColor/30 border-l text-l select-none cursor-pointer'
         onClick={() => {
-          addToBasket(props.cookieId, props.itemDbId, props.variantName);
+          addToBasket(props.cookieId, props.variantId);
         }}
       >
         &#x2B;

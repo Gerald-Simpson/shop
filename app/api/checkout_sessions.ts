@@ -7,10 +7,6 @@ import {
   fetchStockVariantWithId,
   fetchStockListingWithId,
 } from '../serverActions/viewActions.tsx';
-import {
-  stockVariantItem,
-  basketItem,
-} from '../_components/generalControllers.ts';
 import { lineItems } from './_components/controllers.ts';
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);

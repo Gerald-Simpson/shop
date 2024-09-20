@@ -17,7 +17,6 @@ import {
 } from '../_components/generalControllers.ts';
 import { revalidateTag } from 'next/cache';
 import prisma from './db.ts';
-import Page from '../admin2/page.tsx';
 
 // File contains all functions that modify DB's
 

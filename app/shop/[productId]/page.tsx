@@ -15,17 +15,15 @@ import prisma from '../../serverActions/db.ts';
 export default async function Page({
   params,
 }: {
-  params: { productId: string };
+  params: { productId: number };
 }) {
   let cookieId = '';
   let cookieList = cookies();
   if (cookieList.has('id')) {
     cookieId = cookies().get('id')!.value;
   }
-  let stockVariants = await fetchStockVariantsWithListingId(
-    parseInt(params.productId),
-  );
-  let stockListing = await fetchStockListingWithId(parseInt(params.productId));
+  let stockVariants = await fetchStockVariantsWithListingId(params.productId);
+  let stockListing = await fetchStockListingWithId(params.productId);
   if (stockListing == null) {
     return (
       <div className='flex justify-center items-center w-full h-screen mainTitle bg-black'>

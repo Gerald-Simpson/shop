@@ -2,7 +2,7 @@
 
 import { renderedTiles } from '../_components/itemTile.tsx';
 import NavBar from '../../_components/navBar';
-import { fetchStockListingWithCategory, fetchStockWithCategory } from '@/app/serverActions/viewActions.tsx';
+import { fetchStockListingWithCategory } from '@/app/serverActions/viewActions.tsx';
 
 export default async function Grinders() {
   return (

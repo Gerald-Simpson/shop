@@ -2,14 +2,12 @@
 
 import Link from 'next/link';
 import { cookies } from 'next/headers';
-import { Suspense } from 'react';
 import Basket from './basket.tsx';
 import {
   fetchBasket,
   fetchBasketCount,
-  fetchStock,
   compareBasket,
-} from '../actions.tsx';
+} from '../serverActions/viewActions.tsx';
 import NavBut from './navClient.tsx';
 import Image from 'next/image';
 import { space, inter } from '../fonts.ts';

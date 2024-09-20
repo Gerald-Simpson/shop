@@ -23,6 +23,7 @@
 /archive
 *.odt
 *.odt#
+/ignore
 
 # debug
 npm-debug.log*

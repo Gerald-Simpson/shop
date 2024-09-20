@@ -1,0 +1,14 @@
+To dump DB backup:
+mysqldump -u gerry -p shop > sandboxShopDump.sql
+
+To load DB backup:
+mysql -u gerry -p shop < sandboxShopDump.sql
+
+cd /opt/bitnami/projects/shop
+pm2 start 'npm run start'
+sudo mysql -u root -p 
+if sql needs restarting:
+    sudo service mysql start
+
+https://www.prisma.io/docs/orm/prisma-migrate/workflows/development-and-production
+

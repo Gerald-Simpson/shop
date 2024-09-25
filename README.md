@@ -12,8 +12,8 @@ I wanted to create a simple, custom ecommerce site that would offer flexibility 
   - Following the deprecation of Create-React-App, I chose Next.js because of my interest in it's server-side rendering and directory-based routing, along with it's extensive adoption.
 - Tailwind CSS
   - Tailwind integrated well with Next.js, enabling styling to be conveniently managed alongside other code.
-- ~~MongoDB
-  - Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, so opted for MongoDB.~~
+- ~~MongoDB~~
+  - ~~Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, so opted for MongoDB.~~
 - MySQL
   - After considering future features, I identified limitations with the previous MongoDB setup. Migrating to a locally hosted MySQL database offered a cost-effective solution and a valuable learning opportunity, while resolving challenges inherent to a non-SQL database.
 - Prisma ORM

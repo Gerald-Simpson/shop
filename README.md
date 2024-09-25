@@ -12,8 +12,12 @@ I wanted to create a simple, custom ecommerce site that would offer flexibility 
   - Following the deprecation of Create-React-App, I chose Next.js because of my interest in it's server-side rendering and directory-based routing, along with it's extensive adoption.
 - Tailwind CSS
   - Tailwind integrated well with Next.js, enabling styling to be conveniently managed alongside other code.
-- MongoDB
-  - Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, so opted for MongoDB.
+- ~~MongoDB~~
+  - ~~Given the project's limited scope, I saw no need to introduce complexity with an SQL-based database, so opted for MongoDB.~~
+- MySQL
+  - After considering future features, I identified limitations with the previous MongoDB setup. Migrating to a locally hosted MySQL database offered a cost-effective solution and a valuable learning opportunity, while resolving challenges inherent to a non-SQL database.
+- Prisma ORM
+  - Prisma ORM was integrated due to its free, open-source nature, strong compatibility with TypeScript, and its ability to simplify querying the MySQL database.
 - Stripe
   - Stripe provided a straightforward integration at an affordable price for payment processing.
 - Auth0
@@ -26,5 +30,7 @@ Here's what I've got planned next for the project:
 
 - Create a shop name and logo, and update the site style to match. - Complete
 - Convert project to typescript. - Complete
+- Research and implement the best CMS and authentication solution. - Complete
+- Migrate project's backend from MongoDB to MySQL. - Complete
 - Enhance the frontend design by selecting fonts and color schemes that align with the products being sold. - In progress
-- Research and implement the best CMS and authentication solution. - In progress
+- Design and implement the front and backend for the CMS page.

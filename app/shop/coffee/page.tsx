@@ -2,7 +2,7 @@
 
 import { renderedTiles } from '../_components/itemTile.tsx';
 import NavBar from '../../_components/navBar';
-import { fetchStockListingWithCategory } from '@/app/serverActions/viewActions.tsx';
+import { fetchStockListingWithCategory } from '../../serverActions/viewActions.tsx';
 
 export default async function Coffee() {
   return (

@@ -1,5 +1,5 @@
 'use client';
-import { nextRebuild } from '@/app/serverActions/serverControl';
+import { nextRebuild } from '../../../serverActions/serverControl.tsx';
 
 export default function Cms() {
     return (

@@ -1,9 +1,8 @@
 'use client';
 //64e63ee03c9fbcb94a36d0ce
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { GlobalContext } from '../../../stateProvider.tsx';
-import { useContext } from 'react';
-import { addToBasket } from '@/app/serverActions/controllerActions.tsx';
+import { addToBasket } from  '../../serverActions/controllerActions.tsx';
 import { inter, space } from '../../fonts.ts';
 import { JsonObject, JsonValue } from '@prisma/client/runtime/library';
 
